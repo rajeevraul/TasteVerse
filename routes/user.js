@@ -69,6 +69,13 @@ router.post("/create-user-record", (req, res, next) => {
   );
 });
 
+
+
+
+router.get("/list", (req,res) => {
+  res.render("shoppinglist");
+});
+
 ///////////////////////////////////////////// HELPERS ///////////////////////////////////////////
 
 /**
