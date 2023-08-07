@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('header'); %>
-
     <body>
-        <div>
-
+        <div class="container">
+            <h1>Shopping List</h1>
+            <div class="shopping-list">
+                <div class="row">
+                    <input type="text" placeholder="Add your text" id="input-box">
+                    <button>Add</button>
+                </div>
+                <ul id="list-container">
+                    <li>List 1</li>
+                    <li>List 1</li>
+                    <li>List 1</li>
+                </ul>
+            </div>
         </div>
         <%- include('footer'); %>
     </body>
-
 </html>
