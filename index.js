@@ -27,6 +27,8 @@ app.get('/', (req, res) => {
 //this adds all the userRoutes to the app under the path /user
 app.use('/user', userRoutes);
 
+app.use(express.static('css'));
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
