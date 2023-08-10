@@ -1,12 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
-<%- include('header'); %>
-
-    <body>
-        <div>
-
+<html>
+<head>
+  <title>recipe page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/master.css" type="text/css">
+</head>
+<body>
+<header>
+    <div class="d-flex justify-content-between" style="margin-top: 1%;">
+        <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+              <span></span>
+            </label>
+        
+            <ul class="menu__box">
+              <li><a class="menu__item" href="#">Home</a></li>
+              <li><a class="menu__item" href="#">Meal Planner</a></li>
+              <li><a class="menu__item" href="#">My Recipe</a></li>
+              <li><a class="menu__item" href="#">Shopping List</a></li>
+              <li><a class="menu__item" href="#">Find Recipe</a></li>
+              <li><a class="menu__item" href="#">Log Out</a></li>
+            </ul>
+          </div>
+        
+        <div id="logo">
+          <a href="#"><img src="/assets/logo.png" style="height: 40px;"></a>  
         </div>
-        <%- include('footer'); %>
-    </body>
 
+        <div id="search-bar">
+          <form class="d-flex" role="search" style="margin-right: 1rem;">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+    </div>
+    <hr>
+</header>
+
+<div class="md" style="margin-top: 4rem; margin-left: 8rem; margin-right: 8rem;">
+  <div class="flex-column flex-xl-row d-flex justify-content-start ">
+      <!-- image -->
+      <img src="dish.jpg" style="width: 600px;">
+
+      <div style="width: 30px;"></div>
+
+      <div>
+      <!-- title -->
+      <h1 style="font-size: 48px;">Lorem Ipsum</h1>
+
+      <!-- Ingridients -->
+      <h3>Ingridients</h3>
+      <ul>
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+          <li>water</li>
+          <li>peanut</li>
+          <li>ice</li>
+      </ul>
+      <button class="btn btn-outline-success btn-lg">modify recipe</button>
+      <button class="btn btn-outline-success btn-lg">add to favourite</button>
+      </div>
+  </div>
+
+  <div class="flex-column flex-xl-row d-flex justify-content-start my-4">
+      <div class="d-flex flex-column" style="width: 700px; margin-right: 2rem;">
+      <h2>instruction</h2>    
+      <!-- instruction -->
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices diam cursus, dignissim orci et, 
+          tempor purus. Nam vel pharetra enim. Morbi eleifend facilisis ullamcorper. Nullam at dolor in risus 
+          dapibus ornare. Sed tristique dapibus odio. Praesent mollis, sem ac cursus ornare, tellus diam finibus 
+          nisi, vel vehicula ex ligula id nunc. Vestibulum tincidunt risus metus, in accumsan risus condimentum 
+          vitae. Praesent finibus rutrum vehicula. Donec feugiat lorem sit amet scelerisque congue. Etiam venenatis 
+          viverra ornare. Praesent ac pellentesque magna, nec egestas magna. Nullam scelerisque, eros quis posuere 
+          aliquam, magna ipsum varius augue, eget interdum tellus nunc et neque.
+
+          Quisque efficitur vulputate luctus. Pellentesque congue congue est, euismod vestibulum lorem fringilla at. 
+          Nulla nec consequat leo, a pulvinar tellus. Donec nec sem vitae sem dictum consequat ac quis mi. Sed quis 
+          mi nisl. Phasellus pretium quam at odio egestas, nec ullamcorper turpis euismod. Maecenas magna nibh, semper 
+          non sem ac, blandit aliquam eros. Vestibulum ac nibh nec tortor porttitor dignissim eu vel nulla. Sed et 
+          congue dui. Integer cursus diam odio, a dapibus dolor euismod ultrices. Ut egestas ex ut ex venenatis, ac 
+          lobortis massa cursus. Cras vel mi quis nunc iaculis varius. Integer eu tortor risus. Pellentesque velit 
+          odio, egestas at nunc viverra, commodo faucibus mi.</p>
+      </div>    
+      
+      <!-- recommended recipe -->
+      <div id="recommended">
+        <h3>recommended recipe</h3>
+            <div class="flex-row flex-xl-column d-flex">
+                <div id="menu" class="flex-column flex-xl-row d-flex m-3">
+                    <img src="dish.jpg" style="width: 200px;">
+                    <h3 class="my-2">DISH NAME</h3>
+                </div>
+
+                <div id="menu" class="flex-column flex-xl-row d-flex m-3">
+                    <img src="dish.jpg" style="width: 200px;">
+                    <h3 class="my-2">DISH NAME</h3>
+                </div>
+
+                <div id="menu" class="flex-column flex-xl-row d-flex m-3">
+                    <img src="dish.jpg" style="width: 200px;">
+                    <h3 class="my-2">DISH NAME</h3>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>      
+</body>
 </html>
