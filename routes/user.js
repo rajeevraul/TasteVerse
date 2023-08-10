@@ -8,6 +8,8 @@ const express = require("express");
 const router = express.Router();
 const assert = require('assert');
 
+
+////////////////////////////////////////Examples//////////////////////////////////////////////
 /**
  * @desc retrieves the current users
  */
@@ -68,13 +70,23 @@ router.post("/create-user-record", (req, res, next) => {
     }
   );
 });
+////////////////////////////////////////Examples//////////////////////////////////////////////
 
-
+// Protected route - dashboard
+router.get('/dashboard', (req, res) => {
+  if (req.session.user) {
+    res.render('dashboard', { user: req.session.user });
+  } else {
+    res.redirect('/login');
+  }
+});
 
 
 router.get("/list", (req,res) => {
   res.render("shoppinglist");
 });
+
+
 
 ///////////////////////////////////////////// HELPERS ///////////////////////////////////////////
 
