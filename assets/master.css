@@ -181,3 +181,16 @@
     margin-left: 0;
   }
 }
+
+
+/* MyRecipe css */
+
+.RecipeSelction{
+    width: 100%;
+ 
+    display: flexbox;
+    justify-content: space-between;
+  flex-flow: row;
+  flex: auto;
+   
+}

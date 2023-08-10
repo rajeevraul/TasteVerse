@@ -20,7 +20,7 @@ const userRoutes = require('./routes/user');
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render("recipe");
+    res.render("loginpage");
 });
 
 
