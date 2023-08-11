@@ -14,6 +14,8 @@ global.db = new sqlite3.Database('./database.db',function(err){
   }
 });
 
+app.use(express.urlencoded({extended: true}));
+
 const userRoutes = require('./routes/user');
 
 //set the app to use ejs for rendering

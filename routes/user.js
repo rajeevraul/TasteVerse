@@ -73,53 +73,105 @@ const assert = require('assert');
 ////////////////////////////////////////Examples//////////////////////////////////////////////
 
 // Protected route - dashboard
-router.get('/dashboard', (req, res) => {
+router.get('/main', (req, res) => {
   if (req.session.user) {
-    res.render('dashboard', { user: req.session.user });
+    res.render('main', { user: req.session.user });
   } else {
     res.redirect('/login');
   }
 });
 
 
-router.get("/list", (req,res) => {
-  res.render("shoppinglist");
+
+var shoppingList=[];
+
+/**
+ * @desc Renders to the shopping list page 
+ */
+router.get('/list', (req,res) => {
+  res.render('shoppinglist', {shoppingList});
 });
+
+router.post('/list', (req, res) =>{
+  var newItem = req.body.item;
+  if(newItem.trim() !== ''){
+    shoppingList.push(newItem);
+  }
+  res.redirect('/user/list');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 ///////////////////////////////////////////// HELPERS ///////////////////////////////////////////
 
-/**
- * @desc A helper function to generate a random string
- * @returns a random lorem ipsum string
- */
-function generateRandomData(numWords = 5) {
-  const str =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+// /**
+//  * @desc A helper function to generate a random string
+//  * @returns a random lorem ipsum string
+//  */
+// function generateRandomData(numWords = 5) {
+//   const str =
+//     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 
-  const words = str.split(" ");
+//   const words = str.split(" ");
 
-  let output = "";
+//   let output = "";
 
-  for (let i = 0; i < numWords; i++) {
-    output += choose(words);
-    if (i < numWords - 1) {
-      output += " ";
-    }
-  }
+//   for (let i = 0; i < numWords; i++) {
+//     output += choose(words);
+//     if (i < numWords - 1) {
+//       output += " ";
+//     }
+//   }
 
-  return output;
-}
+//   return output;
+// }
 
-/**
- * @desc choose and return an item from an array
- * @returns the item
- */
-function choose(array) {
-  assert(Array.isArray(array), "Not an array");
-  const i = Math.floor(Math.random() * array.length);
-  return array[i];
-}
+// /**
+//  * @desc choose and return an item from an array
+//  * @returns the item
+//  */
+// function choose(array) {
+//   assert(Array.isArray(array), "Not an array");
+//   const i = Math.floor(Math.random() * array.length);
+//   return array[i];
+// }
 
 module.exports = router;
