@@ -82,9 +82,61 @@ router.get('/main', (req, res) => {
 });
 
 
-router.get("/list", (req,res) => {
-  res.render("shoppinglist");
+
+var shoppingList=[];
+
+/**
+ * @desc Renders to the shopping list page 
+ */
+router.get('/list', (req,res) => {
+  res.render('shoppinglist', {shoppingList});
 });
+
+router.post('/list', (req, res) =>{
+  var newItem = req.body.item;
+  if(newItem.trim() !== ''){
+    shoppingList.push(newItem);
+  }
+  res.redirect('/user/list');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
