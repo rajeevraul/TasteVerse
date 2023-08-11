@@ -26,12 +26,18 @@
             <div class="col-12 text-center">
                 <h1>Shopping List</h1>
                 <div class="d-flex justify-content-center">
-                    <input type="text" placeholder="Add your text" id="input-box">
-                    <form action="/user/add-list" method="post">
-                        <button type="submit" name="add_list" class="btn btn-success">Add</button>
+                    <form action="/user/list" method="post">
+                        <input type="text" name="item" placeholder="Add your text" id="input-box">
+                        <button type="submit" class="btn btn-success">Add</button>
                     </form>
+                    <ul>
+                        <% for (let item of shoppingList){ %>
+                            <li><%= item %></li>
+                        <% } %>
+                    </ul>
                 </div>
             </div>
+            
         </div>
         <%- include('footer') %>
     </body>
