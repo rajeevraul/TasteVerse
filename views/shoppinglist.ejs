@@ -27,18 +27,48 @@
                 <h1>Shopping List</h1>
                 <div class="d-flex justify-content-center">
                     <form action="/user/list" method="post">
-                        <input type="text" name="item" placeholder="Add your text" id="input-box">
+                        <input type="text" name="item" placeholder="Add your item" id="input-box">
                         <button type="submit" class="btn btn-success">Add</button>
                     </form>
-                    <ul>
-                        <% for (let item of shoppingList){ %>
-                            <li><%= item %></li>
-                        <% } %>
-                    </ul>
+                    <!-- <ul> -->
+                        <%# for (let item of shoppingList){ %>
+                            <!-- <li><%#= item %></li> -->
+                        <%# } %>
+                    <!-- </ul> -->
+                </div>
+                <div class="col-12">
+                    <form action="/user/handle-checkboxes" method="post" id="shopping-item">
+                        <table class="table table hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Done</th>
+                                    <th class="text-center">Item</th>
+                                    <th class="text-center">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i<shoppingList.length; i++){ %>
+                                    <tr>
+                                        <!-- <td><%#= i+1 %></td> -->
+                                        <td>
+                                            <input type="checkbox" name="done[]" value="<%= i %>" onchange="submitForm()"/>
+                                        </td>
+                                        <td><%= shoppingList[i] %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
             
         </div>
         <%- include('footer') %>
     </body>
+
+    <script>
+        function submitForm(){
+            document.getElementById('shopping-item').submit();
+        }
+    </script>
 </html>
