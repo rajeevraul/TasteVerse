@@ -28,13 +28,9 @@
                 <div class="d-flex justify-content-center">
                     <form action="/user/list" method="post">
                         <input type="text" name="item" placeholder="Add your item" id="input-box">
+                        <input type="number" name="quantity" placeholder="Quantity" id="quantity-box">
                         <button type="submit" class="btn btn-success">Add</button>
                     </form>
-                    <!-- <ul> -->
-                        <%# for (let item of shoppingList){ %>
-                            <!-- <li><%#= item %></li> -->
-                        <%# } %>
-                    <!-- </ul> -->
                 </div>
                 <div class="col-12">
                     <form action="/user/handle-checkboxes" method="post" id="shopping-item">
@@ -51,9 +47,11 @@
                                     <tr>
                                         <!-- <td><%#= i+1 %></td> -->
                                         <td>
-                                            <input type="checkbox" name="done[]" value="<%= i %>" onchange="submitForm()"/>
+                                            <input type="checkbox" name="done[]" value="<%= shoppingList[i].shopping_id %>" onchange="submitForm()"/>
                                         </td>
-                                        <td><%= shoppingList[i] %></td>
+                                        <!-- <td><%#= shoppingList[i] %></td> -->
+                                        <td><%= shoppingList[i].shopping_item %></td>
+                                        <td><%= shoppingList[i].shopping_quantity %></td>
                                     </tr>
                                 <% } %>
                             </tbody>
