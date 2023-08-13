@@ -83,27 +83,55 @@ router.get('/main', (req, res) => {
 
 
 
-var shoppingList=[];
+// var shoppingList=[];
 
 /**
- * @desc Renders to the shopping list page 
+ * @desc Directs to the shopping list page 
  */
-router.get('/list', (req,res) => {
-  res.render('shoppinglist', {shoppingList});
+
+router.get('/list', (req, res) => {
+  db.all('SELECT * FROM shoppingRecord', [], (err, rows) => {
+    if(err){
+      console.error(err);
+    }else{
+      res.render('shoppinglist', {shoppingList: rows});
+    }
+  });
 });
 
-router.post('/list', (req, res) =>{
+
+/**
+ * @desc 
+ */
+router.post('/list', (req, res) => {
   var newItem = req.body.item;
+  var newQuantity = parseInt(req.body.quantity);
   if(newItem.trim() !== ''){
-    shoppingList.push(newItem);
+    db.run('INSERT INTO shoppingRecord (shopping_item, shopping_quantity) VALUES (?, ?)', [newItem, newQuantity], (err) => {
+      if(err){
+        console.error(err);
+      }else{
+        console.log('Item added to shopping table');
+      }
+      res.redirect('/user/list');
+    });
+  }else{
+    res.redirect('/user/list');
   }
-  res.redirect('/user/list');
 });
 
 router.post('/handle-checkboxes', (req, res) =>{
-  const checkedIndexes = req.body.done;
-  if(checkedIndexes){
-    shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
+  const checkedIds = req.body.done;
+  if(checkedIds){
+    checkedIds.forEach(itemId  => {
+      db.run('DELETE FROM shoppingRecord WHERE shopping_id = ?', [itemId], (err) => {
+        if(err){
+          console.error(err);
+        }else{
+          console.log(`Item with ID ${itemId} removed from shoppingRecord table.`);
+        }
+      });
+    });
   }
   res.redirect('/user/list');
 });
