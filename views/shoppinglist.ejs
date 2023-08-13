@@ -28,7 +28,7 @@
                 <div class="d-flex justify-content-center">
                     <form action="/user/list" method="post">
                         <input type="text" name="item" placeholder="Add your item" id="input-box">
-                        <input type="number" name="quantity" placeholder="Quantity" id="quantity-box">
+                        <input type="number" name="quantity" placeholder="Quantity" id="quantity-box" min="0">
                         <button type="submit" class="btn btn-success">Add</button>
                     </form>
                 </div>
@@ -37,7 +37,7 @@
                         <table class="table table hover">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Done</th>
+                                    <th class="text-center">Checked</th>
                                     <th class="text-center">Item</th>
                                     <th class="text-center">Quantity</th>
                                 </tr>
@@ -58,8 +58,10 @@
                         </table>
                     </form>
                 </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger"> Remind Me </button>
+                </div>
             </div>
-            
         </div>
         <%- include('footer') %>
     </body>
