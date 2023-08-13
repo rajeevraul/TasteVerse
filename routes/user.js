@@ -100,6 +100,14 @@ router.post('/list', (req, res) =>{
   res.redirect('/user/list');
 });
 
+router.post('/handle-checkboxes', (req, res) =>{
+  const checkedIndexes = req.body.done;
+  if(checkedIndexes){
+    shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
+  }
+  res.redirect('/user/list');
+});
+
 
 
 

@@ -11,10 +11,15 @@ CREATE TABLE IF NOT EXISTS testUsers (
     user_name TEXT NOT NULL
 );
 
-
+CREATE TABLE IF NOT EXISTS shoppingRecord(
+    shopping_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    shopping_item TEXT NOT NULL, 
+    shopping_quantity INTEGER
+);
 
 --insert data here
  
+
 
 COMMIT;
 
