@@ -4,15 +4,17 @@
   <title>Login Page</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+<!-- ... (head and body tags) ... -->
 <body>
   <form action="/login" method="post">
     <h2>Login</h2>
-    <% if (error) { %>
-      <p class="error"><%= error %></p>
-    <% } %>
     <input type="text" name="username" placeholder="Username" required><br>
     <input type="password" name="password" placeholder="Password" required><br>
     <input type="submit" value="Login">
   </form>
 </body>
 </html>
+
+
+
+

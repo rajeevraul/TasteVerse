@@ -17,8 +17,14 @@ CREATE TABLE IF NOT EXISTS shoppingRecord(
     shopping_quantity INTEGER
 );
 
+CREATE TABLE IF NOT EXISTS admins (
+  id INTEGER PRIMARY KEY,
+  username TEXT NOT NULL,
+  password TEXT NOT NULL
+);
+
 --insert data here
- 
+INSERT INTO admins (username, password) VALUES ('user1', '$2b$10$/TQWU4G7OtY7BxNUKgKNLOVy8w.n78XbW8wG2mTr9tIjKbVsbc6zO');
 
 
 COMMIT;
