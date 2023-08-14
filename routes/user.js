@@ -81,8 +81,6 @@ router.get('/main', (req, res) => {
   }
 });
 
-
-
 // var shoppingList=[];
 
 /**
