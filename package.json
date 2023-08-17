@@ -13,6 +13,6 @@
     "express-session": "^1.17.3",
     "node.js": "^0.0.1-security",
     "passport": "^0.6.0",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.2"
   }
 }
