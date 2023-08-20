@@ -53,21 +53,13 @@
 
 
 <div class="RecipeSelction">
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg">
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage2" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
+  <% myRecipe.forEach(function(dish){ %>
+    <!-- class for the images shld be recipeImage and recipeImage2 -->
+      <figure class="recipeImage">
+      <img src="das" >
+      <figcaption><%=dish.recipe_title %></figcaption>
+      </figure>
+        <% }) %> 
 </div>
 <div class="buttonPos">
     <button onclick="expCol()" id="expand">Expand</button>
@@ -79,9 +71,13 @@
 <div class="recipeHeader">
 <h3>Favourite Recipes</h3>
 </div>
-<div class="RecipeSelction">
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
+<% myRecipe.forEach(function(dish){ %>
+  <!-- class for the images shld be recipeImage and recipeImage2 -->
+    <figure class="recipeImage">
+    <img src="" >
+    <figcaption><%=dish.recipe_title %></figcaption>
+    </figure>
+      <% }) %> 
 </div>
 
 <div class="buttonPos">

@@ -109,6 +109,18 @@ router.post('/handle-checkboxes', (req, res) =>{
 });
 
 
+// myRecipe page 
+router.get('/myRecipe', (req,res) => {
+  global.db.all("SELECT * FROM recipePage",function(err,data){
+    if(err){
+      console.log("error in myRecipe")
+    }
+    else{
+      res.render("myRecipe.ejs",{myRecipe:data})
+    }
+  })
+});
+
 
 
 
