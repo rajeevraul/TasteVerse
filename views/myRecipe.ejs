@@ -55,8 +55,8 @@
 <div class="RecipeSelction">
   <% myRecipe.forEach(function(dish){ %>
     <!-- class for the images shld be recipeImage and recipeImage2 -->
-      <figure class="recipeImage">
-      <img src="das" >
+      <figure id="dish<%=dish.recipe_id %>" class="recipeImage">
+      <img src="/public/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
       <figcaption><%=dish.recipe_title %></figcaption>
       </figure>
         <% }) %> 
@@ -92,17 +92,18 @@
   
     
    
-   var secondaryImage=document.getElementsByClassName("recipeImage2")
+   var checkHiddenImage=document.getElementsByClassName("recipeImage")
     
     function expCol(){
         
-      for(i=0;i<secondaryImage.length;i++){
-      if(secondaryImage[i].style.display=="none"){
+      for(i=0;i<checkHiddenImage.length;i++){
         
-        secondaryImage[i].style.display="inline"
+      if(i>5){
+        
+        checkHiddenImage[i].style.display="inline"
       }else{
         
-        secondaryImage[i].style.display="none"
+        checkHiddenImage[i].style.display="none"
     
       }
     }
