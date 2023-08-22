@@ -185,23 +185,16 @@
 
 /* MyRecipe css */
 
-.RecipeSelction{
-    width: 100%;
- 
-    display: flexbox;
-    justify-content: space-between;
-  flex-flow: row;
-  flex: auto;
-   
-}
+
 
 .recipeImage{
-  padding-top: 20px;
-  width: 15%;
-  height: 15%;
-  padding-left: 7%;
- 
- 
+  width: 100%;
+  
+
+}
+
+.recipeImageText{
+  text-align: center;
 }
 
 .recipeHeader{
