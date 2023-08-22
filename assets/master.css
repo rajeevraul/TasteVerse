@@ -194,3 +194,37 @@
   flex: auto;
    
 }
+
+.recipeImage{
+  padding-top: 20px;
+  width: 15%;
+  height: 15%;
+  padding-left: 7%;
+ 
+ 
+}
+
+.recipeHeader{
+  display: flex;
+  align-content: space-between;
+}
+
+.buttonPos{
+  text-align: center;
+  padding-top: 25px;
+}
+
+#expand{
+border-radius: 5px;
+}
+
+#expandFav{
+  border-radius: 5px;
+}
+
+
+
+
+hr{
+  padding-top: 50px;
+}
