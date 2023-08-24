@@ -55,10 +55,10 @@
 <div class="RecipeSelction">
   <% myRecipe.forEach(function(dish){ %>
     <!-- class for the images shld be recipeImage and recipeImage2 -->
-      <figure id="dish<%=dish.recipe_id %>" class="recipeImage">
-      <img src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
+      <div id="dish<%=dish.recipe_id %>">
+      <img  class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
       <figcaption><%=dish.recipe_title %></figcaption>
-      </figure>
+      </div>
         <% }) %> 
 </div>
 <div class="buttonPos">
