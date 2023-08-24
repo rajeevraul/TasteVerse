@@ -6,7 +6,7 @@ BEGIN TRANSACTION;
 
 --create your tables with SQL commands here (watch out for slight syntactical differences with SQLite)
 
-CREATE TABLE IF NOT EXISTS testUsers (
+CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_name TEXT NOT NULL,
     user_password TEXT NOT NULL
