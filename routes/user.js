@@ -81,6 +81,13 @@ router.get('/main', (req, res) => {
   }
 });
 
+// /**
+//  * @desc Directs to myRecipe page 
+//  */
+// router.get('/myRecipe', (req,res) => {
+//   res.render("myRecipe.ejs");
+// });
+
 // var shoppingList=[];
 
 /**
