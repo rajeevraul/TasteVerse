@@ -81,17 +81,16 @@ router.get('/main', (req, res) => {
   }
 });
 
-// /**
-//  * @desc Directs to myRecipe page 
-//  */
-// router.get('/myRecipe', (req,res) => {
-//   res.render("myRecipe.ejs");
-// });
+/**
+ * @desc Directs to myRecipe page [WORKING]
+ */
+router.get('/myRecipe', (req,res) => {
+  res.render('myRecipe.ejs');
+});
 
-// var shoppingList=[];
 
 /**
- * @desc Directs to the shopping list page 
+ * @desc Directs to the shopping list page [WORKING]
  */
 
 router.get('/list', (req, res) => {
@@ -106,7 +105,7 @@ router.get('/list', (req, res) => {
 
 
 /**
- * @desc 
+ * @desc [WORKING] 
  */
 router.post('/list', (req, res) => {
   var newItem = req.body.item;
@@ -125,6 +124,9 @@ router.post('/list', (req, res) => {
   }
 });
 
+/**
+ * @desc [WORKING]
+ */
 router.post('/handle-checkboxes', (req, res) =>{
   const checkedIds = req.body.done;
   if(checkedIds){
