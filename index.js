@@ -2,16 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
-const bcrypt= require('bcrypt');
-const passport=require('passport')
-const session=require('express-session')
-const flash=require('express-flash')
-
-const initializePassport=require('./passportSetting')
-initializePassport(passport,
-  username=>users.find(user=>user.username ===user),
-  id=>users.find(user=>user.id ===id)
-)
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db',function(err){
@@ -27,7 +17,6 @@ global.db = new sqlite3.Database('./database.db',function(err){
 app.use(express.urlencoded({extended: true}));
 
 const userRoutes = require('./routes/user');
-
 
 //set the app to use ejs for rendering
 app.set('view engine', 'ejs');
@@ -50,18 +39,7 @@ app.use('/assets', express.static('assets'));
 
 
 //login function 
-
-
-app.use(session({
-  secret:"HierachyOrder",
-  resave:false,
-  saveUninitialized:false
-}))
-
-app.use(flash())
-
-app.use(passport.initialize())
-app.use(passport.session())
+const users=[];
 
 app.get('/register', (req,res)=>{
   res.render('register.ejs')
@@ -71,29 +49,18 @@ app.get('/login', (req,res)=>{
   res.render('loginpage')
 })
 
-
-app.post('/login',passport.authenticate('local',{
-  successRedirect:'/',
-  failureRedirect:'/login',
-   failureFlash:true
-}))
-
-
 app.post('/registered',async (req,res)=>{
   try{
     const hashedPassword=await bcrypt.hash(req.body.password, 10)
-    
-   global.db.run("INSERT INTO users(user_name,user_password) VALUES (?,?)",[req.body.username,hashedPassword],function(err){
-    if(err){
-      console.log("register error")
-    }
-    else{
-      res.redirect('/login')
-    }
-   })
+    users.push({
+      id:Date.now().toString(),
+      name:req.body.username,
+      password:hashedPassword
+    })
+    res.redirect('/login')
   }catch{
-    console.log ("error")
+    res.redirect('/register')
   }
-
+  console.log(users)
 })
 
