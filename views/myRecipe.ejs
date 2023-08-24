@@ -52,14 +52,18 @@
 
 
 
-<div class="RecipeSelction">
-  <% myRecipe.forEach(function(dish){ %>
+<div class="container">
+
     <!-- class for the images shld be recipeImage and recipeImage2 -->
-      <div id="dish<%=dish.recipe_id %>">
-      <img  class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
-      <figcaption><%=dish.recipe_title %></figcaption>
+      <div class="row">
+        <% myRecipe.forEach(function(dish){ %>
+          <div class="col-md-2">
+      <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
+      <p class="recipeImageText"><%=dish.recipe_title %></p>
       </div>
         <% }) %> 
+        
+      </div>
 </div>
 <div class="buttonPos">
     <button onclick="expCol()" id="expand">Expand</button>
@@ -71,14 +75,22 @@
 <div class="recipeHeader">
 <h3>Favourite Recipes</h3>
 </div>
-<% myRecipe.forEach(function(dish){ %>
+
+
+<div class="container">
+
   <!-- class for the images shld be recipeImage and recipeImage2 -->
-    <figure class="recipeImage">
-    <img src="" >
-    <figcaption><%=dish.recipe_title %></figcaption>
-    </figure>
+    <div class="row">
+      <% myRecipe.forEach(function(dish){ %>
+        <div class="col-md-2">
+    <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
+    <p class="recipeImageText"><%=dish.recipe_title %></p>
+    </div>
       <% }) %> 
+      
+    </div>
 </div>
+
 
 <div class="buttonPos">
 <button id="expandFav">Expand</button>
@@ -93,10 +105,12 @@
     
    
    var checkHiddenImage=document.getElementsByClassName("recipeImage")
+   var imageText=document.getElementsByClassName("recipeImageText")
 
    for(a=0;a<checkHiddenImage.length;a++){
     if(a>5){
       checkHiddenImage[a].style.display="none"
+      imageText[a].style.display="none"
     }
    }
     
@@ -105,11 +119,12 @@
       for(i=0;i<checkHiddenImage.length;i++){
         
       if(i>5 && checkHiddenImage[i].style.display=="none"){
-        
+        imageText[i].style.display="block"
         checkHiddenImage[i].style.display="inline"
       }else if(i>5 && checkHiddenImage[i].style.display=="inline"){
         
         checkHiddenImage[i].style.display="none"
+        imageText[i].style.display="none"
     
       }
     }
