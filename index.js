@@ -38,3 +38,29 @@ app.listen(port, () => {
 app.use('/assets', express.static('assets'));
 
 
+//login function 
+const users=[];
+
+app.get('/register', (req,res)=>{
+  res.render('register.ejs')
+})
+
+app.get('/login', (req,res)=>{
+  res.render('loginpage')
+})
+
+app.post('/registered',async (req,res)=>{
+  try{
+    const hashedPassword=await bcrypt.hash(req.body.password, 10)
+    users.push({
+      id:Date.now().toString(),
+      name:req.body.username,
+      password:hashedPassword
+    })
+    res.redirect('/login')
+  }catch{
+    res.redirect('/register')
+  }
+  console.log(users)
+})
+
