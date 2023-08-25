@@ -8,10 +8,8 @@ const session=require('express-session')
 const flash=require('express-flash')
 
 const initializePassport=require('./passportSetting')
-initializePassport(passport,
-  username=>users.find(user=>user.username ===user),
-  id=>users.find(user=>user.id ===id)
-)
+initializePassport(passport)
+
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db',function(err){
@@ -73,8 +71,8 @@ app.get('/login', (req,res)=>{
 
 
 app.post('/login',passport.authenticate('local',{
-  successRedirect:'/',
-  failureRedirect:'/login',
+  successRedirect:'/user/myRecipe',
+  failureRedirect:'/register',
    failureFlash:true
 }))
 
@@ -95,5 +93,15 @@ app.post('/registered',async (req,res)=>{
     console.log ("error")
   }
 
+})
+
+app.post('/logout',(req,res,next)=>{
+  req.logOut(function(err){
+    if(err){
+      return next(err);
+    }
+    res.redirect('register')
+  })
+ 
 })
 
