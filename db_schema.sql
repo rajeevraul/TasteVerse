@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS admins (
 
 --insert data here
 INSERT INTO admins (username, password) VALUES ('user1', '$2b$10$/TQWU4G7OtY7BxNUKgKNLOVy8w.n78XbW8wG2mTr9tIjKbVsbc6zO');
-
+INSERT INTO shoppingRecord(shopping_item, shopping_quantity) VALUES ('bread', '2');
 
 COMMIT;
 
