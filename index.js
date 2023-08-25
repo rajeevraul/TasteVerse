@@ -105,3 +105,17 @@ app.post('/logout',(req,res,next)=>{
  
 })
 
+function ifAuthenticated(req,res,next){
+  if(req.isAuthenicated()){
+   return next();
+  }
+  res.redirect('/')
+}
+
+function ifNotAuthenticated(req,res,next){
+  if(req.isAuthenicated()){
+    return res.redirect('/user/myRecipe')
+   }
+   next()
+}
+
