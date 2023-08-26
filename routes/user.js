@@ -1,76 +1,6 @@
-
-/**
- * These are example routes for user management
- * This shows how to correctly structure your routes for the project
- */
-
 const express = require("express");
 const router = express.Router();
 const assert = require('assert');
-
-
-////////////////////////////////////////Examples//////////////////////////////////////////////
-// /**
-//  * @desc retrieves the current users
-//  */
-// router.get("/get-test-users", (req, res, next) => {
-
-//   //Use this pattern to retrieve data
-//   //NB. it's better NOT to use arrow functions for callbacks with this library
-//   global.db.all("SELECT * FROM testUsers", function (err, rows) {
-//     if (err) {
-//       next(err); //send the error on to the error handler
-//     } else {
-//       res.json(rows);
-//     }
-//   });
-  
-// });
-
-// /**
-//  * @desc retrieves the current user records
-//  */
-// router.get("/get-user-records", (req, res, next) => {
-//   //USE this pattern to retrieve data
-//   //NB. it's better NOT to use arrow functions for callbacks with this library
-
-//   global.db.all("SELECT * FROM testUserRecords", function (err, rows) {
-//     if (err) {
-//       next(err); //send the error on to the error handler
-//     } else {
-//       res.json(rows);
-//     }
-//   });
-// });
-
-// /**
-//  * @desc Renders the page for creating a user record
-//  */
-// router.get("/create-user-record", (req, res) => {
-//   res.render("create-user-record");
-// });
-
-// /**
-//  * @desc Add a new user record to the database for user id = 1
-//  */
-// router.post("/create-user-record", (req, res, next) => {
-//   //USE this pattern to update and insert data
-//   //NB. it's better NOT to use arrow functions for callbacks with this library
-//   const data = generateRandomData(10);
-//   global.db.run(
-//     "INSERT INTO testUserRecords ('test_record_value', 'test_user_id') VALUES( ?, ? );",
-//     [data, 1],
-//     function (err) {
-//       if (err) {
-//         next(err); //send the error on to the error handler
-//       } else {
-//         res.send(`New data inserted @ id ${this.lastID}!`);
-//         next();
-//       }
-//     }
-//   );
-// });
-////////////////////////////////////////Examples//////////////////////////////////////////////
 
 // Protected route - dashboard
 router.get('/main', (req, res) => {
@@ -80,7 +10,6 @@ router.get('/main', (req, res) => {
     res.redirect('/login');
   }
 });
-
 
 
 var shoppingList=[];
