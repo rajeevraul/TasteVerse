@@ -52,7 +52,23 @@ router.get('/myRecipe', (req,res) => {
 
 
 
+/**
+ * @desc Renders to mealplanner page
+ */
+router.get('/planner', (req, res) => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const calendarDays = [];
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    calendarDays.push(day);
+  }
 
+  res.render('mealplanner' , { year, month, calendarDays  });
+});
 
 
 
