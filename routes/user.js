@@ -3,13 +3,12 @@ const router = express.Router();
 const assert = require('assert');
 
 // Protected route - dashboard
-router.get('/main', (req, res) => {
-  if (req.session.user) {
+router.get('/main',ifNotAuthenticated, (req, res) => {
+  
     res.render('main', { user: req.session.user });
-  } else {
-    res.redirect('/login');
+ 
   }
-});
+);
 
 
 var shoppingList=[];
@@ -17,7 +16,7 @@ var shoppingList=[];
 /**
  * @desc Renders to the shopping list page 
  */
-router.get('/list', (req,res) => {
+router.get('/list',ifNotAuthenticated, (req,res) => {
   res.render('shoppinglist', {shoppingList});
 });
 
@@ -39,7 +38,7 @@ router.post('/handle-checkboxes', (req, res) =>{
 
 
 // myRecipe page 
-router.get('/myRecipe', (req,res) => {
+router.get('/myRecipe',ifNotAuthenticated, (req,res) => {
   global.db.all("SELECT * FROM recipePage",function(err,data){
     if(err){
       console.log("error in myRecipe")
@@ -55,7 +54,7 @@ router.get('/myRecipe', (req,res) => {
 /**
  * @desc Renders to mealplanner page
  */
-router.get('/planner', (req, res) => {
+router.get('/planner',ifNotAuthenticated, (req, res) => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
