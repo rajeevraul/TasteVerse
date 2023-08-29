@@ -1,11 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const assert = require('assert');
+const passport=require('passport')
+const session=require('express-session')
+const bcrypt= require('bcrypt');
+
+const {ifAuthenticated}=require('./auth.js')
+
 
 // Protected route - dashboard
-router.get('/main',ifNotAuthenticated, (req, res) => {
+router.get('/main',ifAuthenticated, (req, res) => {
   
-    res.render('main', { user: req.session.user });
+    res.render('main');
  
   }
 );
@@ -16,7 +22,7 @@ var shoppingList=[];
 /**
  * @desc Renders to the shopping list page 
  */
-router.get('/list',ifNotAuthenticated, (req,res) => {
+router.get('/list',ifAuthenticated, (req,res) => {
   res.render('shoppinglist', {shoppingList});
 });
 
@@ -38,7 +44,7 @@ router.post('/handle-checkboxes', (req, res) =>{
 
 
 // myRecipe page 
-router.get('/myRecipe',ifNotAuthenticated, (req,res) => {
+router.get('/myRecipe',ifAuthenticated, (req,res) => {
   global.db.all("SELECT * FROM recipePage",function(err,data){
     if(err){
       console.log("error in myRecipe")
@@ -54,7 +60,7 @@ router.get('/myRecipe',ifNotAuthenticated, (req,res) => {
 /**
  * @desc Renders to mealplanner page
  */
-router.get('/planner',ifNotAuthenticated, (req, res) => {
+router.get('/planner',ifAuthenticated, (req, res) => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -136,5 +142,7 @@ router.get('/planner',ifNotAuthenticated, (req, res) => {
 //   const i = Math.floor(Math.random() * array.length);
 //   return array[i];
 // }
+
+
 
 module.exports = router;

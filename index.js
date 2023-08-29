@@ -7,6 +7,8 @@ const passport=require('passport')
 const session=require('express-session')
 const flash=require('express-flash')
 
+const {ifAuthenticated}=require('./routes/auth')
+
 const initializePassport=require('./passportSetting')
 initializePassport(passport)
 
@@ -63,7 +65,7 @@ app.use('/assets', express.static('assets'));
 
 
 
-app.get('/register', (req,res)=>{
+app.get('/register',ifNotAuthenticated, (req,res)=>{
   res.render('register.ejs')
 })
 
@@ -74,7 +76,7 @@ app.get('/login',ifNotAuthenticated,(req,res)=>{
 
 app.post('/login',passport.authenticate('local',{
   successRedirect:'/user/myRecipe',
-  failureRedirect:'/register',
+  failureRedirect:'/login',
    failureFlash:true
 }))
 
@@ -107,12 +109,7 @@ app.post('/logout',(req,res,next)=>{
  
 })
 
-function ifAuthenticated(req,res,next){
-  if(req.isAuthenticated()){
-   return next();
-  }
-  res.redirect('/login')
-}
+
 
 function ifNotAuthenticated(req,res,next){
   if(req.isAuthenticated()){
@@ -120,4 +117,6 @@ function ifNotAuthenticated(req,res,next){
    }
    next()
 }
+
+
 
