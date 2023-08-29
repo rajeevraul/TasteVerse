@@ -65,11 +65,11 @@ app.use('/assets', express.static('assets'));
 
 
 
-app.get('/register',ifNotAuthenticated, (req,res)=>{
+app.get('/register',ifLoggedIn, (req,res)=>{
   res.render('register.ejs')
 })
 
-app.get('/login',ifNotAuthenticated,(req,res)=>{
+app.get('/login',ifLoggedIn,(req,res)=>{
   res.render('loginpage')
 })
 
@@ -111,7 +111,7 @@ app.post('/logout',(req,res,next)=>{
 
 
 
-function ifNotAuthenticated(req,res,next){
+function ifLoggedIn(req,res,next){
   if(req.isAuthenticated()){
     return res.redirect('/user/myRecipe')
    }
