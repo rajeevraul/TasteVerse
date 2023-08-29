@@ -4,16 +4,17 @@
   <title>Login Page</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
-<body>
+<body class="loginpage">
   <% if (messages.error) { %>
     <%= messages.error %>
  <% } %>
   <form action="/login" method="post">
-    <h2>Login</h2>
+    <h2 class="form-title">Login</h2>
    
-    <input type="text" name="username" placeholder="Username" required><br>
-    <input type="password" name="password" placeholder="Password" required><br>
-    <input type="submit" value="Login">
+    <input type="text" name="username" class="input-field" placeholder="Username" required><br>
+    <input type="password" name="password" class="input-field" placeholder="Password" required><br>
+    <input type="submit" value="Login" class="submit-button">
   </form>
 </body>
 </html>
+
