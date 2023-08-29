@@ -8,10 +8,8 @@ const session=require('express-session')
 const flash=require('express-flash')
 
 const initializePassport=require('./passportSetting')
-initializePassport(passport,
-  username=>users.find(user=>user.username ===user),
-  id=>users.find(user=>user.id ===id)
-)
+initializePassport(passport)
+
 
 //items in the global namespace are accessible throught out the node application
 global.db = new sqlite3.Database('./database.db',function(err){
@@ -24,6 +22,17 @@ global.db = new sqlite3.Database('./database.db',function(err){
   }
 });
 
+app.use(session({
+  secret:"HierachyOrder",
+  resave:false,
+  saveUninitialized:false
+}))
+
+app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.urlencoded({extended: true}));
 
 const userRoutes = require('./routes/user');
@@ -32,7 +41,7 @@ const userRoutes = require('./routes/user');
 //set the app to use ejs for rendering
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
+app.get('/',ifAuthenticated ,(req, res) => {
     res.render("loginpage");
 });
 
@@ -52,29 +61,20 @@ app.use('/assets', express.static('assets'));
 //login function 
 
 
-app.use(session({
-  secret:"HierachyOrder",
-  resave:false,
-  saveUninitialized:false
-}))
 
-app.use(flash())
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.get('/register', (req,res)=>{
   res.render('register.ejs')
 })
 
-app.get('/login', (req,res)=>{
+app.get('/login',ifNotAuthenticated,(req,res)=>{
   res.render('loginpage')
 })
 
 
 app.post('/login',passport.authenticate('local',{
-  successRedirect:'/',
-  failureRedirect:'/login',
+  successRedirect:'/user/myRecipe',
+  failureRedirect:'/register',
    failureFlash:true
 }))
 
@@ -96,4 +96,28 @@ app.post('/registered',async (req,res)=>{
   }
 
 })
+
+app.post('/logout',(req,res,next)=>{
+  req.logOut(function(err){
+    if(err){
+      return next(err);
+    }
+    res.redirect('register')
+  })
+ 
+})
+
+function ifAuthenticated(req,res,next){
+  if(req.isAuthenticated()){
+   return next();
+  }
+  res.redirect('/login')
+}
+
+function ifNotAuthenticated(req,res,next){
+  if(req.isAuthenticated()){
+    return res.redirect('/user/myRecipe')
+   }
+   next()
+}
 
