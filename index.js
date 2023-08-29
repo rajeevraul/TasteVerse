@@ -22,6 +22,17 @@ global.db = new sqlite3.Database('./database.db',function(err){
   }
 });
 
+app.use(session({
+  secret:"HierachyOrder",
+  resave:false,
+  saveUninitialized:false
+}))
+
+app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.urlencoded({extended: true}));
 
 const userRoutes = require('./routes/user');
@@ -30,7 +41,7 @@ const userRoutes = require('./routes/user');
 //set the app to use ejs for rendering
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
+app.get('/',ifAuthenticated ,(req, res) => {
     res.render("loginpage");
 });
 
@@ -50,22 +61,13 @@ app.use('/assets', express.static('assets'));
 //login function 
 
 
-app.use(session({
-  secret:"HierachyOrder",
-  resave:false,
-  saveUninitialized:false
-}))
 
-app.use(flash())
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.get('/register', (req,res)=>{
   res.render('register.ejs')
 })
 
-app.get('/login', (req,res)=>{
+app.get('/login',ifNotAuthenticated,(req,res)=>{
   res.render('loginpage')
 })
 
@@ -106,14 +108,14 @@ app.post('/logout',(req,res,next)=>{
 })
 
 function ifAuthenticated(req,res,next){
-  if(req.isAuthenicated()){
+  if(req.isAuthenticated()){
    return next();
   }
-  res.redirect('/')
+  res.redirect('/login')
 }
 
 function ifNotAuthenticated(req,res,next){
-  if(req.isAuthenicated()){
+  if(req.isAuthenticated()){
     return res.redirect('/user/myRecipe')
    }
    next()
