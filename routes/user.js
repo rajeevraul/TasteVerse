@@ -5,10 +5,10 @@ const passport=require('passport')
 const session=require('express-session')
 const bcrypt= require('bcrypt');
 
-const {ifAuthenticated}=require('./auth.js')
+const {ifAuthenticated}=require('./auth.js') 
 
 
-// Protected route - dashboard
+// Protected route - dashboard 
 router.get('/main',ifAuthenticated, (req, res) => {
   
     res.render('main');
@@ -60,21 +60,40 @@ router.get('/myRecipe',ifAuthenticated, (req,res) => {
 /**
  * @desc Renders to mealplanner page
  */
-router.get('/planner',ifAuthenticated, (req, res) => {
+// router.get('/planner',ifAuthenticated, (req, res) => {
+// router.get('/planner', (req, res) => {
+//   const today = new Date();
+//   const year = today.getFullYear();
+//   const month = today.getMonth();
+  
+//   const daysInMonth = new Date(year, month + 1, 0).getDate();
+//   const calendarDays = [];
+  
+//   for (let day = 1; day <= daysInMonth; day++) {
+//     calendarDays.push(day);
+//   }
+
+//   res.render('mealplanner' , { year, month, calendarDays  });
+// });
+
+router.get('/planner', ifAuthenticated, (req, res) => {
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
+  let year = parseInt(req.query.year) || today.getFullYear();
+  let month = parseInt(req.query.month) || today.getMonth();
   
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const calendarDays = [];
-  
-  for (let day = 1; day <= daysInMonth; day++) {
-    calendarDays.push(day);
+  if (month < 0) {
+    month = 11; // Wrap to December of the previous year
+    year--;
+  } else if (month > 11) {
+    month = 0; // Wrap to January of the next year
+    year++;
   }
 
-  res.render('mealplanner' , { year, month, calendarDays  });
-});
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  res.render('mealplanner', { year, month, firstDay, daysInMonth });
+});
 
 
 
