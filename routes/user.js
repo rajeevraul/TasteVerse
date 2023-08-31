@@ -8,7 +8,7 @@ const bcrypt= require('bcrypt');
 const {ifAuthenticated}=require('./auth.js') 
 
 
-// Protected route - dashboard 
+// Protected route - dashboard  
 router.get('/main',ifAuthenticated, (req, res) => {
   
     res.render('main');
