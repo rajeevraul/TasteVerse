@@ -8,11 +8,9 @@ const bcrypt= require('bcrypt');
 const {ifAuthenticated}=require('./auth.js') 
 
 
-// Protected route - dashboard  TO ADD BACK
+// Protected route - dashboard  
 router.get('/main',ifAuthenticated, (req, res) => {
-  
     res.render('main');
- 
   }
 );
 
@@ -62,6 +60,7 @@ router.get('/myRecipe',ifAuthenticated, (req,res) => {
  */
 router.get('/planner',ifAuthenticated, (req, res) => {
   const today = new Date();
+
   let year = parseInt(req.query.year) || today.getFullYear();
   let month = parseInt(req.query.month) || today.getMonth();
   
@@ -76,10 +75,10 @@ router.get('/planner',ifAuthenticated, (req, res) => {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  res.render('mealplanner', { year, month, firstDay, daysInMonth });
+  const selectedDate = req.query.date || null;
+
+  res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
 });
-
-
 
 
 
