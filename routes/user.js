@@ -8,37 +8,102 @@ const bcrypt= require('bcrypt');
 const {ifAuthenticated}=require('./auth.js') 
 
 
-// Protected route - dashboard  
+// Protected route - dashboard  TO ADD BACK
 router.get('/main',ifAuthenticated, (req, res) => {
     res.render('main');
   }
 );
 
 
-var shoppingList=[];
+// var shoppingList=[];
 
 /**
- * @desc Renders to the shopping list page 
+ * @desc Renders to the shopping list page  ORIGINAL DO NOT DELETE
  */
-router.get('/list',ifAuthenticated, (req,res) => {
-  res.render('shoppinglist', {shoppingList});
+// router.get('/list',ifAuthenticated, (req,res) => {
+// router.get('/list', (req,res) => {
+//   res.render('shoppinglist', {shoppingList});
+// });
+
+
+router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
+  db.all('SELECT * FROM shoppingRecord', (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    res.render('shoppinglist', { shoppingList: rows });
+  });
 });
 
-router.post('/list', (req, res) =>{
-  var newItem = req.body.item;
-  if(newItem.trim() !== ''){
-    shoppingList.push(newItem);
+
+// router.post('/list', (req, res) =>{ ORIGINAL DO NOT DELETE
+//   var newItem = req.body.item;
+//   if(newItem.trim() !== ''){
+//     shoppingList.push(newItem);
+//   }
+//   res.redirect('/user/list');
+// });
+
+
+router.post('/list', (req, res) => { //WORKING DO NOT DELETE
+  const newItem = req.body.item;
+  const quantity = req.body.quantity;
+
+  if (newItem.trim() !== '') {
+    db.run('INSERT INTO shoppingRecord (shopping_item, shopping_quantity) VALUES (?, ?)', [newItem, quantity], (err) => {
+      if (err) {
+        console.error(err.message);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      res.redirect('/user/list');
+    });
+  } else {
+    // Handle empty item name, if needed.
+    res.redirect('/user/list');
   }
-  res.redirect('/user/list');
 });
 
-router.post('/handle-checkboxes', (req, res) =>{
+
+
+
+// router.post('/handle-checkboxes', (req, res) =>{ ORIGINAL DO NOT DELETE
+//   const checkedIndexes = req.body.done;
+//   if(checkedIndexes){
+//     shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
+//   }
+//   res.redirect('/user/list');
+// });
+
+
+router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
   const checkedIndexes = req.body.done;
-  if(checkedIndexes){
-    shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
+
+  if (checkedIndexes) {
+    checkedIndexes.forEach((index) => {
+      db.run('DELETE FROM shoppingRecord WHERE shopping_id = ?', [index], (err) => {
+        if (err) {
+          console.error(err.message);
+          return res.status(500).send('Internal Server Error');
+        }
+      });
+    });
   }
+
   res.redirect('/user/list');
 });
+
+
+
+
+
+
+
+
+
+
 
 
 // myRecipe page 
@@ -78,6 +143,33 @@ router.get('/planner',ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date || null;
 
   res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// When a user saves data for the calendar
+router.post('/save-calendar-data', (req, res) => {
+  const date = req.body.date;
+  const data = req.body.data;
+
+  // Insert or update the data in the database
+  db.run("INSERT OR REPLACE INTO calendar (date, data) VALUES (?, ?)", date, data, function(err) {
+    if (err) {
+      console.error('Error saving calendar data:', err);
+      res.status(500).send('Error saving calendar data');
+    } else {
+      res.status(200).send('Calendar data saved successfully');
+    }
+  });
 });
 
 

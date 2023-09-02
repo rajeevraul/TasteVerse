@@ -9,6 +9,7 @@
 /*mealplanner.ejs CSS*/
 .container.mt-4{
     margin-bottom: 2rem;
+    position: relative;
 }
 
 td#dates{
@@ -18,7 +19,8 @@ td#dates{
 #dates:hover{
     background-color: lightgray;
     cursor:pointer;
-    /* height: 10px;
+    /* border-radius: 20%;
+    height: 10px;
     width: 10px; */
 }
 
@@ -49,8 +51,9 @@ td#dates{
     width: 100%; /* Make it fill the container horizontally */
     height: 100%; /* Make it fill the container vertically */
     background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-    z-index: 1; /* Ensure the popup is on top of other elements */
+    /* z-index: 1; Ensure the popup is on top of other elements */
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 }

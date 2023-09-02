@@ -13,7 +13,7 @@
   <div class="col-12 text-center">
     <h1>Calendar - <%= year %>/<%= month + 1 %></h1>
   </div>
-  <div class="container mt-4">
+  <div class="container mt-4" id="overall">
     <div class="calendar col-12 text-center" data-year="<%= year %>" data-month="<%= month %>" data-firstDay="<%= firstDay %>">
       <div class="navigation">
         <button id="prevMonth">Previous Month</button>
@@ -39,7 +39,7 @@
                 <% if ((week === 0 && day < firstDay) || currentDay > daysInMonth) { %>
                   <td class="text-center" ></td>
                 <% } else { %>
-                  <td class="text-center date-cell rounded-circle" id="dates"><%= currentDay %></td>
+                  <td class="text-center date-cell" id="dates" ><%= currentDay %></td>
                   <a href="/planner?date=<%= year %>-<%= month + 1 %>-<%= currentDay %>"></a>
                   <% currentDay++; %>
                 <% } %>
@@ -57,7 +57,7 @@
 
 
 
-  <script>
+  <script> 
     const popup = document.getElementById('popup');
     const closePopupButton = document.getElementById('closePopup');
     const dateCells = document.querySelectorAll('.date-cell');
@@ -72,9 +72,10 @@
       cell.addEventListener('click', showPopup);
     });
     closePopupButton.addEventListener('click', hidePopup);
+
   </script>
 
-
+  
 
   <%- include('footer'); %>
 </body>
