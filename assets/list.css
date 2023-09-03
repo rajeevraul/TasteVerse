@@ -25,10 +25,20 @@ td#dates{
 }
 
 
-.card{
-    margin: 2rem;
+
+/* popup.ejs CSS */
+
+#meal-card{
+    /* margin: 2rem;
     position: relative;
-    left: 5%;
+    left: 5%; */
+    float: left;
+    margin-right: 1rem;
+}
+
+#calorie-card{
+    float: right;
+    /* margin-right: 2rem; */
 }
 
 .close {
@@ -57,3 +67,7 @@ td#dates{
     align-items: center;
     z-index: 999;
 }
+
+/* #weight-input, #height-input::placeholder{
+    text-align: right;
+} */

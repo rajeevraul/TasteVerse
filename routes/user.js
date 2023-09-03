@@ -17,15 +17,10 @@ router.get('/main',ifAuthenticated, (req, res) => {
 
 // var shoppingList=[];
 
+
 /**
- * @desc Renders to the shopping list page  ORIGINAL DO NOT DELETE
+ * @desc Renders to shoppinglist page WORKING
  */
-// router.get('/list',ifAuthenticated, (req,res) => {
-// router.get('/list', (req,res) => {
-//   res.render('shoppinglist', {shoppingList});
-// });
-
-
 router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
   db.all('SELECT * FROM shoppingRecord', (err, rows) => {
     if (err) {
@@ -38,15 +33,9 @@ router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE
 });
 
 
-// router.post('/list', (req, res) =>{ ORIGINAL DO NOT DELETE
-//   var newItem = req.body.item;
-//   if(newItem.trim() !== ''){
-//     shoppingList.push(newItem);
-//   }
-//   res.redirect('/user/list');
-// });
-
-
+/**
+ * @desc When a new item is added to the shopping list  WORKING
+ */
 router.post('/list', (req, res) => { //WORKING DO NOT DELETE
   const newItem = req.body.item;
   const quantity = req.body.quantity;
@@ -68,16 +57,9 @@ router.post('/list', (req, res) => { //WORKING DO NOT DELETE
 
 
 
-
-// router.post('/handle-checkboxes', (req, res) =>{ ORIGINAL DO NOT DELETE
-//   const checkedIndexes = req.body.done;
-//   if(checkedIndexes){
-//     shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
-//   }
-//   res.redirect('/user/list');
-// });
-
-
+/**
+ * @desc handles the checkboxes in shoppinglist page WORKING
+ */
 router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
   const checkedIndexes = req.body.done;
 
@@ -96,17 +78,9 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 });
 
 
-
-
-
-
-
-
-
-
-
-
-// myRecipe page 
+/**
+ * @desc Renders to myRecipe page WORKING
+ */
 router.get('/myRecipe',ifAuthenticated, (req,res) => {
   global.db.all("SELECT * FROM recipePage",function(err,data){
     if(err){
@@ -121,7 +95,7 @@ router.get('/myRecipe',ifAuthenticated, (req,res) => {
 
 
 /**
- * @desc Renders to mealplanner page
+ * @desc Renders to mealplanner page WORKING
  */
 router.get('/planner',ifAuthenticated, (req, res) => {
   const today = new Date();
@@ -148,29 +122,37 @@ router.get('/planner',ifAuthenticated, (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-// When a user saves data for the calendar
+/**
+ * @desc When a user saves data for the calendar, saves into table and redirects back to planner WORKING
+ */
 router.post('/save-calendar-data', (req, res) => {
+  const user_id = req.user_id;
   const date = req.body.date;
-  const data = req.body.data;
+  const breakfast = req.body.breakfast;
+  const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
+  const lunch = req.body.lunch;
+  const lunchCalories = parseInt(req.body.lunch_calories) || 0;
+  const dinner = req.body.dinner;
+  const dinnerCalories = parseInt(req.body.dinner_calories) || 0;
 
-  // Insert or update the data in the database
-  db.run("INSERT OR REPLACE INTO calendar (date, data) VALUES (?, ?)", date, data, function(err) {
-    if (err) {
-      console.error('Error saving calendar data:', err);
-      res.status(500).send('Error saving calendar data');
-    } else {
-      res.status(200).send('Calendar data saved successfully');
+  const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
+
+  // Insert the data into the calendar table
+  db.run(
+    "INSERT OR REPLACE INTO calendar (user_id, date, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [user_id, date, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
+    function (err) {
+      if (err) {
+        console.error('Error saving calendar data:', err);
+        res.status(500).send('Error saving calendar data');
+      } else {
+        // res.status(200).send('Calendar data saved successfully');
+        res.redirect('/user/planner');
+      }
     }
-  });
+  );
 });
+
 
 
 

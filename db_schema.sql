@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS favouriteRecipe(
 CREATE TABLE IF NOT EXISTS calendar(
     meal_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
-    date DATE NOT NULL,
+    date TEXT NOT NULL,
     breakfast TEXT NOT NULL,
     breakfast_calories INTEGER NOT NULL,
     lunch TEXT NOT NULL,
