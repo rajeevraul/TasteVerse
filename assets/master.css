@@ -154,6 +154,12 @@
 }
 
 /* Login page */
+
+.errorMessage{
+  text-align: center;
+  color: red;
+}
+
 .loginlogo {
   text-align: center;
   margin-bottom: 20px;

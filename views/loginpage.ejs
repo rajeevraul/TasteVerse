@@ -5,13 +5,16 @@
   <link rel="stylesheet" href="/assets/master.css" type="text/css">
 </head>
 <body class="loginpage">
-  <% if (messages.error) { %>
-    <%= messages.error %>
-  <% } %>
+  
   <div class="container">
     <div class="loginlogo">
       <img src="/assets/logo.png" alt="Logo">
     </div>
+    <div class="errorMessage">
+      <% if (messages.error) { %>
+        <%= messages.error %>
+      <% } %>
+      </>
     <form action="/login" method="post" class="login-form">
       <h2 class="form-title">Login</h2>
       <input type="text" name="username" class="input-field" placeholder="Username" required><br>

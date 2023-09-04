@@ -43,9 +43,6 @@ const userRoutes = require('./routes/user');
 //set the app to use ejs for rendering
 app.set('view engine', 'ejs');
 
-app.get('/',ifAuthenticated ,(req, res) => {
-    res.render("loginpage");
-});
 
 
 //this adds all the userRoutes to the app under the path /user
@@ -66,10 +63,10 @@ app.use('/assets', express.static('assets'));
 
 
 app.get('/register',ifLoggedIn, (req,res)=>{
-  res.render('register.ejs')
+  res.render('register.ejs',{errorMessage:null})
 })
 
-app.get('/login',ifLoggedIn,(req,res)=>{
+app.get('/',ifLoggedIn,(req,res)=>{
   res.render('loginpage')
 })
 
@@ -81,10 +78,36 @@ app.post('/login',passport.authenticate('local',{
 }))
 
 
-app.post('/registered',async (req,res)=>{
+app.post('/register',async (req,res)=>{
+  
+ 
+
+  const usernameAvailable=(username)=>{
+
+    global.db.get("SELECT * FROM users",function(err,data){
+      if(err){
+        console.log("fail to check if username is available")
+      }
+      else{
+      for (i=0;i<data.length;i++){
+        if(data[i].user_name===username){
+          return false
+        }
+        else{
+          return true
+        }
+      }
+      }
+    })
+
+  }
+      
+  if(usernameAvailable(req.body.username)){
+  
   try{
     const hashedPassword=await bcrypt.hash(req.body.password, 10)
-    
+
+   
    global.db.run("INSERT INTO users(user_name,user_password) VALUES (?,?)",[req.body.username,hashedPassword],function(err){
     if(err){
       console.log("register error")
@@ -96,6 +119,11 @@ app.post('/registered',async (req,res)=>{
   }catch{
     console.log ("error")
   }
+}
+else{
+  
+  res.render('register.ejs',{errorMessage:"Username not available"})
+}
 
 })
 
