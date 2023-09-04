@@ -93,7 +93,7 @@ app.post('/register',async (req,res)=>{
       console.log("register error")
     }
     else{
-      res.redirect('/login')
+      res.redirect('/')
     }
    })
   }catch{
