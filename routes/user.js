@@ -10,7 +10,7 @@ const {ifAuthenticated}=require('./auth.js')
 
 // Protected route - dashboard  TO ADD BACK
 router.get('/main',ifAuthenticated, (req, res) => {
-    res.render('main');
+  res.render('mainpage.ejs');
   }
 );
 
