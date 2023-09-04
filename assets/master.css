@@ -154,19 +154,41 @@
 }
 
 /* Login page */
+.loginlogo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.loginlogo img {
+  max-width: 30%;
+  height: auto;
+}
+
 .loginpage {
   background-color: #1a1a1a;
   color: #ffffff;
   font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-.login-form {
+.container {
+  text-align: center;
+  position: relative; 
+}
+
+.login-form, .logout-form {
   background-color: #2b2b2b;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative; 
+  text-align: center;
 }
 
 .form-title {
@@ -200,6 +222,21 @@
 .submit-button:focus {
   outline: none;
 }
+
+.logout-button {
+  background-color: #fff; 
+  color: #ff6600; 
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #ff6600; 
+  color: #fff; 
+}
+
 
 /*  */
 #logo
