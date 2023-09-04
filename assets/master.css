@@ -158,6 +158,7 @@
 .errorMessage{
   text-align: center;
   color: red;
+  padding:5px;
 }
 
 .loginlogo {

@@ -10,13 +10,14 @@
     <div class="loginlogo">
       <img src="/assets/logo.png" alt="Logo">
     </div>
-    <div class="errorMessage">
-      <% if (messages.error) { %>
-        <%= messages.error %>
-      <% } %>
-      </>
+      
     <form action="/login" method="post" class="login-form">
       <h2 class="form-title">Login</h2>
+      <div class="errorMessage">
+        <% if (messages.error) { %>
+          <%= messages.error %>
+        <% } %>
+      </div>
       <input type="text" name="username" class="input-field" placeholder="Username" required><br>
       <input type="password" name="password" class="input-field" placeholder="Password" required><br>
       <input type="submit" value="Login" class="submit-button">
