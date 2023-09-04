@@ -82,27 +82,7 @@ app.post('/register',async (req,res)=>{
   
  
 
-  const usernameAvailable=(username)=>{
-
-    global.db.get("SELECT * FROM users",function(err,data){
-      if(err){
-        console.log("fail to check if username is available")
-      }
-      else{
-      for (i=0;i<data.length;i++){
-        if(data[i].user_name===username){
-          return false
-        }
-        else{
-          return true
-        }
-      }
-      }
-    })
-
-  }
-      
-  if(usernameAvailable(req.body.username)){
+ 
   
   try{
     const hashedPassword=await bcrypt.hash(req.body.password, 10)
@@ -120,12 +100,9 @@ app.post('/register',async (req,res)=>{
     console.log ("error")
   }
 }
-else{
-  
-  res.render('register.ejs',{errorMessage:"Username not available"})
-}
 
-})
+
+)
 
 app.post('/logout',(req,res,next)=>{
   req.logOut(function(err){
