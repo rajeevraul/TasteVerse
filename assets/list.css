@@ -1,8 +1,73 @@
-/* .container{
-    margin-top: 2rem;
-} */
-
+/*shoppinglist.ejs CSS*/
 #shopping{
     margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
+
+
+/*mealplanner.ejs CSS*/
+.container.mt-4{
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+td#dates{
+    padding: 2.5rem;
+}
+
+#dates:hover{
+    background-color: lightgray;
+    cursor:pointer;
+    /* border-radius: 20%;
+    height: 10px;
+    width: 10px; */
+}
+
+
+
+/* popup.ejs CSS */
+
+#meal-card{
+    /* margin: 2rem;
+    position: relative;
+    left: 5%; */
+    float: left;
+    margin-right: 1rem;
+}
+
+#calorie-card{
+    float: right;
+    /* margin-right: 2rem; */
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa; /* Set the color of the close button icon */
+    cursor: pointer;
+    /* padding: 0; Remove padding to make it smaller */
+}
+
+.close:hover {
+    color: #333; /* Change color on hover */
+}
+
+.popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Make it fill the container horizontally */
+    height: 100%; /* Make it fill the container vertically */
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    /* z-index: 1; Ensure the popup is on top of other elements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* #weight-input, #height-input::placeholder{
+    text-align: right;
+} */

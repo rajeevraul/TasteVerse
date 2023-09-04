@@ -10,40 +10,77 @@ const {ifAuthenticated}=require('./auth.js')
 
 // Protected route - dashboard  TO ADD BACK
 router.get('/main',ifAuthenticated, (req, res) => {
-  
     res.render('main');
- 
   }
 );
 
 
-var shoppingList=[];
+// var shoppingList=[];
+
 
 /**
- * @desc Renders to the shopping list page 
+ * @desc Renders to shoppinglist page WORKING
  */
-router.get('/list',ifAuthenticated, (req,res) => {
-  res.render('shoppinglist', {shoppingList});
+router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
+  db.all('SELECT * FROM shoppingRecord', (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    res.render('shoppinglist', { shoppingList: rows });
+  });
 });
 
-router.post('/list', (req, res) =>{
-  var newItem = req.body.item;
-  if(newItem.trim() !== ''){
-    shoppingList.push(newItem);
+
+/**
+ * @desc When a new item is added to the shopping list  WORKING
+ */
+router.post('/list', (req, res) => { //WORKING DO NOT DELETE
+  const newItem = req.body.item;
+  const quantity = req.body.quantity;
+
+  if (newItem.trim() !== '') {
+    db.run('INSERT INTO shoppingRecord (shopping_item, shopping_quantity) VALUES (?, ?)', [newItem, quantity], (err) => {
+      if (err) {
+        console.error(err.message);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      res.redirect('/user/list');
+    });
+  } else {
+    // Handle empty item name, if needed.
+    res.redirect('/user/list');
   }
-  res.redirect('/user/list');
 });
 
-router.post('/handle-checkboxes', (req, res) =>{
+
+
+/**
+ * @desc handles the checkboxes in shoppinglist page WORKING
+ */
+router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
   const checkedIndexes = req.body.done;
-  if(checkedIndexes){
-    shoppingList= shoppingList.filter((item, index) => !checkedIndexes.includes(index.toString()));
+
+  if (checkedIndexes) {
+    checkedIndexes.forEach((index) => {
+      db.run('DELETE FROM shoppingRecord WHERE shopping_id = ?', [index], (err) => {
+        if (err) {
+          console.error(err.message);
+          return res.status(500).send('Internal Server Error');
+        }
+      });
+    });
   }
+
   res.redirect('/user/list');
 });
 
 
-// myRecipe page 
+/**
+ * @desc Renders to myRecipe page WORKING
+ */
 router.get('/myRecipe',ifAuthenticated, (req,res) => {
   global.db.all("SELECT * FROM recipePage",function(err,data){
     if(err){
@@ -58,10 +95,11 @@ router.get('/myRecipe',ifAuthenticated, (req,res) => {
 
 
 /**
- * @desc Renders to mealplanner page
+ * @desc Renders to mealplanner page WORKING
  */
 router.get('/planner',ifAuthenticated, (req, res) => {
   const today = new Date();
+
   let year = parseInt(req.query.year) || today.getFullYear();
   let month = parseInt(req.query.month) || today.getMonth();
   
@@ -76,9 +114,44 @@ router.get('/planner',ifAuthenticated, (req, res) => {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  res.render('mealplanner', { year, month, firstDay, daysInMonth });
+  const selectedDate = req.query.date || null;
+
+  res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
 });
 
+
+
+
+/**
+ * @desc When a user saves data for the calendar, saves into table and redirects back to planner WORKING
+ */
+router.post('/save-calendar-data', (req, res) => {
+  const user_id = req.user_id;
+  const date = req.body.date;
+  const breakfast = req.body.breakfast;
+  const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
+  const lunch = req.body.lunch;
+  const lunchCalories = parseInt(req.body.lunch_calories) || 0;
+  const dinner = req.body.dinner;
+  const dinnerCalories = parseInt(req.body.dinner_calories) || 0;
+
+  const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
+
+  // Insert the data into the calendar table
+  db.run(
+    "INSERT OR REPLACE INTO calendar (user_id, date, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [user_id, date, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
+    function (err) {
+      if (err) {
+        console.error('Error saving calendar data:', err);
+        res.status(500).send('Error saving calendar data');
+      } else {
+        // res.status(200).send('Calendar data saved successfully');
+        res.redirect('/user/planner');
+      }
+    }
+  );
+});
 
 
 
