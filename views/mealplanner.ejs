@@ -15,10 +15,6 @@
   </div>
   <div class="container mt-4" id="overall">
     <div class="calendar col-12 text-center" data-year="<%= year %>" data-month="<%= month %>" data-firstDay="<%= firstDay %>">
-      <div class="navigation">
-        <button id="prevMonth">Previous Month</button>
-        <button id="nextMonth">Next Month</button>
-      </div>
     </div>
     <div class="col-12 d-flex justify-content-center mt-4">
       <table class="table-bordered">
@@ -59,7 +55,8 @@
 
   <script> 
     const popup = document.getElementById('popup');
-    const closePopupButton = document.getElementById('closePopup');
+    const closePopupButton1 = document.getElementById('closePopup1');
+    const closePopupButton2 = document.getElementById('closePopup2');
     const dateCells = document.querySelectorAll('.date-cell');
 
     function showPopup() {
@@ -71,7 +68,8 @@
     dateCells.forEach((cell) => {
       cell.addEventListener('click', showPopup);
     });
-    closePopupButton.addEventListener('click', hidePopup);
+    closePopupButton1.addEventListener('click', hidePopup);
+    closePopupButton2.addEventListener('click', hidePopup);
     
   </script>
 

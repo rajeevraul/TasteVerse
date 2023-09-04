@@ -9,7 +9,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <!-- Meals for <%#= dates %> -->
             <h2 class="card-title">Meals for today!</h2>
-            <button id="closePopup" type="button" class="close" aria-label="Close">
+            <button id="closePopup1" type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -58,7 +58,7 @@
     <div class="card" style="width: 40rem;" id="calorie-card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="card-title">Calorie Tracker</h2>
-            <button id="closePopup" type="button" class="close" aria-label="Close">
+            <button id="closePopup2" type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -163,9 +163,7 @@
                 calorieIntake = 0;
             }
 
-            // Display the result
-            // document.querySelector(".ans_calculate").innerHTML = '<div class="container"><h4 class="text-center form-control my-3 text-danger fs-4">You should consume <span class="text-red">' + Math.ceil(calorieIntake) + ' calories/day</span> to maintain your weight.</h4></div>';
-        
+            // Display the result        
             document.querySelector(".ans_calculate").innerHTML = `
                 <div class="alert alert-danger text-center" role="alert">
                     You should consume <span class="text-red">${Math.ceil(calorieIntake)} calories/day</span> to maintain your weight.
