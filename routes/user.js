@@ -93,7 +93,6 @@ router.get('/myRecipe',ifAuthenticated, (req,res) => {
 });
 
 
-
 /**
  * @desc Renders to mealplanner page WORKING
  */
@@ -118,8 +117,6 @@ router.get('/planner',ifAuthenticated, (req, res) => {
 
   res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
 });
-
-
 
 
 /**
@@ -152,6 +149,29 @@ router.post('/save-calendar-data', (req, res) => {
     }
   );
 });
+
+
+// recipe page WORKING 
+router.get('/recipe', (req, res) => {
+  const { id } = req.query;
+  const sqlite2 = 'SELECT * FROM recipes WHERE id = ?';
+  
+  db.all(sqlite2, [id], (err,data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    data[0].ingredients = data[0].ingredients.replace(/'/g, '"');
+    // Parse the JSON string into an array
+    const parsedArray = JSON.parse(data[0].ingredients);
+
+    data[0].ingredients = parsedArray;
+
+    res.render('recipe', { recipeData: data });
+  });
+}
+);
 
 
 
