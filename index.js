@@ -70,21 +70,44 @@ app.get('/',ifLoggedIn,(req,res)=>{
   res.render('loginpage')
 })
 
-
+//send a request for session after authenticatating that the username and password is in the database
 app.post('/login',passport.authenticate('local',{
   successRedirect:'/user/planner',
   failureRedirect:'/',
    failureFlash:true
 }))
 
-
-app.post('/register',async (req,res)=>{
-  
- 
-
- 
-  
+//check if username is already in database
+const usernameAvailable=async (username)=>{ 
   try{
+    return new Promise((resolve,reject)=>{
+      global.db.get("SELECT COUNT(*) as count FROM users WHERE user_name=?",[username],function(err,data){
+        if(err){
+          console.log("error in checking availibility")
+          reject(err)
+        }
+        else{
+          console.log(data)
+        console.log(data.count==0)
+        resolve(data.count===0)
+        }
+      })
+    }
+    )}
+catch(error){
+  console.log("error for data")
+  return false
+}
+}
+
+
+// if username is in database already send an error message, if not add the username and password to the database
+app.post('/register',async (req,res)=>{
+
+  try{
+    const isAvailable= await usernameAvailable(req.body.username)
+    console.log("isAvailable " +isAvailable)
+    if(isAvailable){
     const hashedPassword=await bcrypt.hash(req.body.password, 10)
 
    
@@ -96,14 +119,19 @@ app.post('/register',async (req,res)=>{
       res.redirect('/')
     }
    })
-  }catch{
+  
+}
+else{
+   res.render('register.ejs',{errorMessage:"Username not available"})
+}
+  }
+catch{
     console.log ("error")
   }
-}
+})
 
 
-)
-
+//deserialise the session,thus logging out
 app.post('/logout',(req,res,next)=>{
   req.logOut(function(err){
     if(err){
@@ -115,7 +143,7 @@ app.post('/logout',(req,res,next)=>{
 })
 
 
-
+//if the user is already logged in prevent them from going back to pages with this function by redirecting them to another page, example:loginPage
 function ifLoggedIn(req,res,next){
   if(req.isAuthenticated()){
     return res.redirect('/user/myRecipe')
