@@ -41,6 +41,19 @@ CREATE TABLE IF NOT EXISTS favouriteRecipe(
     recipe_id INTEGER
 );
 
+CREATE TABLE IF NOT EXISTS calendar(
+    meal_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    date TEXT NOT NULL,
+    breakfast TEXT NOT NULL,
+    breakfast_calories INTEGER NOT NULL,
+    lunch TEXT NOT NULL,
+    lunch_calories INTEGER NOT NULL,
+    dinner TEXT NOT NULL,
+    dinner_calories INTEGER NOT NULL,
+    total_calories INTEGER NOT NULL 
+);
+
 --insert data here
 INSERT INTO recipePage(recipe_title, recipe_ingridients, recipe_instructions) VALUES ('chicken rice', '1 rice, 1 chicken, 1 salt', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc posuere at neque aliquet tristique. Suspendisse sed fringilla orci. Nullam eros est, ultrices sit amet tincidunt eget, dapibus in dolor. Pellentesque cursus leo et nibh faucibus ornare. Etiam tempus dictum tortor, pharetra tincidunt mauris consectetur at. Suspendisse eget nisl viverra nisl aliquam blandit. Aenean a tellus vitae odio iaculis porttitor. Nunc feugiat in felis at pretium. Donec malesuada lorem at magna volutpat, in ullamcorper sapien ultrices. Nulla id posuere est, sed mattis tellus. Nullam vestibulum nibh et justo accumsan, et convallis lacus bibendum.'), 
                                                                                              ('ice milo', '1 ice, 1 water, 1 milo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc posuere at neque aliquet tristique. Suspendisse sed fringilla orci. Nullam eros est, ultrices sit amet tincidunt eget, dapibus in dolor. Pellentesque cursus leo et nibh faucibus ornare. Etiam tempus dictum tortor, pharetra tincidunt mauris consectetur at. Suspendisse eget nisl viverra nisl aliquam blandit. Aenean a tellus vitae odio iaculis porttitor. Nunc feugiat in felis at pretium. Donec malesuada lorem at magna volutpat, in ullamcorper sapien ultrices. Nulla id posuere est, sed mattis tellus. Nullam vestibulum nibh et justo accumsan, et convallis lacus bibendum.'), 
