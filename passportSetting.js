@@ -17,26 +17,32 @@ global.db.get("SELECT * FROM users where user_name=?",[username],async function(
     return done(err);
   }
   else{
-   let userAuth={
+    if(!data){
+      
+    return done(null,false,{message:'Incorrect username or password'})
+    }else{
+
+    
+   let userData={
       username:data.user_name,
       password:data.user_password,
       id:data.user_id
     }
     
     try{
-      if (await bcrypt.compare(password,userAuth.password)){
-        console.log({message:"logged in", user:userAuth})
-      return done(null,{message:"logged in", user:userAuth})
+      if (await bcrypt.compare(password,userData.password)){
+        console.log({message:"logged in", user:userData})
+      return done(null,{message:"logged in", user:userData})
       }
       else{
-          return done(null,false,{message:'Incorrect password'})
+          return done(null,false,{message:'Incorrect username or password'})
       }
       
         }
       catch(error){
       return done(error)
         }
-
+      }
   }
 })
 
