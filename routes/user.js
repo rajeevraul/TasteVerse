@@ -173,6 +173,38 @@ router.get('/recipe', (req, res) => {
 }
 );
 
+router.post("/toFavourite",(req,res)=>{
+
+ 
+const userId=req.session.user_id
+
+  global.db.get("SELECT * FROM recipes WHERE id=?",[req.body.id],function(err,data){
+    if(err){
+      console.log("Error: Failed to get data from provided id")
+    }
+    else{
+      if(!data){
+        console.log("NoData: Failed to get data from provided id")
+      }
+      else{
+         global.db.run("INSERT INTO favouriteRecipe(user_id,recipe_id) VALUES (?,?)",[userId,req.body.id],function(err){
+          if(err){
+            console.log("Fail to insert to favourite")
+           }
+           else{
+            console.log("checkpt" + userId)
+           }
+         })
+      
+        res.redirect("back")
+      }
+    }
+  })
+
+  
+
+})
+
 
 
 

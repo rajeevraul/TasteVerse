@@ -32,7 +32,7 @@ global.db.get("SELECT * FROM users where user_name=?",[username],async function(
     try{
       if (await bcrypt.compare(password,userData.password)){
         console.log({message:"logged in", user:userData})
-      return done(null,{message:"logged in", user:userData})
+      return done(null,userData)
       }
       else{
           return done(null,false,{message:'Incorrect username or password'})
@@ -54,18 +54,8 @@ global.db.get("SELECT * FROM users where user_name=?",[username],async function(
 passport.use(new localStrategy({usernameField:'username'},authUser))
 
 
-passport.serializeUser((authUser,done)=>{
-  console.log(authUser)
-  let user=authUser.user.username
-  
-  global.db.get("SELECT * FROM users WHERE user_name = ?", [user], function(err, data) {
-if(err){
-  return done(error)
-}else{
-  console.log(data)
-  done(null,data.user_id)
-}
-})
+passport.serializeUser((user,done)=>{
+done(null,user.id)
   })
 
 

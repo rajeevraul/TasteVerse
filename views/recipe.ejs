@@ -28,8 +28,11 @@
           <li><%= ingredient %></li>
         <% }); %>
       </ul>
-      <a href="#"> <button class="btn btn-outline-success btn-lg">modify recipe</button> </a>
-      <a href="#"> <button class="btn btn-outline-success btn-lg">add to favourite</button> </a>
+      <a href="#"> <button class="btn btn-outline-success btn-lg">Modify Recipe</button> </a>
+      <form action="/user/toFavourite" method="post">
+        <input type="hidden" value="<%=recipes.id %>" name="id">
+        <input type="submit" value="Add To Favourite">
+      </form>
       </div>
   </div>
 

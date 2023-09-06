@@ -72,10 +72,32 @@ app.get('/',ifLoggedIn,(req,res)=>{
 
 //send a request for session after authenticatating that the username and password is in the database
 app.post('/login',passport.authenticate('local',{
-  successRedirect:'/user/planner',
   failureRedirect:'/',
    failureFlash:true
-}))
+}),function(req,res){
+  req.session.user_id=req.user.id
+  console.log("this is user id "+req.session.user_id)
+  res.redirect('/user/planner')
+}
+)
+
+
+//base my code on this:
+// app.post('/login',
+// passport.authenticate('local'),function(req, res) {
+//  // If this function gets called, authentication was successful.
+//  // `req.user` contains the authenticated user.
+//  res.redirect('/users/' + req.user.username);
+// });
+
+app.get('/loginInfo',(req,res)=>{
+  req.user.id=req.session.user_id
+  console.log("req.user.user_id:", req.user.id);
+    console.log("req.session.user_id:", req.session.user_id)
+    res.redirect('/user/planner')
+  
+  }
+)
 
 //check if username is already in database
 const usernameAvailable=async (username)=>{ 
