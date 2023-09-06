@@ -15,20 +15,21 @@
             </label>
         
             <ul class="menu__box">
-              <li><a class="menu__item" href="#">Home</a></li>
-              <li><a class="menu__item" href="#">Meal Planner</a></li>
-              <li><a class="menu__item" href="#">My Recipe</a></li>
-              <li><a class="menu__item" href="#">Shopping List</a></li>
+              <li><a class="menu__item" href="/user/main">Home</a></li>
+              <li><a class="menu__item" href="/user/planner">Meal Planner</a></li>
+              <li><a class="menu__item" href="/user/myRecipe">My Recipe</a></li>
+              <li><a class="menu__item" href="/user/List">Shopping List</a></li>
               <li><a class="menu__item" href="#">Find Recipe</a></li>
-              <li><form action="#" method="post">
-                <button type="submit" class="menu__item" style="border: none; width: 300px; text-align: left;">Log Out</button>
+              <li> <a class="menu__item" href="javascript:document.LogOut.submit()">Log Out</a></li>
+              <!--logout form for a href=javascript:document.LogOut.submit() below so that the link can log the user out-->
+                <form action="/logout" name="LogOut" method="post">
+                <input hidden type="submit" value="Log Out" style="border: none; width: 300px; text-align: left;">
                 </form>
-              </li>
             </ul>
           </div>
         
         <div id="logo">
-          <a href="#"><img src="../assets/logo.png" style="height: 40px;"></a>  
+          <a href="/user/main"><img src="../assets/logo.png" style="height: 40px;"></a>  
         </div>
 
         <div id="search-bar">

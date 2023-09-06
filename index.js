@@ -77,27 +77,12 @@ app.post('/login',passport.authenticate('local',{
 }),function(req,res){
   req.session.user_id=req.user.id
   console.log("this is user id "+req.session.user_id)
-  res.redirect('/user/planner')
+  res.redirect('/user/main')
 }
 )
 
 
-//base my code on this:
-// app.post('/login',
-// passport.authenticate('local'),function(req, res) {
-//  // If this function gets called, authentication was successful.
-//  // `req.user` contains the authenticated user.
-//  res.redirect('/users/' + req.user.username);
-// });
 
-app.get('/loginInfo',(req,res)=>{
-  req.user.id=req.session.user_id
-  console.log("req.user.user_id:", req.user.id);
-    console.log("req.session.user_id:", req.session.user_id)
-    res.redirect('/user/planner')
-  
-  }
-)
 
 //check if username is already in database
 const usernameAvailable=async (username)=>{ 
@@ -159,7 +144,7 @@ app.post('/logout',(req,res,next)=>{
     if(err){
       return next(err);
     }
-    res.redirect('register')
+    res.redirect('/')
   })
  
 })
@@ -168,7 +153,7 @@ app.post('/logout',(req,res,next)=>{
 //if the user is already logged in prevent them from going back to pages with this function by redirecting them to another page, example:loginPage
 function ifLoggedIn(req,res,next){
   if(req.isAuthenticated()){
-    return res.redirect('/user/myRecipe')
+    return res.redirect('/user/main')
    }
    next()
 }
