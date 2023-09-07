@@ -24,6 +24,7 @@
             <a href="/user/recipe?id=<%=dish.id %>">
       <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
       <p class="recipeImageText"><%=dish.title %></p>
+      </a>
       </div>
         <% }) %> 
         
@@ -47,8 +48,10 @@
     <div class="row">
       <% myRecipe.forEach(function(dish){ %>
         <div class="col-md-2">
+          <a href="/user/recipe?id=<%=dish.id %>">
     <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
     <p class="recipeImageText"><%=dish.title %></p>
+  </a>
     </div>
       <% }) %> 
       
