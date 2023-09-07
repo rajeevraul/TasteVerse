@@ -8,25 +8,33 @@
 <body>
 <header>
     <div class="d-flex justify-content-between" style="margin-top: 1%;">
-        <div class="hamburger-menu">
-            <input id="menu__toggle" type="checkbox" />
+        <div class="hamburger-menu" >
+            <input id="menu__toggle" type="checkbox" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"/>
             <label class="menu__btn" for="menu__toggle">
               <span></span>
             </label>
         
-            <ul class="menu__box">
-              <li><a class="menu__item" href="/user/main">Home</a></li>
-              <li><a class="menu__item" href="/user/planner">Meal Planner</a></li>
-              <li><a class="menu__item" href="/user/myRecipe">My Recipe</a></li>
-              <li><a class="menu__item" href="/user/List">Shopping List</a></li>
-              <li><a class="menu__item" href="#">Find Recipe</a></li>
-              <li> <a class="menu__item" href="javascript:document.LogOut.submit()">Log Out</a></li>
-              <!--logout form for a href=javascript:document.LogOut.submit() below so that the link can log the user out-->
-                <form action="/logout" name="LogOut" method="post">
-                <input hidden type="submit" value="Log Out" style="border: none; width: 300px; text-align: left;">
-                </form>
-            </ul>
+            <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+              <div class="offcanvas-header">
+                <span class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+              </div>
+              <div class="offcanvas-body">
+                  <a class="menu__item" href="/user/main">Home</a>
+                  <a class="menu__item" href="/user/planner">Meal Planner</a>
+                  <a class="menu__item" href="/user/myRecipe">My Recipe</a>
+                  <a class="menu__item" href="/user/List">Shopping List</a>
+                  <a class="menu__item" href="#">Find Recipe</a>
+                  <a class="menu__item" href="javascript:document.LogOut.submit()">Log Out</a>
+                  <!--logout form for a href=javascript:document.LogOut.submit() below so that the link can log the user out-->
+                    <form action="/logout" name="LogOut" method="post">
+                    <input hidden type="submit" value="Log Out" style="border: none; width: 300px; text-align: left;">
+                    </form>
+              </div>
+            </div>
+
           </div>
+
+          
         
         <div id="logo">
           <a href="/user/main"><img src="../assets/logo.png" style="height: 40px;"></a>  
