@@ -223,6 +223,11 @@ router.get('/recipe', (req, res) => {
 }
 );
 
+router.get('/modifyRecipe',(req, res) => {
+  res.render('modifyRecipe');
+  }
+);
+
 router.post("/toFavourite",async(req,res)=>{
 
  try{
