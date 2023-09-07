@@ -21,7 +21,7 @@
       <!-- title -->
       <h1 style="font-size: 48px;"><%= recipes.title %></h1>
 
-      <!-- Ingridients -->
+      <!-- Ingredients -->
       <h3>Ingredients</h3>
       <ul>
         <% recipes.ingredients.forEach((ingredient) => { %>
@@ -29,9 +29,9 @@
         <% }); %>
       </ul>
       <a href="#"> <button class="btn btn-outline-success btn-lg">Modify Recipe</button> </a>
-      <form action="/user/toFavourite" method="post">
+      <a href="javascript:document.addToFavourite.submit()"> <button class="btn btn-outline-success btn-lg">Add To Favourite</button> </a>
+      <form action="/user/toFavourite" name="addToFavourite" method="post">
         <input type="hidden" value="<%=recipes.id %>" name="id">
-        <input type="submit" value="Add To Favourite">
       </form>
       </div>
   </div>
