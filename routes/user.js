@@ -169,7 +169,7 @@ router.get('/planner',ifAuthenticated, (req, res) => {
  * @desc When a user saves data for the calendar, saves into table and redirects back to planner WORKING
  */
 router.post('/save-calendar-data', (req, res) => {
-  const user_id = req.user_id;
+  const user_id = req.session.user_id;
   const date = req.body.date;
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
