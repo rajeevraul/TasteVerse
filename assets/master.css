@@ -187,7 +187,7 @@
   position: relative; 
 }
 
-.login-form, .logout-form {
+.login-form, .signup-form {
   background-color: #2b2b2b;
   max-width: 400px;
   margin: 10px auto;
@@ -230,7 +230,7 @@
   outline: none;
 }
 
-.logout-button {
+.signup-button {
   background-color: #fff; 
   color: #ff6600; 
   border: none;
