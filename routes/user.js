@@ -4,6 +4,7 @@ const assert = require('assert');
 const passport=require('passport')
 const session=require('express-session')
 const bcrypt= require('bcrypt');
+const flash=require('express-flash')
 
 const {ifAuthenticated}=require('./auth.js'); 
 const { resolve } = require("path");
@@ -160,6 +161,7 @@ router.get('/planner',ifAuthenticated, (req, res) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   const selectedDate = req.query.date || null;
+  
 
   res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
 });
@@ -171,6 +173,7 @@ router.get('/planner',ifAuthenticated, (req, res) => {
 router.post('/save-calendar-data', (req, res) => {
   const user_id = req.session.user_id;
   const date = req.body.date;
+  console.log("date: " +date)
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
   const lunch = req.body.lunch;
@@ -201,6 +204,7 @@ router.post('/save-calendar-data', (req, res) => {
 router.get('/recipe', (req, res) => {
   const { id } = req.query;
   const sqlite2 = 'SELECT * FROM recipes WHERE id = ?';
+  const message=req.flash('message')
   
   db.all(sqlite2, [id], (err,data) => {
     if (err) {
@@ -213,8 +217,8 @@ router.get('/recipe', (req, res) => {
     const parsedArray = JSON.parse(data[0].ingredients);
 
     data[0].ingredients = parsedArray;
-
-    res.render('recipe', { recipeData: data});
+    req.flash('message', 'This is an error message');
+    res.render('recipe', { recipeData: data,message});
   });
 }
 );
@@ -223,6 +227,7 @@ router.post("/toFavourite",async(req,res)=>{
 
  try{
 const userId=req.session.user_id
+
 
 const idExistAlr=await new Promise((resolve,reject)=>{
 global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],function(err,recipe){
@@ -259,7 +264,8 @@ global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],fu
   })
 }
 else{
-  res.redirect("/user/recipe?id="+req.body.id)
+  req.flash("message","In Favourite Already")
+  res.redirect('/user/recipe?id='+req.body.id)
 }
  }
  catch(error){
