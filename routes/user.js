@@ -214,7 +214,7 @@ router.get('/recipe', (req, res) => {
 
     data[0].ingredients = parsedArray;
 
-    res.render('recipe', { recipeData: data,message:null });
+    res.render('recipe', { recipeData: data});
   });
 }
 );
@@ -259,7 +259,7 @@ global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],fu
   })
 }
 else{
-  res.render("/user/recipe?id="+req.body.id,{message:"This is already in favourite"})
+  res.redirect("/user/recipe?id="+req.body.id)
 }
  }
  catch(error){
