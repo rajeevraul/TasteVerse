@@ -5,7 +5,9 @@ const passport=require('passport')
 const session=require('express-session')
 const bcrypt= require('bcrypt');
 
-const {ifAuthenticated}=require('./auth.js') 
+const {ifAuthenticated}=require('./auth.js'); 
+const { resolve } = require("path");
+const { error } = require("console");
 
 
 // Protected route - dashboard  TO ADD BACK
@@ -81,16 +83,60 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc Renders to myRecipe page WORKING
  */
-router.get('/myRecipe',ifAuthenticated, (req,res) => {
-  global.db.all("SELECT * FROM recipePage",function(err,data){
+router.get('/myRecipe',ifAuthenticated, async(req,res) => {
+
+  try{
+  const userId=req.session.user_id
+ const favList=await new Promise((resolve, reject)=>{
+  global.db.all("SELECT * FROM favouriteRecipe WHERE user_id=?",[userId],function(err,favData){
     if(err){
-      console.log("error in myRecipe")
+      console.log("error in getting favList")
+      reject(err)
     }
     else{
-      res.render("myRecipe.ejs",{myRecipe:data})
+    resolve(favData)
     }
   })
-});
+ })
+
+ const data=[]
+
+ for(i=0;i<favList.length;i++){
+ const recipes=await new Promise((resolve,reject)=>{
+global.db.get("SELECT * FROM recipes WHERE id=?",[favList[i].recipe_id],function(err,recipe){
+  if(err){
+    reject(err)
+  }else{
+    resolve(recipe)
+  }
+})
+
+ })
+
+if(recipes){
+  console.log("recipe: "+recipes.title)
+  data.push(recipes)
+}
+
+ }
+
+ if(!data.length){
+  console.log("error in retrieving data")
+ }else{
+  console.log("data:" + data);
+  res.render("myRecipe.ejs", { myRecipe: data })
+ }
+
+}
+catch(error){
+console.error(error)
+}
+
+})
+ 
+
+
+
 
 
 /**
@@ -177,6 +223,7 @@ router.post("/toFavourite",(req,res)=>{
 
  
 const userId=req.session.user_id
+
 
   global.db.get("SELECT * FROM recipes WHERE id=?",[req.body.id],function(err,data){
     if(err){
