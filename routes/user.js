@@ -214,17 +214,27 @@ router.get('/recipe', (req, res) => {
 
     data[0].ingredients = parsedArray;
 
-    res.render('recipe', { recipeData: data });
+    res.render('recipe', { recipeData: data,message:null });
   });
 }
 );
 
-router.post("/toFavourite",(req,res)=>{
+router.post("/toFavourite",async(req,res)=>{
 
- 
+ try{
 const userId=req.session.user_id
 
+const idExistAlr=await new Promise((resolve,reject)=>{
+global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],function(err,recipe){
+  if(err){
+    reject(err)
+  }else{
+    resolve(recipe)
+  }
+})
+})
 
+ if(!idExistAlr){
   global.db.get("SELECT * FROM recipes WHERE id=?",[req.body.id],function(err,data){
     if(err){
       console.log("Error: Failed to get data from provided id")
@@ -247,7 +257,14 @@ const userId=req.session.user_id
       }
     }
   })
-
+}
+else{
+  res.render("/user/recipe?id="+req.body.id,{message:"This is already in favourite"})
+}
+ }
+ catch(error){
+  console.error(error)
+ }
   
 
 })
