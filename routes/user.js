@@ -161,7 +161,7 @@ router.get('/planner',ifAuthenticated, (req, res) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   const selectedDate = req.query.date || null;
-  
+
 
   res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
 });
