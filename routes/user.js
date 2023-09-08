@@ -99,7 +99,7 @@ router.get('/myRecipe',ifAuthenticated, async(req,res) => {
     }
   })
  })
-
+ 
  const data=[]
 
  for(i=0;i<favList.length;i++){
@@ -123,6 +123,8 @@ if(recipes){
 
  if(!data.length){
   console.log("error in retrieving data")
+ 
+  res.render("myRecipe.ejs", { myRecipe: data })
  }else{
   console.log("data:" + data);
   res.render("myRecipe.ejs", { myRecipe: data })
@@ -131,9 +133,10 @@ if(recipes){
 }
 catch(error){
 console.error(error)
+
 }
 
-})
+}) 
  
 
 
@@ -383,6 +386,16 @@ else{
  }
   
 
+})
+
+router.post("/deleteFavourite",(req,res)=>{
+  global.db.run("DELETE FROM favouriteRecipe where recipe_id=?",[req.body.recipe_id],function(err){
+    if(err){
+      console.log("error in deleting from favouriteList")
+    }
+    else{console.log("success")}
+    res.redirect("back")
+  })
 })
 
 

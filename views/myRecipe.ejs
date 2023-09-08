@@ -13,23 +13,56 @@
 <h3>My Recipes</h3>
 </div>
 
-
+<button id="ToggleDelete" onclick="">Delete</button>
+<div id="recipe" value=<%= myRecipe %>></div>
 
 <div class="container">
 
     <!-- class for the images shld be recipeImage and recipeImage2 -->
+    
       <div class="row">
+        <% if (!myRecipe|| myRecipe.length===0){ %>
+         
+          <p>No Recipe Found</p>
+          <%} else { %>
+            
         <% myRecipe.forEach(function(dish){ %>
           <div class="col-md-2">
             <a href="/user/recipe?id=<%=dish.id %>">
       <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
       <p class="recipeImageText"><%=dish.title %></p>
+      <form action="/user/deleteFavourite" method="post" id="delete-form" style="display:none;padding:5px;">
+        <input type="hidden" value="<%=dish.id %>" name="recipe_id">
+        <input type="submit" value="delete">
+      </form>
       </a>
       </div>
         <% }) %> 
+        <% } %>
         
       </div>
 </div>
+
+<script>
+  const deleteButton=document.getElementById("ToggleDelete")
+  const delete_form=document.getElementById("delete-form")
+   deleteButton.addEventListener("click",function(){
+   if(deleteButton.textContent=="Delete"){
+    deleteButton.textContent="Done"
+    delete_form.style.display="inline"
+   }
+   else{
+    deleteButton.textContent="Delete"
+    delete_form.style.display="none"
+   }
+
+   })
+  </script>
+
+
+
+
+
 <div class="buttonPos">
     <button onclick="expCol()" id="expand">Expand</button>
     </div>
