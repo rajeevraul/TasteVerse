@@ -186,8 +186,6 @@ router.get('/planner',ifAuthenticated, (req, res) => {
  */
 router.post('/save-calendar-data', (req, res) => {
   const user_id = req.session.user_id;
-  // const date = req.query.date || null;
-  // console.log("date: " +date)
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
   const lunch = req.body.lunch;
@@ -215,23 +213,10 @@ router.post('/save-calendar-data', (req, res) => {
 
 router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
   const user_id = req.session.user_id;
-  const selectedDate = req.query.date || null;
-  // console.log("Retrieved date: " + date);
-  // db.get(
-  //   "SELECT * FROM calendar WHERE user_id=?", 
-  //   [user_id], 
-  //   function(err, row){
-  //     if(err){
-  //       console.error('Error fetching calendar data:', err);
-  //       res.status(500).send('Error fetching calendar data');
-  //     }else{
-  //       res.json(row);
-  //     }
-  //   }
-  // )
+  // const selectedDate = req.query.date || null;
   db.get(
-    "SELECT * FROM calendar WHERE user_id=? AND date=?",
-    [user_id, selectedDate],
+    "SELECT * FROM calendar WHERE user_id=?",
+    [user_id],
     function(err, row){
       if(err){
         console.error('Error fetching calendar data:', err);
