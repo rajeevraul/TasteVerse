@@ -33,20 +33,20 @@
 
 <% modifyRecipeData.forEach((modifiedRecipe) => { %>
 <div class="md" style="margin-top: 4rem; margin-left: 8rem; margin-right: 8rem;">
-    <form action="" method="POST">
+    <form action="/user/modified" method="POST">
     <div class="flex-column flex-xl-row d-flex justify-content-start ">
         <div>
         <!-- title -->
         <h3>Title</h3>
         <div class="mb-3" style="width: 20rem;">
-            <input type="text" class="form-control" id="title" name="article_title" value="<%= modifiedRecipe.modifiedRecipe_title %>">
+            <input type="text" class="form-control" id="title" name="modified_title" value="<%= modifiedRecipe.modifiedRecipe_title %>">
         </div>
 
         <!-- Ingredients -->
         <h3 class="my-4">Ingredients</h3>
         <div id="container" class="mb-3" style="width: 26rem;">
-            <% modifiedRecipe.modifiedRecipe_ingridients.forEach((modifiedRecipe_ingridient) => { %>
-            <div class="input-wrapper"><input type="text" class="form-control" value="<%= modifiedRecipe_ingridient %> " ><button class="mx-2 btn btn-danger">Remove</button></div>
+            <% modifiedRecipe.modifiedRecipe_ingridients[0].forEach((modifiedRecipe_ingridient) => { %>
+                <div class="input-wrapper"><input type="text" class="form-control" name="modified_ingridient" value="<%= modifiedRecipe_ingridient %>" ><button class="mx-2 btn btn-danger">Remove</button></div>
             <% }); %>    
         </div>
 
@@ -60,7 +60,7 @@
         <h2>Instruction</h2>    
         <!-- instruction -->
         <div class="mb-3" style="width: 50%;">
-            <textarea id="subject" class="form-control" name="article_text" style="height:500px; width: 800px;">
+            <textarea id="subject" class="form-control" name="modified_instructions" style="height:500px; width: 800px;">
             <%= modifiedRecipe.modifiedRecipe_instructions %>
             </textarea>
         </div>    

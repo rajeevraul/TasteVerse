@@ -291,6 +291,8 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].ingredients);
 
+    //console.log(data[0].ingredients);
+
     data[0].ingredients = parsedArray;
     req.flash('message', 'This is an error message');
     res.render('recipe', { recipeData: data,message});
@@ -301,7 +303,8 @@ router.post('/modify',(req, res) => {
   const userId=req.session.user_id
   const { id, title, ingredients, instructions} = req.body;
 
-  const ingredientsJSON = JSON.stringify(ingredients);
+  const ingredientsArray = ingredients.split(',').map((ingredient) => ingredient.trim());
+  const ingredientsJSON = JSON.stringify(ingredientsArray);
 
   const sql = 'INSERT INTO modifiedRecipe (user_id, recipe_id, modifiedRecipe_title, modifiedRecipe_ingridients, modifiedRecipe_instructions) VALUES (?, ?, ?, ?, ?)';
   db.run(sql, [userId, id, title, ingredientsJSON, instructions], (err) => {
@@ -330,10 +333,18 @@ router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].modifiedRecipe_ingridients);
 
+    //console.log(data[0].modifiedRecipe_ingridients);
+
     data[0].modifiedRecipe_ingridients = parsedArray;
     req.flash('message', 'This is an error message');
     res.render('modifyRecipe', { modifyRecipeData: data,message});
   });
+});
+
+router.post("/modified", (req, res) => { 
+  const { modified_ingridient } = req.body;
+  
+  console.log(modified_ingridient);
 });
 
 router.post("/toFavourite",async(req,res)=>{
