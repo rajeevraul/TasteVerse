@@ -167,13 +167,27 @@ router.get('/planner',ifAuthenticated, (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
- * @desc When a user saves data for the calendar, saves into table and redirects back to planner WORKING
+ * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
  */
 router.post('/save-calendar-data', (req, res) => {
   const user_id = req.session.user_id;
-  const date = req.body.date;
-  console.log("date: " +date)
+  // const date = req.query.date || null;
+  // console.log("date: " +date)
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
   const lunch = req.body.lunch;
@@ -185,8 +199,8 @@ router.post('/save-calendar-data', (req, res) => {
 
   // Insert the data into the calendar table
   db.run(
-    "INSERT OR REPLACE INTO calendar (user_id, date, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [user_id, date, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
+    "INSERT OR REPLACE INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    [user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
     function (err) {
       if (err) {
         console.error('Error saving calendar data:', err);
@@ -198,6 +212,79 @@ router.post('/save-calendar-data', (req, res) => {
     }
   );
 });
+
+router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
+  const user_id = req.session.user_id;
+  const selectedDate = req.query.date || null;
+  // console.log("Retrieved date: " + date);
+  // db.get(
+  //   "SELECT * FROM calendar WHERE user_id=?", 
+  //   [user_id], 
+  //   function(err, row){
+  //     if(err){
+  //       console.error('Error fetching calendar data:', err);
+  //       res.status(500).send('Error fetching calendar data');
+  //     }else{
+  //       res.json(row);
+  //     }
+  //   }
+  // )
+  db.get(
+    "SELECT * FROM calendar WHERE user_id=? AND date=?",
+    [user_id, selectedDate],
+    function(err, row){
+      if(err){
+        console.error('Error fetching calendar data:', err);
+        res.status(500).send('Error fetching calendar data');
+      }else{
+        if(row){
+          res.json(row);
+        } else{
+          res.status(404).json({message: 'No data found for the selected date' });
+        }
+      }
+    }
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // recipe page WORKING 
