@@ -273,12 +273,12 @@ router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
 
 
 // recipe page WORKING 
-router.get('/recipe', (req, res) => {
+router.get('/recipe', ifAuthenticated, (req, res) => {
   const { id } = req.query;
-  const sqlite2 = 'SELECT * FROM recipes WHERE id = ?';
+  const sqlite = 'SELECT * FROM recipes WHERE id = ?';
   const message=req.flash('message')
   
-  db.all(sqlite2, [id], (err,data) => {
+  db.all(sqlite, [id], (err,data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
@@ -292,13 +292,46 @@ router.get('/recipe', (req, res) => {
     req.flash('message', 'This is an error message');
     res.render('recipe', { recipeData: data,message});
   });
-}
-);
+});
 
-router.get('/modifyRecipe',(req, res) => {
-  res.render('modifyRecipe');
-  }
-);
+router.post('/modify',(req, res) => {
+  const userId=req.session.user_id
+  const { id, title, ingredients, instructions} = req.body;
+
+  const ingredientsJSON = JSON.stringify(ingredients);
+
+  const sql = 'INSERT INTO modifiedRecipe (user_id, recipe_id, modifiedRecipe_title, modifiedRecipe_ingridients, modifiedRecipe_instructions) VALUES (?, ?, ?, ?, ?)';
+  db.run(sql, [userId, id, title, ingredientsJSON, instructions], (err) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    res.redirect("/user/modifyRecipe?id=" + id);
+  });
+  
+});
+
+router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
+  const { id } = req.query;
+  const sqlite = 'SELECT * FROM modifiedRecipe WHERE recipe_id = ?';
+  const message=req.flash('message')
+  
+  db.all(sqlite, [id], (err,data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    data[0].modifiedRecipe_ingridients = data[0].modifiedRecipe_ingridients.replace(/'/g, '"');
+    // Parse the JSON string into an array
+    const parsedArray = JSON.parse(data[0].modifiedRecipe_ingridients);
+
+    data[0].modifiedRecipe_ingridients = parsedArray;
+    req.flash('message', 'This is an error message');
+    res.render('modifyRecipe', { modifyRecipeData: data,message});
+  });
+});
 
 router.post("/toFavourite",async(req,res)=>{
 

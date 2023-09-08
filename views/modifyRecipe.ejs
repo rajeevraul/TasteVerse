@@ -31,6 +31,7 @@
 <body>
 <%- include('header'); %>
 
+<% modifyRecipeData.forEach((modifiedRecipe) => { %>
 <div class="md" style="margin-top: 4rem; margin-left: 8rem; margin-right: 8rem;">
     <form action="" method="POST">
     <div class="flex-column flex-xl-row d-flex justify-content-start ">
@@ -38,13 +39,15 @@
         <!-- title -->
         <h3>Title</h3>
         <div class="mb-3" style="width: 20rem;">
-            <input type="text" class="form-control" id="title" name="article_title" value="title">
+            <input type="text" class="form-control" id="title" name="article_title" value="<%= modifiedRecipe.modifiedRecipe_title %>">
         </div>
 
         <!-- Ingredients -->
         <h3 class="my-4">Ingredients</h3>
         <div id="container" class="mb-3" style="width: 26rem;">
-            <div class="input-wrapper"><input type="text" class="form-control" value="1 water" ><button class="mx-2 btn btn-danger">Remove</button></div>
+            <% modifiedRecipe.modifiedRecipe_ingridients.forEach((modifiedRecipe_ingridient) => { %>
+            <div class="input-wrapper"><input type="text" class="form-control" value="<%= modifiedRecipe_ingridient %> " ><button class="mx-2 btn btn-danger">Remove</button></div>
+            <% }); %>    
         </div>
 
         <button id="addButton" class="btn btn-primary">Add Ingredient</button>
@@ -58,21 +61,8 @@
         <!-- instruction -->
         <div class="mb-3" style="width: 50%;">
             <textarea id="subject" class="form-control" name="article_text" style="height:500px; width: 800px;">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices diam cursus, dignissim orci et, 
-                tempor purus. Nam vel pharetra enim. Morbi eleifend facilisis ullamcorper. Nullam at dolor in risus 
-                dapibus ornare. Sed tristique dapibus odio. Praesent mollis, sem ac cursus ornare, tellus diam finibus 
-                nisi, vel vehicula ex ligula id nunc. Vestibulum tincidunt risus metus, in accumsan risus condimentum 
-                vitae. Praesent finibus rutrum vehicula. Donec feugiat lorem sit amet scelerisque congue. Etiam venenatis 
-                viverra ornare. Praesent ac pellentesque magna, nec egestas magna. Nullam scelerisque, eros quis posuere 
-                aliquam, magna ipsum varius augue, eget interdum tellus nunc et neque.
-    
-                Quisque efficitur vulputate luctus. Pellentesque congue congue est, euismod vestibulum lorem fringilla at. 
-                Nulla nec consequat leo, a pulvinar tellus. Donec nec sem vitae sem dictum consequat ac quis mi. Sed quis 
-                mi nisl. Phasellus pretium quam at odio egestas, nec ullamcorper turpis euismod. Maecenas magna nibh, semper 
-                non sem ac, blandit aliquam eros. Vestibulum ac nibh nec tortor porttitor dignissim eu vel nulla. Sed et 
-                congue dui. Integer cursus diam odio, a dapibus dolor euismod ultrices. Ut egestas ex ut ex venenatis, ac 
-                lobortis massa cursus. Cras vel mi quis nunc iaculis varius. Integer eu tortor risus. Pellentesque velit 
-                odio, egestas at nunc viverra, commodo faucibus mi.</textarea>
+            <%= modifiedRecipe.modifiedRecipe_instructions %>
+            </textarea>
         </div>    
         </div>    
         <button type="submit" class="btn btn-primary">Save Recipe</button>    
@@ -80,6 +70,7 @@
     
     </form>
 </div>
+<% }); %>
 
 <%- include('footer') %>
 

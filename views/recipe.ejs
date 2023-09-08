@@ -35,7 +35,15 @@
           <li><%= ingredient %></li>
         <% }); %>
       </ul>
-      <a href="#"> <button class="btn btn-outline-success btn-lg">Modify Recipe</button> </a>
+
+      <a href="javascript:document.addToModifyRecipe.submit()"> <button class="btn btn-outline-success btn-lg">Modify Recipe</button> </a>
+      <form action="/user/modify" name="addToModifyRecipe" method="post">
+        <input type="hidden" value="<%=recipes.id %>" name="id">
+        <input type="hidden" value="<%=recipes.title %>" name="title">
+        <input type="hidden" value="<%=recipes.ingredients %>" name="ingredients">
+        <input type="hidden" value="<%=recipes.instructions %>" name="instructions">        
+      </form>
+
       <a href="javascript:document.addToFavourite.submit()"> <button class="btn btn-outline-success btn-lg">Add To Favourite</button> </a>
       <form action="/user/toFavourite" name="addToFavourite" method="post">
         <input type="hidden" value="<%=recipes.id %>" name="id">
