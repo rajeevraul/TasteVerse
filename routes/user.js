@@ -288,6 +288,7 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
     }
 
     data[0].ingredients = data[0].ingredients.replace(/'/g, '"');
+    //data[0].ingredients = data[0].ingredients.replace(/'/g, "'");
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].ingredients);
 
@@ -341,11 +342,20 @@ router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
   });
 });
 
-router.post("/modified", (req, res) => { 
-  const { modified_ingridient } = req.body;
+router.post("/modified/:modifiedRecipe_id", (req, res) => { 
   
-  console.log(modified_ingridient);
+  const { modified_title, modified_ingridient, modified_instructions, modifiedRecipe_id } = req.body;
+  const sqlite = 'UPDATE modifiedRecipe SET modifiedRecipe_title = ?, modifiedRecipe_ingridients = ?, modifiedRecipe_instructions = ? WHERE modifiedRecipe_id = ?';
+
+  db.run(sqlite, [modified_title, modified_ingridient, modified_instructions, modifiedRecipe_id], (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.redirect('/user/main');
+  });
 });
+
 
 router.post("/toFavourite",async(req,res)=>{
 
