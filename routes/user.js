@@ -300,6 +300,31 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
   });
 });
 
+// recipe page WORKING 
+router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
+  const { modifiedRecipe_id } = req.query;
+  const sqlite = 'SELECT * FROM modifiedRecipe WHERE modifiedRecipe_id = ?';
+  const message=req.flash('message')
+  
+  db.all(sqlite, [modifiedRecipe_id], (err,data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    data[0].modifiedRecipe_ingredients = data[0].modifiedRecipe_ingredients.replace(/'/g, '"');
+    //data[0].ingredients = data[0].ingredients.replace(/'/g, "'");
+    // Parse the JSON string into an array
+    const parsedArray = JSON.parse(data[0].modifiedRecipe_ingredients);
+
+    console.log(data[0].modifiedRecipe_ingredients);
+
+    data[0].modifiedRecipe_ingredients = parsedArray;
+    req.flash('message', 'This is an error message');
+    res.render('modifiedRecipe', { recipeData: data,message});
+  });
+});
+
 router.post('/modify',(req, res) => {
   const userId=req.session.user_id
   const { id, title, ingredients, instructions} = req.body;
