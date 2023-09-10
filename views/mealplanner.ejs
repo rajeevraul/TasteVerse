@@ -35,8 +35,8 @@
                 <% if ((week === 0 && day < firstDay) || currentDay > daysInMonth) { %>
                   <td class="text-center" ></td>
                 <% } else { %>
-                  <td class="text-center date-cell" id="dates" ><%= currentDay %></td>
-                  <a href="/planner?date=<%= year %>-<%= month + 1 %>-<%= currentDay %>"></a>
+                  <td class="text-center date-cell" id="dates" onclick="getCellDay(this)"><%= currentDay %></td>
+                  <a href="/planner?date=<%= year %>-<%= month + 1 %>-<%= currentDay %>"></a> 
                   <% currentDay++; %>
                 <% } %>
               <% } %>
@@ -70,11 +70,7 @@
     });
     closePopupButton1.addEventListener('click', hidePopup);
     closePopupButton2.addEventListener('click', hidePopup);
-    
   </script>
-
-
-  
 
   <%- include('footer'); %>
 </body>
