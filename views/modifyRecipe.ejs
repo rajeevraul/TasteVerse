@@ -49,9 +49,9 @@
             <!-- Ingredients -->
             <h3 class="my-4">Ingredients</h3>
             <div id="container" class="mb-3" style="width: 26rem">
-              <% modifiedRecipe.modifiedRecipe_ingridients.forEach((modifiedRecipe_ingridient) => { %>
+              <% modifiedRecipe.modifiedRecipe_ingredients.forEach((modifiedRecipe_ingredient) => { %>
               <div class="input-wrapper">
-                <input type="text" class="form-control" name="modified_ingridient" value="<%= modifiedRecipe_ingridient %>" />
+                <input type="text" class="form-control" name="modified_ingredient" value="<%= modifiedRecipe_ingredient %>" />
                 <span class="mx-2 btn btn-danger" onclick="removeInputWrapper(this)">Remove</span>
               </div>
               <% }); %>
@@ -92,6 +92,7 @@
 
         const textInput = document.createElement("input");
         textInput.type = "text";
+        textInput.name = "modified_ingredient";
         textInput.classList.add("form-control");
 
         const removeButton = document.createElement("span");
