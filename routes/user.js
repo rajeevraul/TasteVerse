@@ -281,13 +281,13 @@ router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
 
 router.post('/modify',(req, res) => {
   const userId=req.session.user_id
-  const { id, title, ingredients, instructions} = req.body;
+  const { id, title, ingredients, instructions, image} = req.body;
 
   const ingredientsArray = ingredients.split(',').map((ingredient) => ingredient.trim());
   const ingredientsJSON = JSON.stringify(ingredientsArray);
 
-  const sql = 'INSERT INTO modifiedRecipe (user_id, recipe_id, modifiedRecipe_title, modifiedRecipe_ingridients, modifiedRecipe_instructions) VALUES (?, ?, ?, ?, ?)';
-  db.run(sql, [userId, id, title, ingredientsJSON, instructions], (err) => {
+  const sql = 'INSERT INTO modifiedRecipe (user_id, recipe_id, modifiedRecipe_title, modifiedRecipe_ingredients, modifiedRecipe_instructions, image_name) VALUES (?, ?, ?, ?, ?, ?)';
+  db.run(sql, [userId, id, title, ingredientsJSON, instructions, image], (err) => {
     if (err) {
       console.error(err.message);
       return res.status(500).send('Internal Server Error');
@@ -309,13 +309,11 @@ router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
       return res.status(500).send('Internal Server Error');
     }
 
-    data[0].modifiedRecipe_ingridients = data[0].modifiedRecipe_ingridients.replace(/'/g, '"');
+    data[0].modifiedRecipe_ingredients = data[0].modifiedRecipe_ingredients.replace(/'/g, '"');
     // Parse the JSON string into an array
-    const parsedArray = JSON.parse(data[0].modifiedRecipe_ingridients);
+    const parsedArray = JSON.parse(data[0].modifiedRecipe_ingredients);
 
-    //console.log(data[0].modifiedRecipe_ingridients);
-
-    data[0].modifiedRecipe_ingridients = parsedArray;
+    data[0].modifiedRecipe_ingredients = parsedArray;
     req.flash('message', 'This is an error message');
     res.render('modifyRecipe', { modifyRecipeData: data,message});
   });
@@ -323,10 +321,13 @@ router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
 
 router.post("/modified/:modifiedRecipe_id", (req, res) => { 
   
-  const { modified_title, modified_ingridient, modified_instructions, modifiedRecipe_id } = req.body;
-  const sqlite = 'UPDATE modifiedRecipe SET modifiedRecipe_title = ?, modifiedRecipe_ingridients = ?, modifiedRecipe_instructions = ? WHERE modifiedRecipe_id = ?';
+  const { modified_title, modified_ingredient, modified_instructions, modifiedRecipe_id } = req.body;
+  const sqlite = 'UPDATE modifiedRecipe SET modifiedRecipe_title = ?, modifiedRecipe_ingredients = ?, modifiedRecipe_instructions = ? WHERE modifiedRecipe_id = ?';
 
-  db.run(sqlite, [modified_title, modified_ingridient, modified_instructions, modifiedRecipe_id], (err) => {
+  console.log(req.body);
+  const ingredientsJSON = JSON.stringify(modified_ingredient);
+  
+  db.run(sqlite, [modified_title, ingredientsJSON, modified_instructions, modifiedRecipe_id], (err) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
