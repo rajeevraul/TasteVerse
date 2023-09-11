@@ -21,13 +21,61 @@
       <div class="row">
         <% myRecipe.forEach(function(dish){ %>
           <div class="col-md-2">
+<<<<<<< Updated upstream
       <img class="recipeImage" src="/assets/img/photo-1546069901-ba9599a7e63c.jpg" >
       <p class="recipeImageText"><%=dish.recipe_title %></p>
+=======
+            <a class="favLink" href="/user/recipe?id=<%=dish.id %>" dishId="<%=dish.id%>">
+      <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
+      <p class="recipeImageText"><%=dish.title %></p>
+      <form action="/user/deleteFavourite" name="deleteRecipe" method="post" id="delete-form" style="display:none;padding:5px;">
+        <input type="hidden" value="<%=dish.id %>" name="recipe_id">
+        <input hidden type="submit" value="delete">
+      </form>
+      </a>
+>>>>>>> Stashed changes
       </div>
         <% }) %> 
         
       </div>
 </div>
+<<<<<<< Updated upstream
+=======
+
+<script>
+const deleteButton = document.getElementById("ToggleDelete");
+const delete_form = document.getElementById("delete-form");
+const favLinks = document.querySelectorAll(".favLink");
+var deleting=false
+
+deleteButton.addEventListener("click", function () {
+   deleting=!deleting
+
+
+    if (deleting) {
+
+      deleteButton.textContent = "Done";
+     
+      
+      link.setAttribute("href", "javascript:document.deleteRecipe.submit()");
+      
+    } else {
+      deleteButton.textContent = "Delete";
+      favLinks.forEach(function (link) {
+        const dishId = link.getAttribute("dishId");
+        link.setAttribute("href", `/user/recipe?id=${dishId}`)
+      })
+    }
+  ;
+});
+
+  </script>
+
+
+
+
+
+>>>>>>> Stashed changes
 <div class="buttonPos">
     <button onclick="expCol()" id="expand">Expand</button>
     </div>
