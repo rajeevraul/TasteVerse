@@ -85,7 +85,6 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
  * @desc Renders to myRecipe page WORKING
  */
 router.get('/myRecipe',ifAuthenticated, async(req,res) => {
-
   try{
   const userId=req.session.user_id
  const favList=await new Promise((resolve, reject)=>{
@@ -172,23 +171,13 @@ router.get('/planner',ifAuthenticated, (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
  */
 router.post('/save-calendar-data', (req, res) => {
   const user_id = req.session.user_id;
+  const meal_id = req.body.meal_id;
+  const dayOfMonth = req.query.date;
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
   const lunch = req.body.lunch;
@@ -200,8 +189,8 @@ router.post('/save-calendar-data', (req, res) => {
 
   // Insert the data into the calendar table
   db.run(
-    "INSERT OR REPLACE INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    [user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
+    "INSERT OR REPLACE INTO calendar (meal_id, user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [meal_id, user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories, dayOfMonth],
     function (err) {
       if (err) {
         console.error('Error saving calendar data:', err);
@@ -216,10 +205,11 @@ router.post('/save-calendar-data', (req, res) => {
 
 router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
   const user_id = req.session.user_id;
+  const dayOfMonth = req.query.date || null;
   // const selectedDate = req.query.date || null;
   db.get(
-    "SELECT * FROM calendar WHERE user_id=?",
-    [user_id],
+    "SELECT * FROM calendar WHERE user_id=? AND dayOfMonth=?",
+    [user_id, dayOfMonth],
     function(err, row){
       if(err){
         console.error('Error fetching calendar data:', err);
@@ -234,42 +224,6 @@ router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
     }
   );
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
