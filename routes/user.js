@@ -176,6 +176,7 @@ router.get('/planner',ifAuthenticated, (req, res) => {
  */
 router.post('/save-calendar-data', (req, res) => {
   const user_id = req.session.user_id;
+  const meal_id = req.body.meal_id;
   const dayOfMonth = req.query.date;
   const breakfast = req.body.breakfast;
   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
@@ -188,8 +189,8 @@ router.post('/save-calendar-data', (req, res) => {
 
   // Insert the data into the calendar table
   db.run(
-    "INSERT OR REPLACE INTO calendar (user_id, dayOfMonth, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [user_id, dayOfMonth, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories],
+    "INSERT OR REPLACE INTO calendar (meal_id, user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [meal_id, user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories, dayOfMonth],
     function (err) {
       if (err) {
         console.error('Error saving calendar data:', err);

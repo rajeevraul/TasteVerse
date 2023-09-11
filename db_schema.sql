@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS calendar(
     dinner TEXT NOT NULL,
     dinner_calories INTEGER NOT NULL,
     total_calories INTEGER NOT NULL,
-    dayOfMonth TEXT NOT NULL
+    dayOfMonth TEXT NOT NULL 
     
 );
 
