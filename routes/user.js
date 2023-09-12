@@ -239,7 +239,9 @@ res.status(500).send("Internal Server Error");
 //   );
 // });
 
-
+/**
+ * @desc Renders to meal planner page WORKING
+ */
 router.get('/planner', (req, res) => {
   const selectedDate = new Date(req.query.date || new Date());
   const year = selectedDate.getFullYear();
@@ -267,7 +269,9 @@ router.get('/planner', (req, res) => {
   res.render('mealplanner', { calendar, year, month});
 });
 
-
+/**
+ * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
+ */
 router.post('/save-calendar-data', (req, res) => {
   const {
     breakfast,
@@ -318,6 +322,9 @@ function retrievedDataFromDatabase(selectedDate, callback){
   );
 }
 
+/**
+ * @desc Retrieves the data about the specific data and displays it on the form 
+ */
 router.get('/get-calendar-data', (req, res) => {
   const selectedDate = req.query.date;
   retrievedDataFromDatabase(selectedDate, (err, data) => {
