@@ -33,7 +33,7 @@
       <p class="recipeImageText"><%=dish.title %></p>
       <form action="/user/deleteFavourite" method="post" id="delete-form" style="display:none;padding:5px;">
         <input type="hidden" value="<%=dish.id %>" name="recipe_id">
-        <input type="submit" value="delete">
+        <input class="recipePageDeleteButton" type="submit" value="delete">
       </form>
       </a>
       </div>
@@ -91,7 +91,7 @@
 
     <form action="/user/deleteModified" method="post" id="delete-modified-form" style="display:none;padding:5px;">
       <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
-      <input type="submit" value="delete">
+      <input class="recipePageDeleteButton" type="submit" value="delete">
     </form>
   </a>
     </div>
