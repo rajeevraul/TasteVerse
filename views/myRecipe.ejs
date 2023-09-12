@@ -13,7 +13,7 @@
 <h3>My Recipes</h3>
 </div>
 
-<button id="ToggleDelete" onclick="">Delete</button>
+<button id="ToggleDelete" class="recipePageDeleteButton" onclick="">Delete</button>
 <div id="recipe" value=<%= myRecipe %>></div>
 
 <div class="container">
@@ -74,19 +74,29 @@
 <h3>Favourite Recipes</h3>
 </div>
 
-
+<button id="ToggleModifiedDelete" class="recipePageDeleteButton" onclick="">Delete</button>
 <div class="container">
 
   <!-- class for the images shld be recipeImage and recipeImage2 -->
     <div class="row">
-      <% myRecipe.forEach(function(dish){ %>
+      <% if (!modifiedRecipe|| modifiedRecipe.length===0){ %>
+         
+        <p>No Recipe Found</p>
+        <%} else { %>
+      <% modifiedRecipe.forEach(function(myDish){ %>
         <div class="col-md-2">
-          <a href="/user/recipe?id=<%=dish.id %>">
-    <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
-    <p class="recipeImageText"><%=dish.title %></p>
+          <a href="/user/modifiedRecipe?modifiedRecipe_id=<%=myDish.modifiedRecipe_id %>">
+    <img class="recipeImage" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
+    <p class="recipeImageText"><%=myDish.modifiedRecipe_title %></p>
+
+    <form action="/user/deleteModified" method="post" id="delete-modified-form" style="display:none;padding:5px;">
+      <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
+      <input type="submit" value="delete">
+    </form>
   </a>
     </div>
-      <% }) %> 
+    <% }) %> 
+    <% } %>
       
     </div>
 </div>
@@ -100,6 +110,20 @@
 <script>
 
     // myRecipe script
+
+    const modifiedDeleteButton=document.getElementById("ToggleModifiedDelete")
+  const delete_modified_form=document.getElementById("delete-modified-form")
+  modifiedDeleteButton.addEventListener("click",function(){
+   if(modifiedDeleteButton.textContent=="Delete"){
+    modifiedDeleteButton.textContent="Done"
+    delete_modified_form.style.display="inline"
+   }
+   else{
+    modifiedDeleteButton.textContent="Delete"
+    delete_modified_form.style.display="none"
+   }
+
+   })
     
     const expandButton=document.getElementById("expand")
    expandButton.addEventListener("click",function(){

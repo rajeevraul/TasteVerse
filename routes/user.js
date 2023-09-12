@@ -87,6 +87,19 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 router.get('/myRecipe',ifAuthenticated, async(req,res) => {
   try{
   const userId=req.session.user_id
+
+  const modifiedRecipe=await new Promise((resolve,reject)=>
+   global.db.all("SELECT * FROM modifiedRecipe where user_id=?",[userId],function(err,modified){
+    if(err){
+    reject(err)
+    }else{
+      console.log("modified:"+modified)
+      resolve (modified)
+    }
+  })
+  )
+
+
  const favList=await new Promise((resolve, reject)=>{
   global.db.all("SELECT * FROM favouriteRecipe WHERE user_id=?",[userId],function(err,favData){
     if(err){
@@ -120,18 +133,15 @@ if(recipes){
 
  }
 
- if(!data.length){
-  console.log("error in retrieving data")
  
-  res.render("myRecipe.ejs", { myRecipe: data })
- }else{
   console.log("data:" + data);
-  res.render("myRecipe.ejs", { myRecipe: data })
- }
+  res.render("myRecipe.ejs", { myRecipe: data, modifiedRecipe:modifiedRecipe })
+ 
 
 }
 catch(error){
 console.error(error)
+res.status(500).send("Internal Server Error");
 
 }
 
@@ -399,6 +409,16 @@ router.post("/deleteFavourite",(req,res)=>{
   })
 })
 
+
+router.post("/deleteModified",(req,res)=>{
+  global.db.run("DELETE FROM modifiedRecipe where recipe_id=?",[req.body.recipe_id],function(err){
+    if(err){
+      console.log("error in deleting from favouriteList")
+    }
+    else{console.log("success")}
+    res.redirect("back")
+  })
+})
 
 
 
