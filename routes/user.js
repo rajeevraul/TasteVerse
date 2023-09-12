@@ -398,6 +398,25 @@ router.post("/deleteFavourite",(req,res)=>{
 })
 
 
+// Search bar
+router.get('/search-result', (req, res) => {
+  const searchTerm = req.query.searchTerm;
+  const sqlite = 'SELECT * FROM recipes WHERE title LIKE ? LIMIT 20';
+  // Perform a database query to retrieve data
+  global.db.all(sqlite, [`%${searchTerm}%`], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+
+    console.log(rows);
+    const recipeNames = rows.map((row) => row.title);
+
+    res.render('search', { items: recipeNames });
+  });
+});
+
+
 
 
 
