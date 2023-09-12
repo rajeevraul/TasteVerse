@@ -9,10 +9,12 @@ const flash=require('express-flash')
 const {ifAuthenticated}=require('./auth.js'); 
 const { resolve } = require("path");
 const { error } = require("console");
+const { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth } = require('date-fns');
 
 
 // Protected route - dashboard  TO ADD BACK
-router.get('/main',ifAuthenticated, (req, res) => {
+// router.get('/main',ifAuthenticated, (req, res) => {
+router.get('/main', (req, res) => {
   res.render('mainpage.ejs');
   }
 );
@@ -24,7 +26,8 @@ router.get('/main',ifAuthenticated, (req, res) => {
 /**
  * @desc Renders to shoppinglist page WORKING
  */
-router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
+// router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
+router.get('/list', (req, res) => { //WORKING DO NOT DELETE 
   db.all('SELECT * FROM shoppingRecord', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -84,6 +87,7 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc Renders to myRecipe page WORKING
  */
+// router.get('/myRecipe',ifAuthenticated, async(req,res) => {
 router.get('/myRecipe',ifAuthenticated, async(req,res) => {
   try{
   const userId=req.session.user_id
@@ -152,88 +156,185 @@ res.status(500).send("Internal Server Error");
 
 
 
-/**
- * @desc Renders to mealplanner page WORKING
- */
-router.get('/planner',ifAuthenticated, (req, res) => {
-  const today = new Date();
+// /**
+//  * @desc Renders to mealplanner page WORKING
+//  */
+// router.get('/planner',ifAuthenticated, (req, res) => {
+//   const today = new Date();
 
-  let year = parseInt(req.query.year) || today.getFullYear();
-  let month = parseInt(req.query.month) || today.getMonth();
+//   let year = parseInt(req.query.year) || today.getFullYear();
+//   let month = parseInt(req.query.month) || today.getMonth();
   
-  if (month < 0) {
-    month = 11; // Wrap to December of the previous year
-    year--;
-  } else if (month > 11) {
-    month = 0; // Wrap to January of the next year
-    year++;
+//   if (month < 0) {
+//     month = 11; // Wrap to December of the previous year
+//     year--;
+//   } else if (month > 11) {
+//     month = 0; // Wrap to January of the next year
+//     year++;
+//   }
+
+//   const firstDay = new Date(year, month, 1).getDay();
+//   const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+//   const selectedDate = req.query.date || null;
+
+
+//   res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
+// });
+
+
+
+
+// /**
+//  * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
+//  */
+// router.post('/save-calendar-data', (req, res) => {
+//   const user_id = req.session.user_id;
+//   const meal_id = req.body.meal_id;
+//   const dayOfMonth = req.query.date;
+//   const breakfast = req.body.breakfast;
+//   const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
+//   const lunch = req.body.lunch;
+//   const lunchCalories = parseInt(req.body.lunch_calories) || 0;
+//   const dinner = req.body.dinner;
+//   const dinnerCalories = parseInt(req.body.dinner_calories) || 0;
+
+//   const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
+
+//   // Insert the data into the calendar table
+//   db.run(
+//     "INSERT OR REPLACE INTO calendar (meal_id, user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//     [meal_id, user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories, dayOfMonth],
+//     function (err) {
+//       if (err) {
+//         console.error('Error saving calendar data:', err);
+//         res.status(500).send('Error saving calendar data');
+//       } else {
+//         // res.status(200).send('Calendar data saved successfully');
+//         res.redirect('/user/planner');
+//       }
+//     }
+//   );
+// });
+
+// router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
+//   const user_id = req.session.user_id;
+//   const dayOfMonth = req.query.date || null;
+//   // const selectedDate = req.query.date || null;
+//   db.get(
+//     "SELECT * FROM calendar WHERE user_id=? AND dayOfMonth=?",
+//     [user_id, dayOfMonth],
+//     function(err, row){
+//       if(err){
+//         console.error('Error fetching calendar data:', err);
+//         res.status(500).send('Error fetching calendar data');
+//       }else{
+//         if(row){
+//           res.json(row);
+//         } else{
+//           res.status(404).json({message: 'No data found for the selected date' });
+//         }
+//       }
+//     }
+//   );
+// });
+
+
+router.get('/planner', (req, res) => {
+  const selectedDate = new Date(req.query.date || new Date());
+  const year = selectedDate.getFullYear();
+  const month = selectedDate.getMonth();
+  const firstDayOfMonth = startOfMonth(selectedDate);
+  const lastDayOfMonth = endOfMonth(selectedDate);
+
+  const startOfWeekDate = startOfWeek(firstDayOfMonth);
+  const endOfWeekDate = endOfWeek(lastDayOfMonth);
+
+  var calendar = [];
+  let currentDate = startOfWeekDate;
+  while (currentDate <= endOfWeekDate) {
+    const week = [];
+    for(let i = 0; i < 7; i++){
+      week.push({
+        date: currentDate,
+        day: format(currentDate, 'd'),
+        isCurrentMonth: isSameMonth(currentDate, selectedDate),
+      });
+      currentDate = addDays(currentDate, 1);
+    }
+    calendar.push(week);
   }
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const selectedDate = req.query.date || null;
-
-
-  res.render('mealplanner', { year, month, firstDay, daysInMonth, selectedDate });
+  res.render('mealplanner', { calendar, year, month});
 });
 
 
-
-
-/**
- * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
- */
 router.post('/save-calendar-data', (req, res) => {
-  const user_id = req.session.user_id;
-  const meal_id = req.body.meal_id;
-  const dayOfMonth = req.query.date;
-  const breakfast = req.body.breakfast;
-  const breakfastCalories = parseInt(req.body.breakfast_calories) || 0;
-  const lunch = req.body.lunch;
-  const lunchCalories = parseInt(req.body.lunch_calories) || 0;
-  const dinner = req.body.dinner;
-  const dinnerCalories = parseInt(req.body.dinner_calories) || 0;
+  const {
+    breakfast,
+    breakfast_calories,
+    lunch,
+    lunch_calories,
+    dinner,
+    dinner_calories,
+    totalCalories,
+    dayOfMonth,
+  } = req.body;
+  console.log('Received Request Body:', req.body);
+  // const totalCalories = document.getElementById('totalCalories').value;
+  // const totalCalories = req.body.totalCalories;
 
-  const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
+  if (!totalCalories || isNaN(totalCalories)) {
+    console.error('Invalid total calories value');
+    return res.sendStatus(400);
+  }
 
-  // Insert the data into the calendar table
-  db.run(
-    "INSERT OR REPLACE INTO calendar (meal_id, user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [meal_id, user_id, breakfast, breakfastCalories, lunch, lunchCalories, dinner, dinnerCalories, totalCalories, dayOfMonth],
-    function (err) {
-      if (err) {
-        console.error('Error saving calendar data:', err);
-        res.status(500).send('Error saving calendar data');
-      } else {
-        // res.status(200).send('Calendar data saved successfully');
+  db.run('INSERT INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+    [1, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, totalCalories, dayOfMonth],
+    (err) => {
+      if(err){
+        console.error('Error inserting data into the calendar table:', err);
+        res.sendStatus(500);
+      }else{
+        console.log('Data inserted successfully');
+        // res.sendStatus(200);
         res.redirect('/user/planner');
       }
     }
   );
 });
 
-router.get('/get-calendar-data',ifAuthenticated, (req, res) => {
-  const user_id = req.session.user_id;
-  const dayOfMonth = req.query.date || null;
-  // const selectedDate = req.query.date || null;
+function retrievedDataFromDatabase(selectedDate, callback){
   db.get(
-    "SELECT * FROM calendar WHERE user_id=? AND dayOfMonth=?",
-    [user_id, dayOfMonth],
-    function(err, row){
+    'SELECT breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories FROM calendar WHERE dayOfMonth = ?',
+    [selectedDate],
+    (err, row) => {
       if(err){
-        console.error('Error fetching calendar data:', err);
-        res.status(500).send('Error fetching calendar data');
+        console.error('Error querying the database:', err);
+        callback(err, null);
       }else{
-        if(row){
-          res.json(row);
-        } else{
-          res.status(404).json({message: 'No data found for the selected date' });
-        }
+        callback(null, row);
       }
     }
   );
+}
+
+router.get('/get-calendar-data', (req, res) => {
+  const selectedDate = req.query.date;
+  retrievedDataFromDatabase(selectedDate, (err, data) => {
+    if(err){
+      res.status(500).json({error: 'Error retrieving data from the database'});
+    }else{
+      res.json(data);
+    }
+  });
 });
+
+
+
+
+
+
+
 
 
 

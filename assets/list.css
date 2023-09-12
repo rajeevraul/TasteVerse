@@ -7,39 +7,44 @@
 
 
 /*mealplanner.ejs CSS*/
-.container.mt-4{
+/* .container.mt-4{
     margin-bottom: 2rem;
     position: relative;
 }
 
 td#dates{
     padding: 2.5rem;
-}
+} */
 
-#dates:hover{
+/* #dates:hover{
     background-color: lightgray;
-    cursor:pointer;
+    cursor:pointer; */
     /* border-radius: 20%;
     height: 10px;
     width: 10px; */
-}
+/* } */
 
 
 
 /* popup.ejs CSS */
 
-#meal-card{
-    /* margin: 2rem;
-    position: relative;
-    left: 5%; */
-    float: left;
-    margin-right: 1rem;
-}
+/* .custom-modal-dialog {
+    max-width: 800px;
+    margin: 1rem auto;
+} */
 
-#calorie-card{
-    float: right;
+/* #meal-content{ */
+    /* margin: 2rem; */
+    /* position: relative; */
+    /* left: 5%; */
+    /* float: left; */
+    /* margin-right: 1rem; */
+/* } */
+
+/* #tracker-content{
+    float: right; */
     /* margin-right: 2rem; */
-}
+/* } */
 
 .close {
     background: none;
@@ -54,20 +59,54 @@ td#dates{
     color: #333; /* Change color on hover */
 }
 
-.popup {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; /* Make it fill the container horizontally */
-    height: 100%; /* Make it fill the container vertically */
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+/* .popup { */
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* width: 100%; Make it fill the container horizontally */
+    /* height: 100%; Make it fill the container vertically */
+    /* background-color: rgba(255, 255, 255, 0.9); Semi-transparent white background */
     /* z-index: 1; Ensure the popup is on top of other elements */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* z-index: 999; */
+/* } */
 
 /* #weight-input, #height-input::placeholder{
     text-align: right;
 } */
+
+
+
+
+
+
+table{
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+table th, table td{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+table th{
+    background-color: #f2f2f2;
+}
+table td.other-month{
+    background-color: #f5f5f5;
+    color: #ccc;
+}
+
+
+
+
+
+
+
+
+
+
