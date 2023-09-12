@@ -1,0 +1,4 @@
+db.session.sql
+/.vscode
+# ignoring db file in case of conflicts
+database.db
