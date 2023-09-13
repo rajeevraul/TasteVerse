@@ -23,8 +23,9 @@ CREATE TABLE IF NOT EXISTS modifiedRecipe(
     modifiedRecipe_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     recipe_id INTEGER,
+    image_name TEXT NOT NULL,
     modifiedRecipe_title TEXT NOT NULL,
-    modifiedRecipe_ingridients TEXT NOT NULL,
+    modifiedRecipe_ingredients TEXT NOT NULL,
     modifiedRecipe_instructions TEXT NOT NULL
 );
 
@@ -44,7 +45,7 @@ CREATE TABLE IF NOT EXISTS calendar(
     dinner TEXT NOT NULL,
     dinner_calories INTEGER NOT NULL,
     total_calories INTEGER NOT NULL,
-    dayOfMonth TEXT NOT NULL
+    dayOfMonth TEXT NOT NULL 
     
 );
 

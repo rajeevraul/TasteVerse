@@ -360,11 +360,17 @@
 /* MyRecipe css */
 
 
+.recipePageDeleteButton{
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 4px;
+ 
+ 
+}
 
 .recipeImage{
   width: 100%;
-  
-
+  margin-top: 5px;
 }
 
 .recipeImageText{
@@ -382,11 +388,15 @@
 }
 
 #expand{
-border-radius: 5px;
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 4px;
 }
 
 #expandFav{
-  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 4px;
 }
 
 

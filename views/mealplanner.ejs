@@ -54,7 +54,7 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <div id="meal-content">
+              <div id="meal-content<%#= day.day %>">
                 <form action="/user/save-calendar-data" method="post">
                   <input type="hidden" id="selectedDate" name="dayOfMonth" value="">
                   <div class="input-group input-group-sm mb-3">
@@ -175,6 +175,7 @@
           console.error('Error fetching data:', error);
         });
 
+
         $(targetModalId).modal('show'); // Use jQuery to open the modal
       });
     });
@@ -214,8 +215,9 @@
     }
 
 
+     
+
     function calculateCalorie() {
-        // event.preventDefault();
         const age = parseFloat(document.getElementById('age-input').value);
         const gender = parseInt(document.getElementById('gender-select').value);
         const heightInput = parseFloat(document.getElementById('height-input').value);
@@ -240,41 +242,6 @@
         `;
     }
 
-    function saveTrackerData(){
-      const weight = document.getElementById('weight-input').value;
-      const height = document.getElementById('height-input').value;
-      const age = document.getElementById('age-input').value;
-      const gender = document.getElementById('gender-select').value;
-
-      const trackerData = {
-        weight: weight,
-        height: height,
-        age: age,
-        gender: gender
-      };
-      localStorage.setItem('trackerData', JSON.stringify(trackerData));
-    }
-
-    function loadTrackerData(){
-      const storedData = localStorage.getItem('trackerData');
-      if(storedData){
-        const trackerData = JSON.parse(storedData);
-        document.getElementById('weight-input').value = trackerData.weight;
-        document.getElementById('height-input').value = trackerData.height;
-        document.getElementById('age-input').value = trackerData.age;
-        document.getElementById('gender-select').value = trackerData.gender;
-      }
-    }
-    document.getElementById('calculate-button').addEventListener('click', function(event){
-      event.preventDefault();
-      saveTrackerData();
-      calculateCalorie();
-    });
-    $('#myModal').on('show.bs.modal', function() {
-      const selectedDate = document.getElementById('selectedDate').value;
-      loadTrackerData(selectedDate); // Load data from local storage
-    });
-    
 
   </script>
 

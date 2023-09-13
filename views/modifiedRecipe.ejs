@@ -10,47 +10,32 @@
     <link rel="stylesheet" href="/assets/master.css" type="text/css" />
   </head>
   <body>
-    <%- include('header'); %> <% if (message=="In Favourite Already") { %>
-    <div class="alert alert-danger" style="text-align: center"><%= message %></div>
-    <% } %> <% recipeData.forEach((modifiedRecipe) => { %>
+    <%- include('header'); %> <% recipeData.forEach((modifiedRecipe) => { %>
     <div class="md" style="margin-top: 4rem; margin-left: 8rem; margin-right: 8rem">
       <div class="flex-wrap d-flex justify-content-start">
         <!-- image -->
         <div>
-          <img src="/assets/FoodImages/<%= image_name %>.jpg" style="width: 600px" />
+          <img src="/assets/FoodImages/<%= modifiedRecipe.image_name %>.jpg" style="width: 600px" />
         </div>
 
         <div style="width: 30px"></div>
 
         <div style="width: 30rem">
           <!-- title -->
-          <h1 style="font-size: 48px"><%= recipes.modifiedRecipe_title %></h1>
+          <h1 style="font-size: 48px"><%= modifiedRecipe.modifiedRecipe_title %></h1>
 
           <!-- Ingredients -->
           <h3>Ingredients</h3>
           <ul>
-            <% modifiedRecipe.modifiedRecipe_ingridients.forEach((modifiedRecipe_ingridient) => { %>
-            <li><%= modifiedRecipe_ingridient %></li>
+            <% modifiedRecipe.modifiedRecipe_ingredients.forEach((modifiedRecipe_ingredient) => { %>
+            <li><%= modifiedRecipe_ingredient %></li>
             <% }); %>
           </ul>
 
-          <div class="d-flex gap-1">
-            <a href="javascript:document.addToModifyRecipe.submit()">
-              <button class="btn btn-outline-success btn-lg">Modify Recipe</button>
+          <div class="d-flex">
+            <a href="/user/modifyRecipe?modifiedRecipe_id=<%= modifiedRecipe.modifiedRecipe_id %>">
+              <button class="btn btn-outline-success btn-lg">Edit Recipe</button>
             </a>
-            <form action="/user/modify" name="addToModifyRecipe" method="post">
-              <input type="hidden" value="<%=recipes.modifiedRecipe_id %>" name="id" />
-              <input type="hidden" value="<%=recipes.modifiedRecipe_title %>" name="title" />
-              <input type="hidden" value="<%=recipes.modifiedRecipe_ingredients %>" name="ingredients" />
-              <input type="hidden" value="<%=recipes.modifiedRecipe_instructions %>" name="instructions" />
-            </form>
-
-            <a href="javascript:document.addToFavourite.submit()">
-              <button class="btn btn-outline-success btn-lg">Add To Favourite</button>
-            </a>
-            <form action="/user/toFavourite" name="addToFavourite" method="post">
-              <input type="hidden" value="<%=recipes.modifiedRecipe_id %>" name="id" />
-            </form>
           </div>
         </div>
       </div>

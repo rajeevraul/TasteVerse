@@ -23,7 +23,7 @@
                   <a class="menu__item" href="/user/planner">Meal Planner</a>
                   <a class="menu__item" href="/user/myRecipe">My Recipe</a>
                   <a class="menu__item" href="/user/List">Shopping List</a>
-                  <a class="menu__item" href="/user/search-result?searchTerm=">Find Recipe</a>
+                  <a class="menu__item" href="#">Find Recipe</a>
                   <a class="menu__item" href="javascript:document.LogOut.submit()">Log Out</a>
                   <!--logout form for a href=javascript:document.LogOut.submit() below so that the link can log the user out-->
                     <form action="/logout" name="LogOut" method="post">
@@ -31,14 +31,18 @@
                     </form>
               </div>
             </div>
+
           </div>
+
+          
+        
         <div id="logo">
           <a href="/user/main"><img src="../assets/logo.png" style="height: 40px;"></a>  
         </div>
-        <!-- Search engine funcitonality -->
+
         <div id="search-bar">
-          <form class="d-flex" style="margin-right: 1rem;" action="/user/search-result" method="get">
-            <input id="search-box" class="form-control me-2" type="text" name="searchTerm" placeholder="Search" aria-label="Search">
+          <form class="d-flex" style="margin-right: 1rem;" action="/user/search-result" method="GET">
+            <input id="search-box" class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="keyword">
             <input class="btn btn-outline-success" type="submit" value="submit">
           </form>
         </div>
