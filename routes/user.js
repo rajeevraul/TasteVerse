@@ -13,8 +13,7 @@ const { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSam
 
 
 // Protected route - dashboard  TO ADD BACK
-// router.get('/main',ifAuthenticated, (req, res) => {
-router.get('/main', (req, res) => {
+router.get('/main',ifAuthenticated, (req, res) => {
   res.render('mainpage.ejs');
   }
 );
@@ -26,8 +25,7 @@ router.get('/main', (req, res) => {
 /**
  * @desc Renders to shoppinglist page WORKING
  */
-// router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
-router.get('/list', (req, res) => { //WORKING DO NOT DELETE 
+router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
   db.all('SELECT * FROM shoppingRecord', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -87,7 +85,6 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc Renders to myRecipe page WORKING
  */
-// router.get('/myRecipe',ifAuthenticated, async(req,res) => {
 router.get('/myRecipe',ifAuthenticated, async(req,res) => {
   try{
   const userId=req.session.user_id
@@ -242,7 +239,7 @@ res.status(500).send("Internal Server Error");
 /**
  * @desc Renders to meal planner page WORKING
  */
-router.get('/planner', (req, res) => {
+router.get('/planner', ifAuthenticated, (req, res) => {
   const selectedDate = new Date(req.query.date || new Date());
   const year = selectedDate.getFullYear();
   const month = selectedDate.getMonth();
@@ -325,7 +322,7 @@ function retrievedDataFromDatabase(selectedDate, callback){
 /**
  * @desc Retrieves the data about the specific data and displays it on the form 
  */
-router.get('/get-calendar-data', (req, res) => {
+router.get('/get-calendar-data', ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date;
   retrievedDataFromDatabase(selectedDate, (err, data) => {
     if(err){
