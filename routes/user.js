@@ -405,7 +405,7 @@ router.post("/deleteFavourite",(req,res)=>{
  * @desc 
  */
 router.post("/deleteModified",(req,res)=>{
-  global.db.run("DELETE FROM modifiedRecipe where recipe_id=?",[req.body.recipe_id],function(err){
+  global.db.run("DELETE FROM modifiedRecipe where modifiedRecipe_id=?",[req.body.recipe_id],function(err){
     if(err){
       console.log("error in deleting from favouriteList")
     } 
