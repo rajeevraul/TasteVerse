@@ -10,7 +10,7 @@
 
 <hr>
 <div class="recipeHeader">
-<h3>My Recipes</h3>
+<h3>Favourite Recipes</h3>
 </div>
 
 <button id="ToggleDelete" class="recipePageDeleteButton" onclick="">Delete</button>
@@ -28,14 +28,22 @@
             
         <% myRecipe.forEach(function(dish){ %>
           <div class="col-md-2">
-            <a href="/user/recipe?id=<%=dish.id %>">
+            <a class="favouriteLink" href="/user/recipe?id=<%=dish.id %>">
+              
       <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
       <p class="recipeImageText"><%=dish.title %></p>
-      <form action="/user/deleteFavourite" method="post" id="delete-form" style="display:none;padding:5px;">
-        <input type="hidden" value="<%=dish.id %>" name="recipe_id">
-        <input class="recipePageDeleteButton" type="submit" value="delete">
-      </form>
       </a>
+     
+      <a class="deleteFav" style="display: none;">
+        <img class="recipeImage" src="/assets/FoodImages/<%= dish.image_name %>.jpg">
+        <p class="recipeImageText"><%= dish.title %></p>
+      </a>
+
+      <form action="/user/deleteFavourite" method="post" class="delete-form" name="deleteFav">
+        <input type="hidden" value="<%=dish.id %>" name="recipe_id">
+        <input hidden class="recipePageDeleteButton" type="submit" value="delete">
+      </form>
+      
       </div>
         <% }) %> 
         <% } %>
@@ -43,113 +51,30 @@
       </div>
 </div>
 
-<script>
-  const deleteButton=document.getElementById("ToggleDelete")
-  const delete_form=document.getElementById("delete-form")
-   deleteButton.addEventListener("click",function(){
-   if(deleteButton.textContent=="Delete"){
-    deleteButton.textContent="Done"
-    delete_form.style.display="inline"
-   }
-   else{
-    deleteButton.textContent="Delete"
-    delete_form.style.display="none"
-   }
-
-   })
-  </script>
-
-
-
-
 
 <div class="buttonPos">
-    <button onclick="expCol()" id="expand">Expand</button>
+    <button onclick="expCol()" id="expand" class="expandButton" >Expand</button>
     </div>
 
+    <script>
+      //myRecipe favourite recipe script
+        const deleteButton=document.getElementById("ToggleDelete")
+        const favLink=document.querySelectorAll(".favouriteLink")
+        const deleteFav=document.querySelectorAll(".deleteFav")
+        const expandButton=document.getElementById("expand")
+     
+     
+        expandButton.addEventListener("click",function(){
+         if(expandButton.textContent=="Expand"){
+         expandButton.textContent="Collapse"
+        }else
+        {
+         expandButton.textContent="Expand"
+        }
+        }
+        )
 
-
-<hr>
-<div class="recipeHeader">
-<h3>Favourite Recipes</h3>
-</div>
-
-<button id="ToggleModifiedDelete" class="recipePageDeleteButton" onclick="">Delete</button>
-<div class="container">
-
-  <!-- class for the images shld be recipeImage and recipeImage2 -->
-    <div class="row">
-      <% if (!modifiedRecipe|| modifiedRecipe.length===0){ %>
-         
-        <p>No Recipe Found</p>
-        <%} else { %>
-      <% modifiedRecipe.forEach(function(myDish){ %>
-        <div class="col-md-2">
-          <a href="/user/modifiedRecipe?modifiedRecipe_id=<%=myDish.modifiedRecipe_id %>">
-    <img class="recipeImage" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
-    <p class="recipeImageText"><%=myDish.modifiedRecipe_title %></p>
-
-    <form action="/user/deleteModified" method="post" id="delete-modified-form" style="display:none;padding:5px;">
-      <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
-      <input class="recipePageDeleteButton" type="submit" value="delete">
-    </form>
-  </a>
-    </div>
-    <% }) %> 
-    <% } %>
-      
-    </div>
-</div>
-
-
-<div class="buttonPos">
-<button id="expandFav">Expand</button>
-</div>
-<hr>
-
-<script>
-
-    // myRecipe script
-
-    const modifiedDeleteButton=document.getElementById("ToggleModifiedDelete")
-  const delete_modified_form=document.getElementById("delete-modified-form")
-  modifiedDeleteButton.addEventListener("click",function(){
-   if(modifiedDeleteButton.textContent=="Delete"){
-    modifiedDeleteButton.textContent="Done"
-    delete_modified_form.style.display="inline"
-   }
-   else{
-    modifiedDeleteButton.textContent="Delete"
-    delete_modified_form.style.display="none"
-   }
-
-   })
-    
-    const expandButton=document.getElementById("expand")
-   expandButton.addEventListener("click",function(){
-    if(expandButton.textContent=="Expand"){
-    expandButton.textContent="Collapse"
-   }else
-   {
-    expandButton.textContent="Expand"
-   }
-   }
-   )
-
-   const expandFavButton=document.getElementById("expandFav")
-   expandFavButton.addEventListener("click",function(){
-    if(expandFavButton.textContent=="Expand"){
-    expandFavButton.textContent="Collapse"
-   }else
-   {
-    expandFavButton.textContent="Expand"
-   }
-   }
-   )
-  
-    
-   
-   var checkHiddenImage=document.getElementsByClassName("recipeImage")
+        var checkHiddenImage=document.getElementsByClassName("recipeImage")
    var imageText=document.getElementsByClassName("recipeImageText")
 
    for(a=0;a<checkHiddenImage.length;a++){
@@ -159,6 +84,7 @@
     }
    }
     
+   //when expand button is clicked on activate this function
     function expCol(){
         
       for(i=0;i<checkHiddenImage.length;i++){
@@ -174,6 +100,213 @@
       }
     }
     }
+    
+     
+       
+       
+     
+        deleteButton.addEventListener("click",function(){
+     
+     
+        if(deleteButton.textContent=="Delete"){
+         
+         //set deleteButton text content to "Done" onclick
+         deleteButton.textContent="Done"
+       
+            // //For each favLink set the style to none
+            favLink.forEach(link => link.style.display = "none");
+     
+            // For each deleteFav set display to inline to show the link 
+         deleteFav.forEach(link => {
+     
+           // set display to inline to show the what is wrapped in deleteFav
+           link.style.display = "inline" 
+     
+           //set the deleteFav link to red to symbolise that it is a delete link now
+           link.style.color="red"
+     
+           //add event listener to the delete link to submit the delete-form
+           link.addEventListener("click", function (event) {
+               event.preventDefault();
+               const form = this.nextElementSibling;
+               if (form) {
+                 form.submit();
+               }
+             });
+           })
+         }
+           else{
+     //set deleteButton text content to "Delete" onclick
+     console.log("Delete button clicked. Changing text to 'Done'.");
+             deleteButton.textContent="Delete"
+     
+        // For each deleteFav
+     deleteFav.forEach(link => {
+     
+       //set display to none
+       link.style.display = "none"
+     
+       //remove event listener from deleteFav
+       link.removeEventListener("click", function () {})
+     });
+      
+     //For each favLink set the style to inline
+       favLink.forEach(link => link.style.display = "inline");
+           }
+         
+         
+        })
+       
+     
+      
+       </script>
+
+<hr>
+<div class="recipeHeader">
+  <h3>My Recipes</h3>
+
+</div>
+
+<button id="ToggleModifiedDelete" class="recipePageDeleteButton" onclick="">Delete</button>
+<div class="container">
+
+  <!-- class for the images shld be recipeImage and recipeImage2 -->
+    <div class="row">
+      <% if (!modifiedRecipe|| modifiedRecipe.length===0){ %>
+         
+        <p>No Recipe Found</p>
+        <%} else { %>
+      <% modifiedRecipe.forEach(function(myDish){ %>
+        <div class="col-md-2">
+          <a class="ModifiedRecipeLink" href="/user/modifiedRecipe?modifiedRecipe_id=<%=myDish.modifiedRecipe_id %>">
+    <img class="recipeImage2" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
+    <p class="recipeImageText2"><%=myDish.modifiedRecipe_title %></p>
+  </a>
+
+<a class="deleteModified" style="display:none">
+    <img class="recipeImage2" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
+    <p class="recipeImageText2"><%=myDish.modifiedRecipe_title %></p>
+</a>
+
+    <form action="/user/deleteModified" method="post" id="delete-modified-form">
+      <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
+      <input class="recipePageDeleteButton" hidden type="submit" value="delete">
+    </form>
+ 
+    </div>
+    <% }) %> 
+    <% } %>
+      
+    </div>
+</div>
+
+
+<div class="buttonPos">
+<button onclick="expCol2()" id="expandModified" class="expandButton" >Expand</button>
+</div>
+<hr>
+
+<script>
+
+    // myRecipe for modified recipes
+
+    const expandModifiedButton=document.getElementById("expandModified")
+
+    expandModifiedButton.addEventListener("click",function(){
+    if(expandModifiedButton.textContent=="Expand"){
+      expandModifiedButton.textContent="Collapse"
+   }else
+   {
+    eexpandModifiedButton.textContent="Expand"
+   }
+   }
+   )
+
+
+   // for delete button 
+    const modifiedDeleteButton=document.getElementById("ToggleModifiedDelete")
+  const delete_modified_form=document.getElementById("delete-modified-form")
+const modifiedLink=document.querySelectorAll(".ModifiedRecipeLink")
+const deleteModified=document.querySelectorAll(".deleteModified")
+
+  
+modifiedDeleteButton.addEventListener("click",function(){
+
+
+if(modifiedDeleteButton.textContent=="Delete"){
+ //set deleteButton text content to "Done" onclick
+ modifiedDeleteButton.textContent="Done"
+
+    // //For each favLink set the style to none
+    modifiedLink.forEach(link => link.style.display = "none");
+
+    // For each deleteFav set display to inline to show the link 
+    deleteModified.forEach(link => {
+
+   // set display to inline to show the what is wrapped in deleteFav
+   link.style.display = "inline" 
+
+   //set the deleteFav link to red to symbolise that it is a delete link now
+   link.style.color="red"
+
+   //add event listener to the delete link to submit the delete-form
+   link.addEventListener("click", function (event) {
+       event.preventDefault();
+       const form = this.nextElementSibling;
+       if (form) {
+         form.submit();
+       }
+     });
+   })
+ }
+   else{
+//set deleteButton text content to "Delete" onclick
+modifiedDeleteButton.textContent="Delete"
+
+// For each deleteFav
+deleteModified.forEach(link => {
+
+//set display to none
+link.style.display = "none"
+
+//remove event listener from deleteFav
+link.removeEventListener("click", function () {})
+});
+
+//For each favLink set the style to inline
+modifiedLink.forEach(link => link.style.display = "inline");
+   }
+ 
+ 
+})
+
+    
+    
+   
+   var checkHiddenImage2=document.getElementsByClassName("recipeImage2")
+   var imageText2=document.getElementsByClassName("recipeImageText2")
+
+   for (let a = 0; a < checkHiddenImage2.length; a++) {
+  if (a >= 5) {
+    checkHiddenImage2[a].style.display = "none";
+    imageText2[a].style.display = "none";
+  }
+}
+
+    
+function expCol2() {
+  for (let i = 5; i < checkHiddenImage2.length; i++) {
+    if (checkHiddenImage2[i].style.display === "none") {
+      imageText2[i].style.display = "block";
+      checkHiddenImage2[i].style.display = "inline";
+    } else {
+      checkHiddenImage2[i].style.display = "none";
+      imageText2[i].style.display = "none";
+    }
+  }
+}
+
+    
     
     </script>
 </body>
