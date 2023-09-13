@@ -120,7 +120,7 @@ router.get('/myRecipe',ifAuthenticated, async(req,res) => {
       }
     }
     console.log("data:" + data);
-    res.render("myRecipe.ejs", { myRecipe: data, modifiedRecipe:modifiedRecipe })
+    res.render("myRecipe.ejs", { favRecipe: data, modifiedRecipe:modifiedRecipe })
   }
   catch(error){
     console.error(error)

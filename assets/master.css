@@ -368,21 +368,45 @@
  
 }
 
-.recipeImage{
+.favRecipeImage{
+  width: 100%;
+  margin-top: 5px;
+  display: inline;
+}
+
+.delFavRecipeImage{
   width: 100%;
   margin-top: 5px;
 }
 
-.recipeImage2{
+.delModifiedRecipeImage{
   width: 100%;
   margin-top: 5px;
 }
 
-.recipeImageText{
+.modifiedRecipeImage{
+  width: 100%;
+  margin-top: 5px;
+  display: inline;
+}
+
+.favRecipeImageText{
+  text-align: center;
+  display: inline;
+}
+
+.delRecipeImageText{
   text-align: center;
 }
 
-.recipeImageText2{
+
+
+.recipeModifiedText{
+  display: inline;
+  text-align: center;
+}
+
+.delRecipeModifiedText{
   text-align: center;
 }
 
@@ -400,9 +424,8 @@
   background-color: #1a1a1a;
   color: white;
   border-radius: 4px;
+  
 }
-
-
 
 
 hr{

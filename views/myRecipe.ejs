@@ -1,315 +1,526 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <%- include('header'); %>    
+  <%- include('header'); %>
 
-<!-- Page contents-->
-
-
+    <!-- Page contents-->
 
 
-<hr>
-<div class="recipeHeader">
-<h3>Favourite Recipes</h3>
-</div>
 
-<button id="ToggleDelete" class="recipePageDeleteButton" onclick="">Delete</button>
-<div id="recipe" value=<%= myRecipe %>></div>
 
-<div class="container">
+    <hr>
+    <div class="recipeHeader">
+      <h3>Favourite Recipes:</h3>
+    </div>
 
-    <!-- class for the images shld be recipeImage and recipeImage2 -->
-    
+    <button id="ToggleFavDelete" class="recipePageDeleteButton" onclick="">Delete</button>
+
+
+    <div class="container">
+
+
+
       <div class="row">
-        <% if (!myRecipe|| myRecipe.length===0){ %>
-         
+        <% if (!favRecipe|| favRecipe.length===0){ %>
+
           <p>No Recipe Found</p>
           <%} else { %>
-            
-        <% myRecipe.forEach(function(dish){ %>
-          <div class="col-md-2">
-            <a class="favouriteLink" href="/user/recipe?id=<%=dish.id %>">
-              
-      <img class="recipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg" >
-      <p class="recipeImageText"><%=dish.title %></p>
-      </a>
-     
-      <a class="deleteFav" style="display: none;">
-        <img class="recipeImage" src="/assets/FoodImages/<%= dish.image_name %>.jpg">
-        <p class="recipeImageText"><%= dish.title %></p>
-      </a>
 
-      <form action="/user/deleteFavourite" method="post" class="delete-form" name="deleteFav">
-        <input type="hidden" value="<%=dish.id %>" name="recipe_id">
-        <input hidden class="recipePageDeleteButton" type="submit" value="delete">
-      </form>
-      
+            <% favRecipe.forEach(function(dish){ %>
+              <div class="col-md-2">
+                <a class="favouriteLink" href="/user/recipe?id=<%=dish.id %>">
+
+                  <img class="favRecipeImage" src="/assets/FoodImages/<%=dish.image_name%>.jpg">
+                  <p class="favRecipeImageText">
+                    <%=dish.title %>
+                  </p>
+                  
+                  <div class="delForm">
+                  <a class="deleteFav" style="display: none;">
+                    <img class="delFavRecipeImage" src="/assets/FoodImages/<%= dish.image_name %>.jpg">
+                    <p class="delRecipeImageText">
+                      <%= dish.title %>
+                    </p>
+                  </a>
+                  </div>
+
+                  <form action="/user/deleteFavourite" method="post" class="delete-form" name="deleteFav">
+                    <input type="hidden" value="<%=dish.id %>" name="recipe_id">
+                    <input hidden class="recipePageDeleteButton" type="submit" value="delete">
+                  </form>
+
+              </div>
+              <% }) %>
+                <% } %>
+
       </div>
-        <% }) %> 
-        <% } %>
-        
-      </div>
-</div>
+    </div>
 
 
-<div class="buttonPos">
-    <button onclick="expCol()" id="expand" class="expandButton" >Expand</button>
+    <div class="buttonPos">
+      <button onclick="expFav()" id="expandFav" class="expandButton">Expand</button>
     </div>
 
     <script>
       //myRecipe favourite recipe script
-        const deleteButton=document.getElementById("ToggleDelete")
-        const favLink=document.querySelectorAll(".favouriteLink")
-        const deleteFav=document.querySelectorAll(".deleteFav")
-        const expandButton=document.getElementById("expand")
-     
-     
-        expandButton.addEventListener("click",function(){
-         if(expandButton.textContent=="Expand"){
-         expandButton.textContent="Collapse"
-        }else
-        {
-         expandButton.textContent="Expand"
-        }
-        }
-        )
 
-        var checkHiddenImage=document.getElementsByClassName("recipeImage")
-   var imageText=document.getElementsByClassName("recipeImageText")
+      const expandFavButton = document.getElementById("expandFav")
+      const favDeleteButton = document.getElementById("ToggleFavDelete")
+      const favLink = document.querySelectorAll(".favouriteLink")
+      const deleteFav = document.querySelectorAll(".deleteFav")
+      const favText = document.querySelectorAll(".favRecipeImageText")
+      const checkHiddenFavImage = document.querySelectorAll(".favRecipeImage")
+      const delFavImage = document.querySelectorAll(".delFavRecipeImage")
+      const delFavText = document.querySelectorAll(".delRecipeImageText")
 
-   for(a=0;a<checkHiddenImage.length;a++){
-    if(a>5){
-      checkHiddenImage[a].style.display="none"
-      imageText[a].style.display="none"
-    }
-   }
-    
-   //when expand button is clicked on activate this function
-    function expCol(){
-        
-      for(i=0;i<checkHiddenImage.length;i++){
-        
-      if(i>5 && checkHiddenImage[i].style.display=="none"){
-        imageText[i].style.display="block"
-        checkHiddenImage[i].style.display="inline"
-      }else if(i>5 && checkHiddenImage[i].style.display=="inline"){
-        
-        checkHiddenImage[i].style.display="none"
-        imageText[i].style.display="none"
-    
+
+      //display 5 images in favourite recipe when the expand button is not pressed
+      for (a = 0; a < checkHiddenFavImage.length; a++) {
+        if (a > 5) {
+          checkHiddenFavImage[a].style.display = "none"
+          favText[a].style.display = "none"
+        }
       }
-    }
-    }
-    
-     
-       
-       
-     
-        deleteButton.addEventListener("click",function(){
-     
-     
-        if(deleteButton.textContent=="Delete"){
-         
-         //set deleteButton text content to "Done" onclick
-         deleteButton.textContent="Done"
-       
-            // //For each favLink set the style to none
-            favLink.forEach(link => link.style.display = "none");
-     
-            // For each deleteFav set display to inline to show the link 
-         deleteFav.forEach(link => {
-     
-           // set display to inline to show the what is wrapped in deleteFav
-           link.style.display = "inline" 
-     
-           //set the deleteFav link to red to symbolise that it is a delete link now
-           link.style.color="red"
-     
-           //add event listener to the delete link to submit the delete-form
-           link.addEventListener("click", function (event) {
-               event.preventDefault();
-               const form = this.nextElementSibling;
-               if (form) {
-                 form.submit();
-               }
-             });
-           })
-         }
-           else{
-     //set deleteButton text content to "Delete" onclick
-     console.log("Delete button clicked. Changing text to 'Done'.");
-             deleteButton.textContent="Delete"
-     
-        // For each deleteFav
-     deleteFav.forEach(link => {
-     
-       //set display to none
-       link.style.display = "none"
-     
-       //remove event listener from deleteFav
-       link.removeEventListener("click", function () {})
-     });
-      
-     //For each favLink set the style to inline
-       favLink.forEach(link => link.style.display = "inline");
-           }
-         
-         
-        })
-       
-     
-      
-       </script>
 
-<hr>
-<div class="recipeHeader">
-  <h3>My Recipes</h3>
-
-</div>
-
-<button id="ToggleModifiedDelete" class="recipePageDeleteButton" onclick="">Delete</button>
-<div class="container">
-
-  <!-- class for the images shld be recipeImage and recipeImage2 -->
-    <div class="row">
-      <% if (!modifiedRecipe|| modifiedRecipe.length===0){ %>
-         
-        <p>No Recipe Found</p>
-        <%} else { %>
-      <% modifiedRecipe.forEach(function(myDish){ %>
-        <div class="col-md-2">
-          <a class="ModifiedRecipeLink" href="/user/modifiedRecipe?modifiedRecipe_id=<%=myDish.modifiedRecipe_id %>">
-    <img class="recipeImage2" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
-    <p class="recipeImageText2"><%=myDish.modifiedRecipe_title %></p>
-  </a>
-
-<a class="deleteModified" style="display:none">
-    <img class="recipeImage2" src="/assets/FoodImages/<%=myDish.image_name%>.jpg" >
-    <p class="recipeImageText2"><%=myDish.modifiedRecipe_title %></p>
-</a>
-
-    <form action="/user/deleteModified" method="post" id="delete-modified-form">
-      <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
-      <input class="recipePageDeleteButton" hidden type="submit" value="delete">
-    </form>
- 
-    </div>
-    <% }) %> 
-    <% } %>
-      
-    </div>
-</div>
+      // function to activate when expandFavButton is clicked on
+      function expFav() {
 
 
-<div class="buttonPos">
-<button onclick="expCol2()" id="expandModified" class="expandButton" >Expand</button>
-</div>
-<hr>
+        if (favDeleteButton.textContent == "Delete") {
+          // set all delFav to display none
+          for (a = 0; a < delFavImage.length; a++) {
+            delFavImage[a].style.display = "none";
+            delFavText[a].style.display = "none";
+          }
 
-<script>
+          // display all images of checkHiddenFavImage
+          for (b = 0; b < checkHiddenFavImage.length; b++) {
+            favText[b].style.display = "inline";
+            checkHiddenFavImage[b].style.display = "inline";
+          }
 
-    // myRecipe for modified recipes
+          //set all image and text that belongs to fav to display: inline
+          if (expandFavButton.textContent == "Expand") {
+            expandFavButton.textContent = "Collapse"
+            for (c = 0; c < checkHiddenFavImage.length; c++) {
+              favText[c].style.display = "inline";
+              checkHiddenFavImage[c].style.display = "inline";
+            }
+          }
+          else {
+            expandFavButton.textContent = "Expand"
+            for (d = 0; d < checkHiddenFavImage.length; d++) {
+              if (d > 5) {
+                favText[d].style.display = "none";
+                checkHiddenFavImage[d].style.display = "none";
+              } else {
+                favText[d].style.display = "inline";
+                checkHiddenFavImage[d].style.display = "inline";
+              }
 
-    const expandModifiedButton=document.getElementById("expandModified")
+            }
+          }
+        }
+        else if (favDeleteButton.textContent == "Done") {
+          //set all image and text that does not belong to the delFav to display: none
+          for (i = 0; i < checkHiddenFavImage.length; i++) {
+            favText[i].style.display = "none";
+            checkHiddenFavImage[i].style.display = "none";
+          }
+          for (j = 0; j < delFavImage.length; j++) {
+            delFavImage[j].style.display = "inline";
+            delFavText[j].style.display = "inline";
+          }
+          //for delFav set so that only 5 images display at first
+          if (expandFavButton.textContent == "Expand") {
+            expandFavButton.textContent = "Collapse"
+            for (x = 0; x < delFavImage.length; x++) {
+              delFavImage[x].style.display = "inline"
+              delFavText[x].style.display = "inline"
+            }
+          }
+          else {
+            expandFavButton.textContent = "Expand"
+            for (y = 0; y < delFavImage.length; y++) {
+              if (y > 5) {
+                delFavImage[y].style.display = "none"
+                delFavText[y].style.display = "none"
+              } else {
+                delFavImage[y].style.display = "inline"
+                delFavText[y].style.display = "inline"
+              }
+            }
+          }
+        }
+      }
 
-    expandModifiedButton.addEventListener("click",function(){
-    if(expandModifiedButton.textContent=="Expand"){
-      expandModifiedButton.textContent="Collapse"
-   }else
-   {
-    eexpandModifiedButton.textContent="Expand"
-   }
-   }
-   )
 
 
-   // for delete button 
-    const modifiedDeleteButton=document.getElementById("ToggleModifiedDelete")
-  const delete_modified_form=document.getElementById("delete-modified-form")
-const modifiedLink=document.querySelectorAll(".ModifiedRecipeLink")
-const deleteModified=document.querySelectorAll(".deleteModified")
-
-  
-modifiedDeleteButton.addEventListener("click",function(){
 
 
-if(modifiedDeleteButton.textContent=="Delete"){
- //set deleteButton text content to "Done" onclick
- modifiedDeleteButton.textContent="Done"
+      favDeleteButton.addEventListener("click", function () {
 
-    // //For each favLink set the style to none
-    modifiedLink.forEach(link => link.style.display = "none");
 
-    // For each deleteFav set display to inline to show the link 
-    deleteModified.forEach(link => {
+        if (favDeleteButton.textContent == "Delete") {
 
-   // set display to inline to show the what is wrapped in deleteFav
-   link.style.display = "inline" 
+          //set FavDeleteButton text content to "Done" onclick
+          favDeleteButton.textContent = "Done"
 
-   //set the deleteFav link to red to symbolise that it is a delete link now
-   link.style.color="red"
+          //reset the expand button text content to Expand
+          expandFavButton.textContent = "Expand"
 
-   //add event listener to the delete link to submit the delete-form
-   link.addEventListener("click", function (event) {
-       event.preventDefault();
-       const form = this.nextElementSibling;
-       if (form) {
-         form.submit();
-       }
-     });
-   })
- }
-   else{
-//set deleteButton text content to "Delete" onclick
-modifiedDeleteButton.textContent="Delete"
+          //set all images in checkHiddenFavImage to display none
+          for (i = 0; i < checkHiddenFavImage.length; i++) {
+            favText[i].style.display = "none";
+            checkHiddenFavImage[i].style.display = "none";
+          }
 
-// For each deleteFav
-deleteModified.forEach(link => {
+          //if 5 images in delFavImage is displayed stop displaying additional images
+          for (j = 0; j < delFavImage.length; j++) {
+            if (j > 5) {
+              delFavImage[j].style.display = "none";
+              delFavText[j].style.display = "none";
+            }
+            else {
+              delFavImage[j].style.display = "inline";
+              delFavText[j].style.display = "inline";
+            }
+          }
 
-//set display to none
-link.style.display = "none"
+          // //For each favLink set the style to none
+          favLink.forEach(link => link.style.display = "none");
 
-//remove event listener from deleteFav
-link.removeEventListener("click", function () {})
-});
+          // For each deleteFav set display to inline to show the link 
+          deleteFav.forEach(link => {
 
-//For each favLink set the style to inline
-modifiedLink.forEach(link => link.style.display = "inline");
-   }
- 
- 
-})
+            // set display to inline to show the what is wrapped in deleteFav
+            link.style.display = "inline"
 
-    
-    
-   
-   var checkHiddenImage2=document.getElementsByClassName("recipeImage2")
-   var imageText2=document.getElementsByClassName("recipeImageText2")
+            //set the deleteFav link to red to symbolise that it is a delete link now
+            link.style.color = "red"
 
-   for (let a = 0; a < checkHiddenImage2.length; a++) {
-  if (a >= 5) {
-    checkHiddenImage2[a].style.display = "none";
-    imageText2[a].style.display = "none";
-  }
-}
+            //add event listener to the delete link to submit the delete-form
+            link.addEventListener("click", function (event) {
+              event.preventDefault();
+              const form = this.nextElementSibling;
+              if (form) {
+                form.submit();
+              }
+            });
+          })
+        }
+        else {
+          //set FavDeleteButton text content to "Delete" onclick
+          console.log("Delete button clicked. Changing text to 'Done'.");
+          favDeleteButton.textContent = "Delete"
 
-    
-function expCol2() {
-  for (let i = 5; i < checkHiddenImage2.length; i++) {
-    if (checkHiddenImage2[i].style.display === "none") {
-      imageText2[i].style.display = "block";
-      checkHiddenImage2[i].style.display = "inline";
-    } else {
-      checkHiddenImage2[i].style.display = "none";
-      imageText2[i].style.display = "none";
-    }
-  }
-}
+          //reset the expand button text content to Expand
+          expandFavButton.textContent = "Expand"
 
-    
-    
+
+
+          //set all images in delFavImage to display none
+          for (a = 0; a < delFavImage.length; a++) {
+            delFavImage[a].style.display = "none";
+            delFavText[a].style.display = "none";
+          }
+           
+            //if 5 images in heckHiddenFavImage is displayed stop displaying additional images
+          for (b = 0; b < checkHiddenFavImage.length; b++) {
+            if (b > 5) {
+              favText[b].style.display = "none";
+              checkHiddenFavImage[b].style.display = "none";
+            }
+            else {
+              favText[b].style.display = "inline";
+              checkHiddenFavImage[b].style.display = "inline";
+            }
+          }
+
+          // For each deleteFav
+          deleteFav.forEach(link => {
+
+            //set display to none
+            link.style.display = "none"
+
+            //remove event listener from deleteFav
+            link.removeEventListener("click", function () { })
+          });
+
+          //For each favLink set the style to inline
+          favLink.forEach(link => link.style.display = "inline");
+        }
+
+
+      })
+
+
+
     </script>
-</body>
 
-<%- include('footer'); %>    
+
+    <!--------------------------------------------------------- My recipes code --------------- ------------------------------------>
+    <hr>
+    <div class="recipeHeader">
+      <h3>My Recipes:</h3>
+
+    </div>
+
+    <button id="ToggleModifiedDelete" class="recipePageDeleteButton" onclick="">Delete</button>
+    <div class="container">
+
+      <!-- class for the images shld be recipeImage and recipeImage2 -->
+      <div class="row">
+        <% if (!modifiedRecipe|| modifiedRecipe.length===0){ %>
+
+          <p>No Recipe Found</p>
+          <%} else { %>
+            <% modifiedRecipe.forEach(function(myDish){ %>
+              <div class="col-md-2">
+                <a class="ModifiedRecipeLink"
+                  href="/user/modifiedRecipe?modifiedRecipe_id=<%=myDish.modifiedRecipe_id %>">
+                  <img class="modifiedRecipeImage" src="/assets/FoodImages/<%=myDish.image_name%>.jpg">
+                  <p class="recipeModifiedText">
+                    <%=myDish.modifiedRecipe_title %>
+                  </p>
+                </a>
+
+                <a class="deleteModified" style="display:none">
+                  <img class="delModifiedRecipeImage" src="/assets/FoodImages/<%=myDish.image_name%>.jpg">
+                  <p class="delRecipeModifiedText">
+                    <%=myDish.modifiedRecipe_title %>
+                  </p>
+                </a>
+
+                <form action="/user/deleteModified" method="post" id="delete-modified-form">
+                  <input type="hidden" value="<%=myDish.modifiedRecipe_id %>" name="recipe_id">
+                  <input class="recipePageDeleteButton" hidden type="submit" value="delete">
+                </form>
+
+              </div>
+              <% }) %>
+                <% } %>
+
+      </div>
+    </div>
+
+
+    <div class="buttonPos">
+      <button onclick="expModified()" id="expandModified" class="expandButton">Expand</button>
+    </div>
+    <hr>
+
+    <script>
+
+      //////////////////////////////// Script For Modified Recipes/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+      
+      const expandModifiedButton = document.getElementById("expandModified")
+      const modifiedDeleteButton = document.getElementById("ToggleModifiedDelete")
+      const modifiedLink = document.querySelectorAll(".ModifiedRecipeLink")
+      const deleteModified = document.querySelectorAll(".deleteModified")
+      const checkHiddenModifiedImage = document.querySelectorAll(".modifiedRecipeImage")
+      const modifiedText = document.querySelectorAll(".recipeModifiedText")
+      const delModifiedRecipeImage = document.querySelectorAll(".delModifiedRecipeImage")
+      const delModifiedText = document.querySelectorAll(".delRecipeModifiedText")
+
+
+
+      // event listener for modifiedDeleteButton
+      modifiedDeleteButton.addEventListener("click", function () {
+
+
+        if (modifiedDeleteButton.textContent == "Delete") {
+          //set FavDeleteButton text content to "Done" onclick
+          modifiedDeleteButton.textContent = "Done"
+
+
+          //reset the expand button text content to Expand
+          expandModifiedButton.textContent = "Expand"
+          
+           //set all images in  checkHiddenModifiedImage to display none
+          for (i = 0; i < checkHiddenModifiedImage.length; i++) {
+            modifiedText[i].style.display = "none";
+            checkHiddenModifiedImage[i].style.display = "none";
+          }
+
+          //if 5 images in delModifiedRecipeImage is displayed stop displaying additional images and text
+          for (j = 0; j < delModifiedRecipeImage.length; j++) {
+            if (j > 5) {
+              delModifiedRecipeImage[j].style.display = "none";
+              delModifiedText[j].style.display = "none";
+            }
+            else {
+              delModifiedRecipeImage[j].style.display = "inline";
+              delModifiedText[j].style.display = "inline";
+            }
+          }
+
+
+
+
+          // //For each favLink set the style to none
+          modifiedLink.forEach(link => link.style.display = "none");
+
+          // For each deleteFav set display to inline to show the link 
+          deleteModified.forEach(link => {
+
+            // set display to inline to show the what is wrapped in deleteFav
+            link.style.display = "inline"
+
+            //set the deleteFav link to red to symbolise that it is a delete link now
+            link.style.color = "red"
+
+            //add event listener to the delete link to submit the delete-form
+            link.addEventListener("click", function (event) {
+              event.preventDefault();
+              const form = this.nextElementSibling;
+              if (form) {
+                form.submit();
+              }
+            });
+          })
+        }
+        else {
+          //set FavDeleteButton text content to "Delete" onclick
+          modifiedDeleteButton.textContent = "Delete"
+
+          //reset the expand button text content to Expand
+          expandModifiedButton.textContent = "Expand"
+           
+
+           //set all images in delModifiedRecipeImage to display none
+          for (a = 0; a < delModifiedRecipeImage.length; a++) {
+            delModifiedRecipeImage[a].style.display = "none";
+            delModifiedText[a].style.display = "none";
+          }
+
+          //if 5 images in checkHiddenModifiedImage is displayed stop displaying additional images
+          for (b = 0; b < checkHiddenModifiedImage.length; b++) {
+            if (b > 5) {
+              modifiedText[b].style.display = "none";
+              checkHiddenModifiedImage[b].style.display = "none";
+            }
+            else {
+              modifiedText[b].style.display = "inline";
+              checkHiddenModifiedImage[b].style.display = "inline";
+            }
+          }
+
+          // For each deleteFav
+          deleteModified.forEach(link => {
+
+            //set display to none
+            link.style.display = "none"
+
+            //remove event listener from deleteFav
+            link.removeEventListener("click", function () { })
+          });
+
+          //For each favLink set the style to inline
+          modifiedLink.forEach(link => link.style.display = "inline");
+        }
+
+
+      })
+
+
+
+
+
+      //display 5 images of My Recipe when the expand button is not pressed
+      for (a = 0; a < checkHiddenModifiedImage.length; a++) {
+        if (a > 5) {
+          checkHiddenModifiedImage[a].style.display = "none";
+          modifiedText[a].style.display = "none";
+        }
+      }
+
+      // function to activate when expandModifiedButton is clicked on
+      function expModified() {
+        if (modifiedDeleteButton.textContent == "Delete") {
+          // set all delModified to display none
+          for (a = 0; a < delModifiedRecipeImage.length; a++) {
+            delModifiedRecipeImage[a].style.display = "none";
+            delModifiedText[a].style.display = "none";
+          }
+
+          for (b = 0; b < checkHiddenModifiedImage.length; b++) {
+            modifiedText[b].style.display = "inline";
+            checkHiddenModifiedImage[b].style.display = "inline";
+          }
+
+          //set all image and text that belongs to modified to display: inline
+          if (expandModifiedButton.textContent == "Expand") {
+            expandModifiedButton.textContent = "Collapse"
+            for (c = 0; c < checkHiddenModifiedImage.length; c++) {
+              modifiedText[c].style.display = "inline";
+              checkHiddenModifiedImage[c].style.display = "inline";
+            }
+          }
+          else {
+            expandModifiedButton.textContent = "Expand"
+            for (d = 0; d < checkHiddenModifiedImage.length; d++) {
+              if (d > 5) {
+                modifiedText[d].style.display = "none";
+                checkHiddenModifiedImage[d].style.display = "none";
+              } else {
+                modifiedText[d].style.display = "inline";
+                checkHiddenModifiedImage[d].style.display = "inline";
+              }
+
+            }
+          }
+        }
+        else if (modifiedDeleteButton.textContent == "Done") {
+          //set all image and text that does not belong to the deleteModified to display: none
+          for (i = 0; i < checkHiddenModifiedImage.length; i++) {
+            modifiedText[i].style.display = "none";
+            checkHiddenModifiedImage[i].style.display = "none";
+          }
+          for (j = 0; j < delModifiedRecipeImage.length; j++) {
+            delModifiedRecipeImage[j].style.display = "inline";
+            delModifiedText[j].style.display = "inline";
+          }
+          //for deleteModified set so that only 5 image display at first
+          if (expandModifiedButton.textContent == "Expand") {
+            expandModifiedButton.textContent = "Collapse"
+            for (x = 0; x < delModifiedRecipeImage.length; x++) {
+              delModifiedRecipeImage[x].style.display = "inline"
+              delModifiedText[x].style.display = "inline"
+            }
+          }
+          else {
+            expandModifiedButton.textContent = "Expand"
+            for (y = 0; y < delModifiedRecipeImage.length; y++) {
+              if (y > 5) {
+                delModifiedRecipeImage[y].style.display = "none"
+                delModifiedText[y].style.display = "none"
+              } else {
+                delModifiedRecipeImage[y].style.display = "inline"
+                delModifiedText[y].style.display = "inline"
+              }
+            }
+          }
+        }
+
+
+      }
+
+
+
+
+
+
+    </script>
+    </body>
+
+    <%- include('footer'); %>
+
 </html>
