@@ -393,29 +393,32 @@ router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
 
 router.post('/modify',(req, res) => {
   const userId=req.session.user_id
+
   const { id, title, ingredients, instructions, image} = req.body;
 
   const ingredientsArray = ingredients.split(',').map((ingredient) => ingredient.trim());
   const ingredientsJSON = JSON.stringify(ingredientsArray);
 
   const sql = 'INSERT INTO modifiedRecipe (user_id, recipe_id, modifiedRecipe_title, modifiedRecipe_ingredients, modifiedRecipe_instructions, image_name) VALUES (?, ?, ?, ?, ?, ?)';
-  db.run(sql, [userId, id, title, ingredientsJSON, instructions, image], (err) => {
+  db.run(sql, [userId, id, title, ingredientsJSON, instructions, image], function (err) {
     if (err) {
       console.error(err.message);
       return res.status(500).send('Internal Server Error');
     }
 
-    res.redirect("/user/modifyRecipe?id=" + id);
+    const modifiedRecipe_id = this.lastID;
+    res.redirect('/user/modifyRecipe?modifiedRecipe_id=' + modifiedRecipe_id);
+
   });
   
 });
 
 router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
-  const { id } = req.query;
-  const sqlite = 'SELECT * FROM modifiedRecipe WHERE recipe_id = ?';
+  const { modifiedRecipe_id } = req.query;
+  const sqlite = 'SELECT * FROM modifiedRecipe WHERE modifiedRecipe_id = ?';
   const message=req.flash('message')
   
-  db.all(sqlite, [id], (err,data) => {
+  db.all(sqlite, [modifiedRecipe_id], (err,data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
@@ -446,7 +449,6 @@ router.post("/modified/:modifiedRecipe_id", (req, res) => {
     res.redirect('/user/main');
   });
 });
-
 
 router.post("/toFavourite",async(req,res)=>{
 
