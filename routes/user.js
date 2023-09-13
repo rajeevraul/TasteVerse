@@ -360,11 +360,8 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
     }
 
     data[0].ingredients = data[0].ingredients.replace(/'/g, '"');
-    //data[0].ingredients = data[0].ingredients.replace(/'/g, "'");
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].ingredients);
-
-    //console.log(data[0].ingredients);
 
     data[0].ingredients = parsedArray;
     req.flash('message', 'This is an error message');
@@ -372,7 +369,7 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
   });
 });
 
-// recipe page WORKING 
+// modify recipe page WORKING 
 router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
   const { modifiedRecipe_id } = req.query;
   const sqlite = 'SELECT * FROM modifiedRecipe WHERE modifiedRecipe_id = ?';
@@ -385,11 +382,8 @@ router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
     }
 
     data[0].modifiedRecipe_ingredients = data[0].modifiedRecipe_ingredients.replace(/'/g, '"');
-    //data[0].ingredients = data[0].ingredients.replace(/'/g, "'");
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].modifiedRecipe_ingredients);
-
-    console.log(data[0].modifiedRecipe_ingredients);
 
     data[0].modifiedRecipe_ingredients = parsedArray;
     req.flash('message', 'This is an error message');
@@ -442,7 +436,6 @@ router.post("/modified/:modifiedRecipe_id", (req, res) => {
   const { modified_title, modified_ingredient, modified_instructions, modifiedRecipe_id } = req.body;
   const sqlite = 'UPDATE modifiedRecipe SET modifiedRecipe_title = ?, modifiedRecipe_ingredients = ?, modifiedRecipe_instructions = ? WHERE modifiedRecipe_id = ?';
 
-  console.log(req.body);
   const ingredientsJSON = JSON.stringify(modified_ingredient);
   
   db.run(sqlite, [modified_title, ingredientsJSON, modified_instructions, modifiedRecipe_id], (err) => {

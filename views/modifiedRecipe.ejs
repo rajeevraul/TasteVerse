@@ -10,9 +10,7 @@
     <link rel="stylesheet" href="/assets/master.css" type="text/css" />
   </head>
   <body>
-    <%- include('header'); %> <% if (message=="In Favourite Already") { %>
-    <div class="alert alert-danger" style="text-align: center"><%= message %></div>
-    <% } %> <% recipeData.forEach((modifiedRecipe) => { %>
+    <%- include('header'); %> <% recipeData.forEach((modifiedRecipe) => { %>
     <div class="md" style="margin-top: 4rem; margin-left: 8rem; margin-right: 8rem">
       <div class="flex-wrap d-flex justify-content-start">
         <!-- image -->
