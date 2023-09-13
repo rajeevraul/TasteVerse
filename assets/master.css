@@ -373,7 +373,16 @@
   margin-top: 5px;
 }
 
+.recipeImage2{
+  width: 100%;
+  margin-top: 5px;
+}
+
 .recipeImageText{
+  text-align: center;
+}
+
+.recipeImageText2{
   text-align: center;
 }
 
@@ -387,13 +396,7 @@
   padding-top: 25px;
 }
 
-#expand{
-  background-color: #1a1a1a;
-  color: white;
-  border-radius: 4px;
-}
-
-#expandFav{
+.expandButton{
   background-color: #1a1a1a;
   color: white;
   border-radius: 4px;
