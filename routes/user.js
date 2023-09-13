@@ -419,7 +419,9 @@ router.post("/deleteFavourite",(req,res)=>{
 // Search bar
 router.get('/search-result', (req, res) => {
   const searchTerm = req.query.searchTerm;
-  const sqlite = 'SELECT * FROM recipes WHERE title LIKE ? LIMIT 20';
+  // const sqlite = 'SELECT * FROM recipes WHERE title LIKE ? LIMIT 20';
+  const sqlite = 'SELECT title, image_name, id FROM recipes WHERE title LIKE ? LIMIT 20';
+  
   // Perform a database query to retrieve data
   global.db.all(sqlite, [`%${searchTerm}%`], (err, rows) => {
     if (err) {
@@ -430,9 +432,11 @@ router.get('/search-result', (req, res) => {
     console.log(rows);
     const recipeNames = rows.map((row) => row.title);
 
-    res.render('search', { items: recipeNames });
+    res.render('search', { items: rows});
+
   });
 });
+
 
 
 
