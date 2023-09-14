@@ -371,6 +371,7 @@ router.post("/toFavourite",async(req,res)=>{
                 console.log("checkpt" + userId)
               }
             })
+            req.flash("message","Added to Favourite")
             res.redirect("back")
           }
         }
