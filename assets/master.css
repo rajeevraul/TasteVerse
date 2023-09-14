@@ -364,7 +364,7 @@
   background-color: #1a1a1a;
   color: white;
   border-radius: 4px;
- 
+ margin: 5px;
  
 }
 
@@ -426,6 +426,8 @@
   border-radius: 4px;
   
 }
+
+
 
 
 hr{
