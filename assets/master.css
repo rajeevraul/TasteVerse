@@ -82,11 +82,13 @@
 .footercontainer{
   background-color: #212329;
   padding: 64px 0 64px 0;
+  position: relative;
+  width: 100%;
 }
 
 .footer{
   width: 80%;
-  height: 35vh;
+  height: 25vh;
   background-color: #212329;
   color: #fff;
   display: flex;
@@ -428,7 +430,7 @@
 }
 
 
-
+/* Search page */
 
 hr{
   padding-top: 50px;
@@ -442,6 +444,41 @@ hr{
   transition: transform 0.2s ease-in-out;
 }
 
-.card:hover {
+.searchtable {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Style for individual recipe cards */
+.searchrow {
+  width: calc(30% - 20px);
+  margin-bottom: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 5);
+  border-radius: 5px;
+}
+
+.searchrow:hover {
   transform: scale(1.05);
+}
+
+.card {
+  border: none;
+  background-color: #fff;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #000000;
+  text-decoration: none;
+}
+
+.recipeImage {
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
