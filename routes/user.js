@@ -12,9 +12,77 @@ const { error } = require("console");
 const { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth } = require('date-fns');
 
 
+function areStringsSimilar(string1, string2, threshold = 0.7) {
+  function calculateJaccardSimilarity(set1, set2) {
+    const intersection = new Set([...set1].filter((char) => set2.has(char)));
+    const union = new Set([...set1, ...set2]);
+    return intersection.size / union.size;
+  }
+
+  const set1 = new Set(string1);
+  const set2 = new Set(string2);
+
+  const similarity = calculateJaccardSimilarity(set1, set2);
+
+  return similarity >= threshold;
+}
+
 // Protected route - dashboard  TO ADD BACK
-router.get('/main',ifAuthenticated, (req, res) => {
-  res.render('mainpage.ejs');
+router.get('/main', ifAuthenticated, async (req, res) => {
+  const userId = req.session.user_id;
+  const recipes = await new Promise((resolve, reject) => {
+    global.db.all(
+      'SELECT title, image_name, id, ingredients FROM recipes LIMIT 20',
+      function (err, recipe) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(recipe);
+        }
+      }
+    );
+  });
+  const favList = await new Promise((resolve, reject) => {
+    global.db.all(
+      'SELECT * FROM favouriteRecipe WHERE user_id=?',
+      [userId],
+      function (err, favData) {
+        if (err) {
+          console.log('error in getting favList');
+          reject(err);
+        } else {
+          resolve(favData);
+        }
+      }
+    );
+  });
+
+  let favouriteRecipesExpanded = [];
+  for (let i = 0; i < favList.length; i++) {
+    filteredRecipe = recipes.find(
+      (recipe) => recipe.id == favList[i].recipe_id
+    );
+    favouriteRecipesExpanded.push(filteredRecipe);
+  }
+
+  let recommededRecipe = [];
+  for (let i = 0; i < favouriteRecipesExpanded.length; i++) {
+    for (let j = 0; j < recipes.length; j++) {
+      if (
+        areStringsSimilar(
+          favouriteRecipesExpanded[i].ingredients,
+          recipes[j].ingredients
+        )
+      ) {
+        recommededRecipe.push(recipes[j]);
+      }
+    }
+  }
+  console.log('recommendedRecipe: ', recommededRecipe);
+  res.render('mainpage.ejs', {
+    latestRecipe: recipes,
+    recommededRecipes: recommededRecipe,
+  });
 });
 
 
