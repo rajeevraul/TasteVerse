@@ -45,8 +45,18 @@ CREATE TABLE IF NOT EXISTS calendar(
     dinner TEXT NOT NULL,
     dinner_calories INTEGER NOT NULL,
     total_calories INTEGER NOT NULL,
-    dayOfMonth TEXT NOT NULL 
-    
+    dayOfMonth TEXT NOT NULL, 
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE user_metrics(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    user_id INTEGER, 
+    age REAL, 
+    gender INTEGER,
+    height REAL, 
+    weight REAL, 
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 --insert data here

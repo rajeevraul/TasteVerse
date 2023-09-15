@@ -229,7 +229,7 @@ router.get('/planner', ifAuthenticated, (req, res) => {
 /**
  * @desc When a user saves data for the calendar, saves into table and redirects back to planner with the data
  */
-router.post('/save-calendar-data', (req, res) => {
+router.post('/save-calendar-data', ifAuthenticated, (req, res) => {
   const {
     breakfast,
     breakfast_calories,
@@ -243,6 +243,7 @@ router.post('/save-calendar-data', (req, res) => {
   console.log('Received Request Body:', req.body);
   // const totalCalories = document.getElementById('totalCalories').value;
   // const totalCalories = req.body.totalCalories;
+  const currentUserId = req.userId; 
 
   if (!totalCalories || isNaN(totalCalories)) {
     console.error('Invalid total calories value');
@@ -250,7 +251,7 @@ router.post('/save-calendar-data', (req, res) => {
   }
 
   db.run('INSERT INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-    [1, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, totalCalories, dayOfMonth],
+    [currentUserId, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, totalCalories, dayOfMonth],
     (err) => {
       if(err){
         console.error('Error inserting data into the calendar table:', err);
@@ -264,10 +265,11 @@ router.post('/save-calendar-data', (req, res) => {
   );
 });
 
-function retrievedDataFromDatabase(selectedDate, callback){
+
+function retrievedDataFromDatabase(selectedDate, userId, callback){
   db.get(
-    'SELECT breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories FROM calendar WHERE dayOfMonth = ?',
-    [selectedDate],
+    'SELECT breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories FROM calendar WHERE dayOfMonth=? AND user_id=?',
+    [selectedDate, userId],
     (err, row) => {
       if(err){
         console.error('Error querying the database:', err);
@@ -285,13 +287,72 @@ function retrievedDataFromDatabase(selectedDate, callback){
  */
 router.get('/get-calendar-data', ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date;
-  retrievedDataFromDatabase(selectedDate, (err, data) => {
+  const currentUserId = req.userId; //NEW CODE - TO DELETE LATER
+  retrievedDataFromDatabase(selectedDate, currentUserId, (err, data) => {
     if(err){
       res.status(500).json({error: 'Error retrieving data from the database'});
     }else{
       res.json(data);
     }
   });
+});
+
+
+function saveOrUpdateUserMetrics(req, res, next) {
+  const { age, gender, height, weight } = req.body;
+  const currentUserId = req.userId;
+
+  if (!age || !gender || !height || !weight) {
+    return res.status(400).json({ error: 'Missing required user metrics' });
+  }
+
+  // Notice that I've removed selectedDate from the query
+  db.get(
+    'SELECT * FROM user_metrics WHERE user_id = ?',
+    [currentUserId],
+    (err, row) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      if (row) {
+        // Update existing record
+        db.run(
+          'UPDATE user_metrics SET age = ?, gender = ?, height = ?, weight = ? WHERE user_id = ?',
+          [age, gender, height, weight, currentUserId],
+          function (err) {
+            if (err) {
+              console.error('Error updating user_metrics:', err);
+              return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            console.log(`User metrics updated with rowid ${this.lastID}`);
+            next();
+          }
+        );
+      } else {
+        // Insert new record
+        db.run(
+          'INSERT INTO user_metrics (user_id, age, gender, height, weight) VALUES (?, ?, ?, ?, ?)',
+          [currentUserId, age, gender, height, weight],
+          function (err) {
+            if (err) {
+              console.error('Error inserting into user_metrics:', err);
+              return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            console.log(`User metrics inserted with rowid ${this.lastID}`);
+            next();
+          }
+        );
+      }
+    }
+  );
+}
+
+
+router.post('/save-user-metrics', ifAuthenticated, saveOrUpdateUserMetrics, (req, res) => {
+  console.log('Received Request Body:', req.body);
+  res.status(200).json({ message: 'User metrics saved successfully' });
 });
 
 
