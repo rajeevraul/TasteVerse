@@ -114,11 +114,6 @@
   cursor: pointer;
 }
 
-.footerhead a:hover{
-  color: red;
-  transition: 0.5s ease-out;
-}
-
 .footer-email h2{
   margin-bottom: 32px;
 }

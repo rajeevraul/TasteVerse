@@ -488,8 +488,7 @@ router.post("/deleteModified",(req,res)=>{
 // Search bar
 router.get('/search-result', (req, res) => {
   const searchTerm = req.query.searchTerm;
-  // const sqlite = 'SELECT * FROM recipes WHERE title LIKE ? LIMIT 20';
-  const sqlite = 'SELECT title, image_name, id FROM recipes WHERE title LIKE ? LIMIT 20';
+  const sqlite = 'SELECT title, image_name, id FROM recipes WHERE title LIKE ? LIMIT 45';
   
   // Perform a database query to retrieve data
   global.db.all(sqlite, [`%${searchTerm}%`], (err, rows) => {
