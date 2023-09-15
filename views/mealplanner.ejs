@@ -240,23 +240,7 @@
         `;
     }
 
-    // function saveTrackerData(){
-    //   const weight = document.getElementById('weight-input').value;
-    //   const height = document.getElementById('height-input').value;
-    //   const age = document.getElementById('age-input').value;
-    //   const gender = document.getElementById('gender-select').value;
 
-    //   const trackerData = {
-    //     weight: weight,
-    //     height: height,
-    //     age: age,
-    //     gender: gender
-    //   };
-    //   // Save the merged data back to localStorage
-    //   localStorage.setItem('trackerData', JSON.stringify(allTrackerData));
-    // }
-
-    //NEW CODE - TO DELETE LATER
     function saveTrackerData(selectedDate){
       const weight = document.getElementById('weight-input').value;
       const height = document.getElementById('height-input').value;
@@ -274,18 +258,6 @@
     }
     
 
-    // function loadTrackerData(){
-    //   const storedData = localStorage.getItem('trackerData');
-    //   if(storedData){
-    //     const trackerData = JSON.parse(storedData);
-    //     document.getElementById('weight-input').value = trackerData.weight;
-    //     document.getElementById('height-input').value = trackerData.height;
-    //     document.getElementById('age-input').value = trackerData.age;
-    //     document.getElementById('gender-select').value = trackerData.gender;
-    //   }
-    // }
-
-    //NEW CODE- TO DELETE LATER
     function loadTrackerData(selectedDate){
       const storedData = localStorage.getItem('trackerData_${selectedDate}');
       if(storedData){
@@ -303,14 +275,8 @@
       }
     }
 
+    
     // Save data when the calculate button is clicked
-    // document.getElementById('calculate-button').addEventListener('click', function(event){
-    //   event.preventDefault();
-    //   saveTrackerData();
-    //   calculateCalorie();
-    // });
-
-    //NEW CODE - TO DELETE LATER
     document.getElementById('calculate-button').addEventListener('click', function(event){
       event.preventDefault();
       const selectedDate = document.getElementById('selectedDate').value;
@@ -319,14 +285,8 @@
       calculateCalorie();
     });
 
+
     // Load data when the modal is shown
-    // $('#myModal').on('show.bs.modal', function() {
-    //   const selectedDate = document.getElementById('selectedDate').value;
-    //   loadTrackerData(selectedDate); // Load data from local storage
-    // });
-
-
-    //NEW CODE- TO DELETE LATER
     $('#myModal').on('show.bs.modal', function() {
       // Clear the fields
       document.getElementById('weight-input').value = "";
@@ -337,13 +297,6 @@
       const selectedDate = document.getElementById('selectedDate').value;
       loadTrackerData(selectedDate); // Load data from local storage
     });
-    
-
   </script>
-
-
 </body>
-
-    
-
 </html>
