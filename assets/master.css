@@ -407,9 +407,19 @@
   text-align: center;
 }
 
+.favouriteLink, .ModifiedRecipeLink{
+  text-decoration: none;
+  color: black;
+}
+
+.favouriteLink:hover, .ModifiedRecipeLink:hover{
+  color: orangered;
+}
+
 .recipeHeader{
   display: flex;
   align-content: space-between;
+  padding-left: 4.5rem;
 }
 
 .buttonPos{
