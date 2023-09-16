@@ -1,13 +1,63 @@
+/*mainpage.ejs CSS*/
+.slider-container {
+display: flex;
+overflow: hidden;
+justify-content: center;
+position: relative; /* Needed for absolute positioning of arrows */
+margin-bottom: 6rem;
+}
+
+.slider-item {
+flex: 0 0 380px;
+margin: 10px;
+border: 1px solid #ccc;
+text-align: center;
+padding: 20px;
+}
+
+.slider-arrow {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+font-size: 24px;
+cursor: pointer;
+z-index: 1;
+}
+
+.slider-arrow.prev {
+left: 10px;
+}
+
+.slider-arrow.next {
+right: 10px;
+}
+
+.latestRecipeImages{
+    text-decoration: none;
+    color: black;
+}
+
+.latestRecipeImages:hover{
+    color: orangered;
+    text-decoration: none;
+}
+
+.home-header {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
 /*shoppinglist.ejs CSS*/
 #shopping{
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
 
+
 /*mealplanner.ejs CSS*/
 
 h1{
-    font-family: 'Times New Roman', Times, serif;
+    font-family:Georgia, 'Times New Roman', Times, serif;
     text-align: center;
 }
 

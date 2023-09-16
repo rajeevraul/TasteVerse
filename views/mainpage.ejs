@@ -4,51 +4,16 @@
     <title>Main Page</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/list.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
+
   <body>
     <%- include('header'); %>
 
-    <style>
-      .slider-container {
-        display: flex;
-        overflow: hidden;
-        justify-content: center;
-        position: relative; /* Needed for absolute positioning of arrows */
-      }
-
-      .slider-item {
-        flex: 0 0 380px;
-        margin: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-        padding: 20px;
-      }
-
-      .slider-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 1;
-      }
-
-      .slider-arrow.prev {
-        left: 10px;
-      }
-
-      .slider-arrow.next {
-        right: 10px;
-      }
-    </style>
-
-    <h2><center>RECOMMENDED RECIPE</center></h2>
+    <h2><center><b class="home-header">RECOMMENDED RECIPE</b></center></h2>
     <div class="slider-container recommended">
       <div class="slider-arrow prev" onclick="prevRecommendedSlide()">
         &#10094;
@@ -72,11 +37,11 @@
       </div>
     </div>
 
-    <h2><center>LATEST RECIPE</center></h2>
+    <h2><center><b class="home-header">LATEST RECIPE</b></center></h2>
     <div class="slider-container latest">
       <div class="slider-arrow prev" onclick="prevLatestSlide()">&#10094;</div>
       <% for (let i = 1; i < latestRecipe.length; i++) { %>
-      <a href="/user/recipe?id=<%= latestRecipe[i].id %>">
+      <a href="/user/recipe?id=<%= latestRecipe[i].id %>" class="latestRecipeImages">
       <div class="slider-item">
         <h3><%= latestRecipe[i].title %></h3>
         <img
