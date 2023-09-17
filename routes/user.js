@@ -147,6 +147,8 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 router.get('/myRecipe',ifAuthenticated, async(req,res) => {
   try{
     const userId=req.session.user_id
+
+    // get all the data in modifiedRecipe belonging to the userId
     const modifiedRecipe=await new Promise((resolve,reject)=>
       global.db.all("SELECT * FROM modifiedRecipe where user_id=?",[userId],function(err,modified){
         if(err){
@@ -157,7 +159,8 @@ router.get('/myRecipe',ifAuthenticated, async(req,res) => {
         }
       })
     ) 
-
+     
+     // get all the data in favouriteRecipe belonging to the userId which is just recipe_id
     const favList=await new Promise((resolve, reject)=>{
       global.db.all("SELECT * FROM favouriteRecipe WHERE user_id=?",[userId],function(err,favData){
         if(err){
@@ -171,7 +174,8 @@ router.get('/myRecipe',ifAuthenticated, async(req,res) => {
     })
  
     const data=[]
-
+      
+    // Based on array size of favList run multiple GET request to find all the recipes in the "recipes" database that has the same recipe_id in favList  
     for(i=0;i<favList.length;i++){
       const recipes=await new Promise((resolve,reject)=>{
         global.db.get("SELECT * FROM recipes WHERE id=?",[favList[i].recipe_id],function(err,recipe){
@@ -182,17 +186,18 @@ router.get('/myRecipe',ifAuthenticated, async(req,res) => {
           }
         })
       })
+      // if recipes exist push it to data
       if(recipes){
         console.log("recipe: "+recipes.title)
         data.push(recipes)
       }
     }
-    console.log("data:" + data);
+    //render the myRecipe page
     res.render("myRecipe.ejs", { favRecipe: data, modifiedRecipe:modifiedRecipe })
   }
   catch(error){
     console.error(error)
-    res.status(500).send("Internal Server Error");
+   
   }
 }); 
  
@@ -469,9 +474,14 @@ router.post("/modified/:modifiedRecipe_id", (req, res) => {
 /**
  * @desc
 */
+
+// This code is to add a recipe to the favouriteRecipe table in the database
 router.post("/toFavourite",async(req,res)=>{
   try{
+    //get the current userId
     const userId=req.session.user_id
+
+    //check if the user has already added the current recipe to favouriteRecipe in the database
     const idExistAlr=await new Promise((resolve,reject)=>{
       global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],function(err,recipe){
         if(err){
@@ -481,7 +491,8 @@ router.post("/toFavourite",async(req,res)=>{
         }
       })
     })
-
+    
+    // if the recipe is not in the database run this code to add the recipe to the favourite database
     if(!idExistAlr){
       global.db.get("SELECT * FROM recipes WHERE id=?",[req.body.id],function(err,data){
         if(err){
@@ -506,6 +517,7 @@ router.post("/toFavourite",async(req,res)=>{
         }
       })
     }
+    // if the recipe is in the database show a flash message and redirect them to their current recipe page
     else{
       req.flash("message","In Favourite Already")
       res.redirect('/user/recipe?id='+req.body.id)
@@ -520,6 +532,8 @@ router.post("/toFavourite",async(req,res)=>{
 /**
  * @desc 
  */
+
+// Remove a recipe from favouriteRecipe table in the database
 router.post("/deleteFavourite",(req,res)=>{
   global.db.run("DELETE FROM favouriteRecipe where recipe_id=?",[req.body.recipe_id],function(err){
     if(err){
