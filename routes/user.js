@@ -196,7 +196,7 @@ router.get('/myRecipe', ifAuthenticated, async (req, res) => {
     res.render("myRecipe.ejs", { favRecipe: data, modifiedRecipe: modifiedRecipe })
   }
   catch (error) {
-    console.error(error)
+    res.sendStatus(500);
 
   }
 });
@@ -520,7 +520,7 @@ router.post("/toFavourite", async (req, res) => {
     }
   }
   catch (error) {
-    console.error(error)
+    res.sendStatus(500);
   }
 });
 
@@ -531,7 +531,7 @@ router.post("/toFavourite", async (req, res) => {
 router.post("/deleteFavourite", (req, res) => {
   global.db.run("DELETE FROM favouriteRecipe where recipe_id=?", [req.body.recipe_id], function (err) {
     if (err) {
-      console.log("error in deleting from favouriteList")
+      res.sendStatus(500);
     }
     else { console.log("success") }
     res.redirect("back")
