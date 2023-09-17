@@ -10,293 +10,293 @@
 </head>
 
 
-<%- include('header'); %>
-<body>
-  <h1>Meal Planner</h1>
-  <table>
-    <tr>
-      <th>Sun</th>
-      <th>Mon</th>
-      <th>Tue</th>
-      <th>Wed</th>
-      <th>Thu</th>
-      <th>Fri</th>
-      <th>Sat</th>
-    </tr>
-    <% for(let week of calendar) { %>
+  <%- include('header'); %>
+  <body>
+    <h1>Meal Planner</h1>
+    <table>
       <tr>
-        <% for(let day of week) { %>
-          <% if(!day.isCurrentMonth) { %>
-            <td class="text-center other-month date-cell"><%= day.day %></td>
-          <% }else{ %>
-            <td class="text-center">
-              <button class="btn date-clickable" data-bs-toggle="modal" data-bs-target="#myModal">
-                <%= day.day %>
-              </button>
-              <!-- <a href="/popup?date=<%#= year %>- <%#= month+1 %>- <%#= day.day %>">  -->
-              <!-- </a> -->
-            </td>
-        <% } %>
-      <% } %>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
       </tr>
-    <% } %>
-  </table> 
+      <% for(let week of calendar) { %>
+        <tr>
+          <% for(let day of week) { %>
+            <% if(!day.isCurrentMonth) { %>
+              <td class="text-center other-month date-cell"><%= day.day %></td>
+            <% }else{ %>
+              <td class="text-center">
+                <button class="btn date-clickable" data-bs-toggle="modal" data-bs-target="#myModal">
+                  <%= day.day %>
+                </button>
+                <!-- <a href="/popup?date=<%#= year %>- <%#= month+1 %>- <%#= day.day %>">  -->
+                <!-- </a> -->
+              </td>
+          <% } %>
+        <% } %>
+        </tr>
+      <% } %>
+    </table> 
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mealPlannerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"> Meals for today! </h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"> &times; </span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div id="meal-content">
-                <form action="/user/save-calendar-data" method="post">
-                  <input type="hidden" id="selectedDate" name="dayOfMonth" value="">
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Breakfast</span>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mealPlannerModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"> Meals for today! </h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"> &times; </span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div id="meal-content">
+                  <form action="/user/save-calendar-data" method="post">
+                    <input type="hidden" id="selectedDate" name="dayOfMonth" value="">
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Breakfast</span>
+                      </div>
+                      <input type="text" class="form-control"  name="breakfast" id="breakfast_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                      <input type="text" class="form-control"  name="breakfast_calories" id="breakfastCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
                     </div>
-                    <input type="text" class="form-control"  name="breakfast" id="breakfast_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    <input type="text" class="form-control"  name="breakfast_calories" id="breakfastCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
-                  </div>
-                    
-            
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Lunch</span>
+                      
+              
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Lunch</span>
+                      </div>
+                      <input type="text" class="form-control"  name="lunch" id="lunch_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                      <input type="text" class="form-control"  name="lunch_calories" id="lunchCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
                     </div>
-                    <input type="text" class="form-control"  name="lunch" id="lunch_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    <input type="text" class="form-control"  name="lunch_calories" id="lunchCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
-                  </div>
-            
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Dinner</span>
+              
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Dinner</span>
+                      </div>
+                      <input type="text" class="form-control" name="dinner" id="dinner_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                      <input type="text" class="form-control" name="dinner_calories" id="dinnerCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
                     </div>
-                    <input type="text" class="form-control" name="dinner" id="dinner_input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                    <input type="text" class="form-control" name="dinner_calories" id="dinnerCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Calories">
-                  </div>
+        
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Total Calories Intake</span>
+                      </div>
+                      <input type="number" class="form-control" name="totalCalories" id="totalCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="saveCalendarData"> Save Calendar Data</button>
+                  </form>
+                </div> 
+              </div>
+
+
+              <div class="col-md-6">
+                <div id="tracker-content">
+                  <form>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Weight: </span>
+                      </div>
+                      <input type="number" class="form-control" name="weight" id="weight-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="kg" required>
+                      <div class="invalid-feedback">
+                        "Please indicate your weight"
+                      </div>
+                    </div>
       
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Total Calories Intake</span>
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-sm">Height: </span>
+                      </div>
+                      <input type="number" class="form-control" name="height" id="height-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="cm" required>
+                      <div class="invalid-feedback">
+                          "Please indicate your height"
+                      </div>
                     </div>
-                    <input type="number" class="form-control" name="totalCalories" id="totalCalories" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                  </div>
-                  <button type="submit" class="btn btn-primary" id="saveCalendarData"> Save Calendar Data</button>
-                </form>
-              </div> 
-            </div>
-
-
-            <div class="col-md-6">
-              <div id="tracker-content">
-                <form>
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Weight: </span>
+      
+                    <div class="input-group input-group-sm mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Age: </span>
+                      </div>
+                      <input type="number" class="form-control" name="age" id="age-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
+                      <div class="invalid-feedback">
+                        "Please indicate your age"
+                      </div>
                     </div>
-                    <input type="number" class="form-control" name="weight" id="weight-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="kg" required>
-                    <div class="invalid-feedback">
-                      "Please indicate your weight"
+      
+                    <div class="input-group input-group-sm mb-3">
+                      <label class="input-group-text" for="gender-select">Gender:</label>
+                      <select class="form-select" name="gender" id="gender-select" aria-label="Gender selection" required>
+                          <option selected disabled value="">Choose an option</option>
+                          <option value="1">Male</option>
+                          <option value="2">Female</option>
+                      </select>
+                      <div class="invalid-feedback">
+                          "Please select your gender"
+                      </div>
                     </div>
-                  </div>
-    
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Height: </span>
-                    </div>
-                    <input type="number" class="form-control" name="height" id="height-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="cm" required>
-                    <div class="invalid-feedback">
-                        "Please indicate your height"
-                    </div>
-                  </div>
-    
-                  <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-sm">Age: </span>
-                    </div>
-                    <input type="number" class="form-control" name="age" id="age-input" aria-label="Small" aria-describedby="inputGroup-sizing-sm" required>
-                    <div class="invalid-feedback">
-                      "Please indicate your age"
-                    </div>
-                  </div>
-    
-                  <div class="input-group input-group-sm mb-3">
-                    <label class="input-group-text" for="gender-select">Gender:</label>
-                    <select class="form-select" name="gender" id="gender-select" aria-label="Gender selection" required>
-                        <option selected disabled value="">Choose an option</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        "Please select your gender"
-                    </div>
-                  </div>
-                  <button type="submit" id="calculate-button" class="btn btn-success" onclick="calculateCalorie()">Calculate</button>
-                  <div id="calorie-result"></div>
-                </form>
+                    <button type="submit" id="calculate-button" class="btn btn-success" onclick="calculateCalorie()">Calculate</button>
+                    <div id="calorie-result"></div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>  
+        </div>  
+      </div>
     </div>
-  </div>
- 
- 
 
-  <script>
-    document.querySelectorAll('.date-clickable').forEach(function (element) {
-        element.addEventListener('click', function () {
-          document.querySelector("#calorie-result").innerHTML = "";
-        var targetModalId = element.getAttribute('data-bs-target');
+    <%- include('footer') %>
 
-        const selectedDate = element.textContent.trim();
-        
-        document.getElementById('selectedDate').value = selectedDate;
-
-        function updateFormFields(data) {
-        document.getElementById('breakfast_input').value = data.breakfast || "";
-        document.getElementById('breakfastCalories').value = data.breakfast_calories || "";
-        document.getElementById('lunch_input').value = data.lunch || "";
-        document.getElementById('lunchCalories').value = data.lunch_calories || "";
-        document.getElementById('dinner_input').value = data.dinner || "";
-        document.getElementById('dinnerCalories').value = data.dinner_calories || "";
-        document.getElementById('totalCalories').value = data.total_calories || "";
-        }
-        fetch(`/user/get-calendar-data?date=${selectedDate}`)
-        .then(response => response.json())
-        .then(data => { 
-          console.log(`Fetching data for: ${selectedDate}`);
-          console.log("Received data:", data);
-          // Populate the form fields with the retrieved data
-          console.log("Received data for date " + selectedDate, data);
-          updateFormFields(data);
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
+    <script>
+      document.querySelectorAll('.date-clickable').forEach(function (element) {
+          element.addEventListener('click', function () {
+            document.querySelector("#calorie-result").innerHTML = "";
+          var targetModalId = element.getAttribute('data-bs-target');
+  
+          const selectedDate = element.textContent.trim();
+          
+          document.getElementById('selectedDate').value = selectedDate;
+  
+          function updateFormFields(data) {
+          document.getElementById('breakfast_input').value = data.breakfast || "";
+          document.getElementById('breakfastCalories').value = data.breakfast_calories || "";
+          document.getElementById('lunch_input').value = data.lunch || "";
+          document.getElementById('lunchCalories').value = data.lunch_calories || "";
+          document.getElementById('dinner_input').value = data.dinner || "";
+          document.getElementById('dinnerCalories').value = data.dinner_calories || "";
+          document.getElementById('totalCalories').value = data.total_calories || "";
+          }
+          fetch(`/user/get-calendar-data?date=${selectedDate}`)
+          .then(response => response.json())
+          .then(data => { 
+            console.log(`Fetching data for: ${selectedDate}`);
+            console.log("Received data:", data);
+            // Populate the form fields with the retrieved data
+            console.log("Received data for date " + selectedDate, data);
+            updateFormFields(data);
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+          loadTrackerData(selectedDate);
+          updateFormFields(selectedDate);
+  
+          $(targetModalId).modal('show'); // Use jQuery to open the modal
         });
-        loadTrackerData(selectedDate);
-        updateFormFields(selectedDate);
-
-        $(targetModalId).modal('show'); // Use jQuery to open the modal
       });
-    });
-
-    const breakfastInput = document.getElementById('breakfastCalories');
-    const lunchInput = document.getElementById('lunchCalories');
-    const dinnerInput = document.getElementById('dinnerCalories');
-    const totalCaloriesInput = document.getElementById('totalCalories');
-
-    // Add event listeners to the breakfast, lunch, and dinner input fields
-    breakfastInput.addEventListener('input', updateTotalCalories);
-    lunchInput.addEventListener('input', updateTotalCalories);
-    dinnerInput.addEventListener('input', updateTotalCalories);
-
-    // Function to update the total calories input field
-    function updateTotalCalories() {
-      // Parse the values from the breakfast, lunch, and dinner input fields
-      const breakfastCalories = parseFloat(breakfastInput.value) || 0;
-      const lunchCalories = parseFloat(lunchInput.value) || 0;
-      const dinnerCalories = parseFloat(dinnerInput.value) || 0;
-
-      // Calculate the total calories
-      const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
-
-      // Update the total calories input field with the calculated value
-      totalCaloriesInput.value = totalCalories;
-    }
-
-
-    function calculateCalorie() {
-        // event.preventDefault();
-        const age = parseFloat(document.getElementById('age-input').value);
-        const gender = parseInt(document.getElementById('gender-select').value);
-        const heightInput = parseFloat(document.getElementById('height-input').value);
-        const weightInput = parseFloat(document.getElementById('weight-input').value);
-
-        // Calculate calorie intake using the Harris-Benedict Equation
-        let calorieIntake;
-
-        if (gender === 1) { // Male
-            calorieIntake = 88.362 + (13.397 * weightInput) + (4.799 * heightInput) - (5.677 * age);
-        } else if (gender === 2) { // Female
-            calorieIntake = 447.593 + (9.247 * weightInput) + (3.098 * heightInput) - (4.330 * age);
-        } else {
-            calorieIntake = 0;
-        }
-
-        // Display the result        
-        document.querySelector("#calorie-result").innerHTML = `
-            <div class="alert alert-danger text-center" role="alert">
-                You should consume <span class="text-red">${Math.ceil(calorieIntake)} calories/day</span> to maintain your weight.
-            </div>
-        `;
-    }
-
-
-    function saveTrackerData(selectedDate){
-      const weight = document.getElementById('weight-input').value;
-      const height = document.getElementById('height-input').value;
-      const age = document.getElementById('age-input').value;
-      const gender = document.getElementById('gender-select').value;
-
-      const trackerData = {
-        weight: weight,
-        height: height,
-        age: age,
-        gender: gender
-      };
-      // Save the merged data back to localStorage
-      localStorage.setItem('trackerData', JSON.stringify(allTrackerData));
-    }
-    
-
-    function loadTrackerData(selectedDate){
-      const storedData = localStorage.getItem('trackerData_${selectedDate}');
-      if(storedData){
-        const trackerData = JSON.parse(storedData);
-        document.getElementById('weight-input').value = trackerData.weight;
-        document.getElementById('height-input').value = trackerData.height;
-        document.getElementById('age-input').value = trackerData.age;
-        document.getElementById('gender-select').value = trackerData.gender;
+  
+      const breakfastInput = document.getElementById('breakfastCalories');
+      const lunchInput = document.getElementById('lunchCalories');
+      const dinnerInput = document.getElementById('dinnerCalories');
+      const totalCaloriesInput = document.getElementById('totalCalories');
+  
+      // Add event listeners to the breakfast, lunch, and dinner input fields
+      breakfastInput.addEventListener('input', updateTotalCalories);
+      lunchInput.addEventListener('input', updateTotalCalories);
+      dinnerInput.addEventListener('input', updateTotalCalories);
+  
+      // Function to update the total calories input field
+      function updateTotalCalories() {
+        // Parse the values from the breakfast, lunch, and dinner input fields
+        const breakfastCalories = parseFloat(breakfastInput.value) || 0;
+        const lunchCalories = parseFloat(lunchInput.value) || 0;
+        const dinnerCalories = parseFloat(dinnerInput.value) || 0;
+  
+        // Calculate the total calories
+        const totalCalories = breakfastCalories + lunchCalories + dinnerCalories;
+  
+        // Update the total calories input field with the calculated value
+        totalCaloriesInput.value = totalCalories;
       }
-      else{
+  
+  
+      function calculateCalorie() {
+          // event.preventDefault();
+          const age = parseFloat(document.getElementById('age-input').value);
+          const gender = parseInt(document.getElementById('gender-select').value);
+          const heightInput = parseFloat(document.getElementById('height-input').value);
+          const weightInput = parseFloat(document.getElementById('weight-input').value);
+  
+          // Calculate calorie intake using the Harris-Benedict Equation
+          let calorieIntake;
+  
+          if (gender === 1) { // Male
+              calorieIntake = 88.362 + (13.397 * weightInput) + (4.799 * heightInput) - (5.677 * age);
+          } else if (gender === 2) { // Female
+              calorieIntake = 447.593 + (9.247 * weightInput) + (3.098 * heightInput) - (4.330 * age);
+          } else {
+              calorieIntake = 0;
+          }
+  
+          // Display the result        
+          document.querySelector("#calorie-result").innerHTML = `
+              <div class="alert alert-danger text-center" role="alert">
+                  You should consume <span class="text-red">${Math.ceil(calorieIntake)} calories/day</span> to maintain your weight.
+              </div>
+          `;
+      }
+  
+  
+      function saveTrackerData(selectedDate){
+        const weight = document.getElementById('weight-input').value;
+        const height = document.getElementById('height-input').value;
+        const age = document.getElementById('age-input').value;
+        const gender = document.getElementById('gender-select').value;
+  
+        const trackerData = {
+          weight: weight,
+          height: height,
+          age: age,
+          gender: gender
+        };
+        // Save the merged data back to localStorage
+        localStorage.setItem('trackerData', JSON.stringify(allTrackerData));
+      }
+      
+  
+      function loadTrackerData(selectedDate){
+        const storedData = localStorage.getItem('trackerData_${selectedDate}');
+        if(storedData){
+          const trackerData = JSON.parse(storedData);
+          document.getElementById('weight-input').value = trackerData.weight;
+          document.getElementById('height-input').value = trackerData.height;
+          document.getElementById('age-input').value = trackerData.age;
+          document.getElementById('gender-select').value = trackerData.gender;
+        }
+        else{
+          document.getElementById('weight-input').value = "";
+          document.getElementById('height-input').value = "";
+          document.getElementById('age-input').value = "";
+          document.getElementById('gender-select').value = "";
+        }
+      }
+  
+      
+      // Save data when the calculate button is clicked
+      document.getElementById('calculate-button').addEventListener('click', function(event){
+        event.preventDefault();
+        const selectedDate = document.getElementById('selectedDate').value;
+        console.log('Saving data for selected date:', selectedDate);  // Debugging line
+        saveTrackerData(selectedDate);
+        calculateCalorie();
+      });
+  
+  
+      // Load data when the modal is shown
+      $('#myModal').on('show.bs.modal', function() {
+        // Clear the fields
         document.getElementById('weight-input').value = "";
         document.getElementById('height-input').value = "";
         document.getElementById('age-input').value = "";
         document.getElementById('gender-select').value = "";
-      }
-    }
-
-    
-    // Save data when the calculate button is clicked
-    document.getElementById('calculate-button').addEventListener('click', function(event){
-      event.preventDefault();
-      const selectedDate = document.getElementById('selectedDate').value;
-      console.log('Saving data for selected date:', selectedDate);  // Debugging line
-      saveTrackerData(selectedDate);
-      calculateCalorie();
-    });
-
-
-    // Load data when the modal is shown
-    $('#myModal').on('show.bs.modal', function() {
-      // Clear the fields
-      document.getElementById('weight-input').value = "";
-      document.getElementById('height-input').value = "";
-      document.getElementById('age-input').value = "";
-      document.getElementById('gender-select').value = "";
-
-      const selectedDate = document.getElementById('selectedDate').value;
-      loadTrackerData(selectedDate); // Load data from local storage
-    });
-  </script>
-</body>
+  
+        const selectedDate = document.getElementById('selectedDate').value;
+        loadTrackerData(selectedDate); // Load data from local storage
+      });
+    </script>
+  </body>
 </html>
