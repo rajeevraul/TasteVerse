@@ -42,7 +42,7 @@
     <h2><center><b class="home-header">LATEST RECIPE</b></center></h2>
     <div class="slider-container latest">
       <div class="slider-arrow prev" onclick="prevLatestSlide()">&#10094;</div>
-      <% for (let i = 1; i < latestRecipe.length; i++) { %>
+      <% for (let i = 0; i < latestRecipe.length; i++) { %>
       <a href="/user/recipe?id=<%= latestRecipe[i].id %>" class="latestRecipeImages">
       <div class="slider-item">
         <h3><%= latestRecipe[i].title %></h3>

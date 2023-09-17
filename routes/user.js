@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const assert = require('assert');
-const passport=require('passport')
-const session=require('express-session')
-const bcrypt= require('bcrypt');
-const flash=require('express-flash')
+const passport = require('passport')
+const session = require('express-session')
+const bcrypt = require('bcrypt');
+const flash = require('express-flash')
 
-const {ifAuthenticated}=require('./auth.js'); 
+const { ifAuthenticated } = require('./auth.js');
 const { resolve } = require("path");
 const { error } = require("console");
 const { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth } = require('date-fns');
@@ -116,8 +116,8 @@ router.post('/list', (req, res) => { //WORKING DO NOT DELETE
       res.redirect('/user/list');
     });
   } else {
-  // Handle empty item name, if needed.
-  res.redirect('/user/list');
+    // Handle empty item name, if needed.
+    res.redirect('/user/list');
   }
 });
 
@@ -144,63 +144,63 @@ router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc Renders to myRecipe page WORKING
  */
-router.get('/myRecipe',ifAuthenticated, async(req,res) => {
-  try{
-    const userId=req.session.user_id
+router.get('/myRecipe', ifAuthenticated, async (req, res) => {
+  try {
+    const userId = req.session.user_id
 
     // get all the data in modifiedRecipe belonging to the userId
-    const modifiedRecipe=await new Promise((resolve,reject)=>
-      global.db.all("SELECT * FROM modifiedRecipe where user_id=?",[userId],function(err,modified){
-        if(err){
+    const modifiedRecipe = await new Promise((resolve, reject) =>
+      global.db.all("SELECT * FROM modifiedRecipe where user_id=?", [userId], function (err, modified) {
+        if (err) {
           reject(err)
-        }else{
-          console.log("modified:"+modified)
-          resolve (modified)
+        } else {
+          console.log("modified:" + modified)
+          resolve(modified)
         }
       })
-    ) 
-     
-     // get all the data in favouriteRecipe belonging to the userId which is just recipe_id
-    const favList=await new Promise((resolve, reject)=>{
-      global.db.all("SELECT * FROM favouriteRecipe WHERE user_id=?",[userId],function(err,favData){
-        if(err){
+    )
+
+    // get all the data in favouriteRecipe belonging to the userId which is just recipe_id
+    const favList = await new Promise((resolve, reject) => {
+      global.db.all("SELECT * FROM favouriteRecipe WHERE user_id=?", [userId], function (err, favData) {
+        if (err) {
           console.log("error in getting favList")
           reject(err)
         }
-        else{
+        else {
           resolve(favData)
         }
       })
     })
- 
-    const data=[]
-      
+
+    const data = []
+
     // Based on array size of favList run multiple GET request to find all the recipes in the "recipes" database that has the same recipe_id in favList  
-    for(i=0;i<favList.length;i++){
-      const recipes=await new Promise((resolve,reject)=>{
-        global.db.get("SELECT * FROM recipes WHERE id=?",[favList[i].recipe_id],function(err,recipe){
-          if(err){
+    for (i = 0; i < favList.length; i++) {
+      const recipes = await new Promise((resolve, reject) => {
+        global.db.get("SELECT * FROM recipes WHERE id=?", [favList[i].recipe_id], function (err, recipe) {
+          if (err) {
             reject(err)
-          }else{
+          } else {
             resolve(recipe)
           }
         })
       })
       // if recipes exist push it to data
-      if(recipes){
-        console.log("recipe: "+recipes.title)
+      if (recipes) {
+        console.log("recipe: " + recipes.title)
         data.push(recipes)
       }
     }
     //render the myRecipe page
-    res.render("myRecipe.ejs", { favRecipe: data, modifiedRecipe:modifiedRecipe })
+    res.render("myRecipe.ejs", { favRecipe: data, modifiedRecipe: modifiedRecipe })
   }
-  catch(error){
+  catch (error) {
     console.error(error)
-   
+
   }
-}); 
- 
+});
+
 /**
  * @desc Renders to meal planner page WORKING
  */
@@ -217,17 +217,17 @@ router.get('/planner', ifAuthenticated, (req, res) => {
   let currentDate = startOfWeekDate;
   while (currentDate <= endOfWeekDate) {
     const week = [];
-    for(let i = 0; i < 7; i++){
+    for (let i = 0; i < 7; i++) {
       week.push({
         date: currentDate,
         day: format(currentDate, 'd'),
         isCurrentMonth: isSameMonth(currentDate, selectedDate),
-      });   
+      });
       currentDate = addDays(currentDate, 1);
     }
     calendar.push(week);
   }
-  res.render('mealplanner', { calendar, year, month});
+  res.render('mealplanner', { calendar, year, month });
 });
 
 
@@ -248,20 +248,20 @@ router.post('/save-calendar-data', ifAuthenticated, (req, res) => {
   console.log('Received Request Body:', req.body);
   // const totalCalories = document.getElementById('totalCalories').value;
   // const totalCalories = req.body.totalCalories;
-  const currentUserId = req.userId; 
+  const currentUserId = req.userId;
 
   if (!totalCalories || isNaN(totalCalories)) {
     console.error('Invalid total calories value');
     return res.sendStatus(400);
   }
 
-  db.run('INSERT INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+  db.run('INSERT INTO calendar (user_id, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories, dayOfMonth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [currentUserId, breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, totalCalories, dayOfMonth],
     (err) => {
-      if(err){
+      if (err) {
         console.error('Error inserting data into the calendar table:', err);
         res.sendStatus(500);
-      }else{
+      } else {
         console.log('Data inserted successfully');
         // res.sendStatus(200);
         res.redirect('/user/planner');
@@ -271,15 +271,15 @@ router.post('/save-calendar-data', ifAuthenticated, (req, res) => {
 });
 
 
-function retrievedDataFromDatabase(selectedDate, userId, callback){
+function retrievedDataFromDatabase(selectedDate, userId, callback) {
   db.get(
     'SELECT breakfast, breakfast_calories, lunch, lunch_calories, dinner, dinner_calories, total_calories FROM calendar WHERE dayOfMonth=? AND user_id=?',
     [selectedDate, userId],
     (err, row) => {
-      if(err){
+      if (err) {
         console.error('Error querying the database:', err);
         callback(err, null);
-      }else{
+      } else {
         callback(null, row);
       }
     }
@@ -294,9 +294,9 @@ router.get('/get-calendar-data', ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date;
   const currentUserId = req.userId; //NEW CODE - TO DELETE LATER
   retrievedDataFromDatabase(selectedDate, currentUserId, (err, data) => {
-    if(err){
-      res.status(500).json({error: 'Error retrieving data from the database'});
-    }else{
+    if (err) {
+      res.status(500).json({ error: 'Error retrieving data from the database' });
+    } else {
       res.json(data);
     }
   });
@@ -362,14 +362,14 @@ router.post('/save-user-metrics', ifAuthenticated, saveOrUpdateUserMetrics, (req
 
 
 /**
- * @desc recipe page WORKING
+ * @desc recipe page 
  */
 router.get('/recipe', ifAuthenticated, (req, res) => {
   const { id } = req.query;
   const sqlite = 'SELECT * FROM recipes WHERE id = ?';
-  const message=req.flash('message')
+  const message = req.flash('message')
 
-  db.all(sqlite, [id], (err,data) => {
+  db.all(sqlite, [id], (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
@@ -381,20 +381,20 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
 
     data[0].ingredients = parsedArray;
     req.flash('message', 'This is an error message');
-    res.render('recipe', { recipeData: data,message});
+    res.render('recipe', { recipeData: data, message });
   });
 });
 
 
 /**
- * @desc recipe page WORKING 
+ * @desc modified recipe page
  */
 router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
   const { modifiedRecipe_id } = req.query;
   const sqlite = 'SELECT * FROM modifiedRecipe WHERE modifiedRecipe_id = ?';
-  const message=req.flash('message')
+  const message = req.flash('message')
 
-  db.all(sqlite, [modifiedRecipe_id], (err,data) => {
+  db.all(sqlite, [modifiedRecipe_id], (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
@@ -405,16 +405,16 @@ router.get('/modifiedRecipe', ifAuthenticated, (req, res) => {
 
     data[0].modifiedRecipe_ingredients = parsedArray;
     req.flash('message', 'This is an error message');
-    res.render('modifiedRecipe', { recipeData: data,message});
+    res.render('modifiedRecipe', { recipeData: data, message });
   });
 });
 
 /**
- * @desc If a recipe is to be modified
+ * @desc Make a new records to modifiedRecipe table
  */
-router.post('/modify',(req, res) => {
-  const userId=req.session.user_id
-  const { id, title, ingredients, instructions, image} = req.body;
+router.post('/modify', (req, res) => {
+  const userId = req.session.user_id
+  const { id, title, ingredients, instructions, image } = req.body; //get the original recipe title, ingredients, instructions, and image_name 
   const ingredientsArray = ingredients.split(',').map((ingredient) => ingredient.trim());
   const ingredientsJSON = JSON.stringify(ingredientsArray);
 
@@ -431,14 +431,14 @@ router.post('/modify',(req, res) => {
 
 
 /**
- * @desc After modifying a recipe
+ * @desc modifying a recipe page
  */
 router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
   const { modifiedRecipe_id } = req.query;
   const sqlite = 'SELECT * FROM modifiedRecipe WHERE modifiedRecipe_id = ?';
-  const message=req.flash('message')
-  
-  db.all(sqlite, [modifiedRecipe_id], (err,data) => {
+  const message = req.flash('message')
+
+  db.all(sqlite, [modifiedRecipe_id], (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Internal Server Error');
@@ -450,15 +450,15 @@ router.get('/modifyRecipe', ifAuthenticated, (req, res) => {
 
     data[0].modifiedRecipe_ingredients = parsedArray;
     req.flash('message', 'This is an error message');
-    res.render('modifyRecipe', { modifyRecipeData: data,message});
+    res.render('modifyRecipe', { modifyRecipeData: data, message });
   });
 });
 
 
 /**
- * @desc 
+ * @desc Remove a recipe from the modifiedRecipe table
  */
-router.post("/modified/:modifiedRecipe_id", (req, res) => { 
+router.post("/modified/:modifiedRecipe_id", (req, res) => {
   const { modified_title, modified_ingredient, modified_instructions, modifiedRecipe_id } = req.body;
   const sqlite = 'UPDATE modifiedRecipe SET modifiedRecipe_title = ?, modifiedRecipe_ingredients = ?, modifiedRecipe_instructions = ? WHERE modifiedRecipe_id = ?';
   const ingredientsJSON = JSON.stringify(modified_ingredient);
@@ -472,99 +472,95 @@ router.post("/modified/:modifiedRecipe_id", (req, res) => {
 });
 
 /**
- * @desc
+ * @desc Add a recipe to favouriteRecipe table 
 */
 
 // This code is to add a recipe to the favouriteRecipe table in the database
-router.post("/toFavourite",async(req,res)=>{
-  try{
+router.post("/toFavourite", async (req, res) => {
+  try {
     //get the current userId
-    const userId=req.session.user_id
+    const userId = req.session.user_id
 
     //check if the user has already added the current recipe to favouriteRecipe in the database
-    const idExistAlr=await new Promise((resolve,reject)=>{
-      global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?",[req.body.id],function(err,recipe){
-        if(err){
+    const idExistAlr = await new Promise((resolve, reject) => {
+      global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?", [req.body.id], function (err, recipe) {
+        if (err) {
           reject(err)
-        }else{
+        } else {
           resolve(recipe)
         }
       })
     })
-    
+
     // if the recipe is not in the database run this code to add the recipe to the favourite database
-    if(!idExistAlr){
-      global.db.get("SELECT * FROM recipes WHERE id=?",[req.body.id],function(err,data){
-        if(err){
+    if (!idExistAlr) {
+      global.db.get("SELECT * FROM recipes WHERE id=?", [req.body.id], function (err, data) {
+        if (err) {
           console.log("Error: Failed to get data from provided id")
         }
-        else{
-          if(!data){
+        else {
+          if (!data) {
             console.log("NoData: Failed to get data from provided id")
           }
-          else{
-            global.db.run("INSERT INTO favouriteRecipe(user_id,recipe_id) VALUES (?,?)",[userId,req.body.id],function(err){
-              if(err){
+          else {
+            global.db.run("INSERT INTO favouriteRecipe(user_id,recipe_id) VALUES (?,?)", [userId, req.body.id], function (err) {
+              if (err) {
                 console.log("Fail to insert to favourite")
               }
-              else{
+              else {
                 console.log("checkpt" + userId)
               }
             })
-            req.flash("message","Added to Favourite")
+            req.flash("message", "Added to Favourite")
             res.redirect("back")
           }
         }
       })
     }
     // if the recipe is in the database show a flash message and redirect them to their current recipe page
-    else{
-      req.flash("message","In Favourite Already")
-      res.redirect('/user/recipe?id='+req.body.id)
+    else {
+      req.flash("message", "In Favourite Already")
+      res.redirect('/user/recipe?id=' + req.body.id)
     }
   }
-  catch(error){
+  catch (error) {
     console.error(error)
   }
 });
 
 
 /**
- * @desc 
+ * @desc Remove a recipe from favouriteRecipe table in the database
  */
-
-// Remove a recipe from favouriteRecipe table in the database
-router.post("/deleteFavourite",(req,res)=>{
-  global.db.run("DELETE FROM favouriteRecipe where recipe_id=?",[req.body.recipe_id],function(err){
-    if(err){
+router.post("/deleteFavourite", (req, res) => {
+  global.db.run("DELETE FROM favouriteRecipe where recipe_id=?", [req.body.recipe_id], function (err) {
+    if (err) {
       console.log("error in deleting from favouriteList")
     }
-    else{console.log("success")}
+    else { console.log("success") }
     res.redirect("back")
   })
 });
 
 
 /**
- * @desc 
+ * @desc Remove a recipe from modifiedRecipe table in the database
  */
-router.post("/deleteModified",(req,res)=>{
-  global.db.run("DELETE FROM modifiedRecipe where modifiedRecipe_id=?",[req.body.recipe_id],function(err){
-    if(err){
+router.post("/deleteModified", (req, res) => {
+  global.db.run("DELETE FROM modifiedRecipe where modifiedRecipe_id=?", [req.body.recipe_id], function (err) {
+    if (err) {
       console.log("error in deleting from favouriteList")
-    } 
-    else{console.log("success")}
+    }
+    else { console.log("success") }
     res.redirect("back")
   })
 });
 
-
-
-// Search bar
-router.get('/search-result', (req, res) => {
+// Find recipe page and search bar
+router.get('/search-result', ifAuthenticated, (req, res) => {
   const searchTerm = req.query.searchTerm;
   const sqlite = 'SELECT title, image_name, id FROM recipes WHERE title LIKE ? LIMIT 45';
-  
+
   // Perform a database query to retrieve data
   global.db.all(sqlite, [`%${searchTerm}%`], (err, rows) => {
     if (err) {
@@ -575,32 +571,9 @@ router.get('/search-result', (req, res) => {
     console.log(rows);
     const recipeNames = rows.map((row) => row.title);
 
-    res.render('search', { items: rows});
+    res.render('search', { items: rows });
 
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
