@@ -89,7 +89,7 @@ router.get('/main', ifAuthenticated, async (req, res) => {
 /**
  * @desc Renders to shoppinglist page WORKING
  */
-router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE 
+router.get('/list', ifAuthenticated, (req, res) => { 
   db.all('SELECT * FROM shoppingRecord', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -103,7 +103,7 @@ router.get('/list', ifAuthenticated, (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc When a new item is added to the shopping list  WORKING
  */
-router.post('/list', (req, res) => { //WORKING DO NOT DELETE
+router.post('/list', (req, res) => { 
   const newItem = req.body.item;
   const quantity = req.body.quantity;
 
@@ -125,7 +125,7 @@ router.post('/list', (req, res) => { //WORKING DO NOT DELETE
 /**
  * @desc handles the checkboxes in shoppinglist page WORKING
  */
-router.post('/handle-checkboxes', (req, res) => { //WORKING DO NOT DELETE
+router.post('/handle-checkboxes', (req, res) => {
   const checkedIndexes = req.body.done;
   if (checkedIndexes) {
     checkedIndexes.forEach((index) => {
@@ -246,8 +246,6 @@ router.post('/save-calendar-data', ifAuthenticated, (req, res) => {
     dayOfMonth,
   } = req.body;
   console.log('Received Request Body:', req.body);
-  // const totalCalories = document.getElementById('totalCalories').value;
-  // const totalCalories = req.body.totalCalories;
   const currentUserId = req.userId;
 
   if (!totalCalories || isNaN(totalCalories)) {
@@ -263,7 +261,6 @@ router.post('/save-calendar-data', ifAuthenticated, (req, res) => {
         res.sendStatus(500);
       } else {
         console.log('Data inserted successfully');
-        // res.sendStatus(200);
         res.redirect('/user/planner');
       }
     }
@@ -292,7 +289,7 @@ function retrievedDataFromDatabase(selectedDate, userId, callback) {
  */
 router.get('/get-calendar-data', ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date;
-  const currentUserId = req.userId; //NEW CODE - TO DELETE LATER
+  const currentUserId = req.userId; 
   retrievedDataFromDatabase(selectedDate, currentUserId, (err, data) => {
     if (err) {
       res.status(500).json({ error: 'Error retrieving data from the database' });
@@ -311,7 +308,6 @@ function saveOrUpdateUserMetrics(req, res, next) {
     return res.status(400).json({ error: 'Missing required user metrics' });
   }
 
-  // Notice that I've removed selectedDate from the query
   db.get(
     'SELECT * FROM user_metrics WHERE user_id = ?',
     [currentUserId],

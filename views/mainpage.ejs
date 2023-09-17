@@ -20,7 +20,7 @@
       </div>
       <% if (recommededRecipes && recommededRecipes.length > 0) { %> <% for (let
       i = 0; i < recommededRecipes.length; i++) { %>
-      <a href="/user/recipe?id=<%= recommededRecipes[i].id %>">
+      <a href="/user/recipe?id=<%= recommededRecipes[i].id %>" class="homeImages">
       <div class="slider-item">
         <h3><%= recommededRecipes[i].title %></h3>
         <img
@@ -43,7 +43,7 @@
     <div class="slider-container latest">
       <div class="slider-arrow prev" onclick="prevLatestSlide()">&#10094;</div>
       <% for (let i = 0; i < latestRecipe.length; i++) { %>
-      <a href="/user/recipe?id=<%= latestRecipe[i].id %>" class="latestRecipeImages">
+      <a href="/user/recipe?id=<%= latestRecipe[i].id %>" class="homeImages">
       <div class="slider-item">
         <h3><%= latestRecipe[i].title %></h3>
         <img

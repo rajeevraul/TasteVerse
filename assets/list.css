@@ -32,12 +32,12 @@ left: 10px;
 right: 10px;
 }
 
-.latestRecipeImages{
+.homeImages{
     text-decoration: none;
     color: black;
 }
 
-.latestRecipeImages:hover{
+.homeImages:hover{
     color: rgb(176, 102, 74);
     text-decoration: none;
 }
