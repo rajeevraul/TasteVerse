@@ -20,6 +20,7 @@
       </div>
       <% if (recommededRecipes && recommededRecipes.length > 0) { %> <% for (let
       i = 0; i < recommededRecipes.length; i++) { %>
+      <a href="/user/recipe?id=<%= recommededRecipes[i].id %>">
       <div class="slider-item">
         <h3><%= recommededRecipes[i].title %></h3>
         <img
@@ -27,6 +28,7 @@
           alt="<%= recommededRecipes[i].title %>"
         />
       </div>
+      </a>
       <% } %> <% } else { %>
       <!-- Display a message or placeholder content when data is not available -->
       <p>No recommended recipes available.</p>
