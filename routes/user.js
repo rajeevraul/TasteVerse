@@ -89,7 +89,7 @@ router.get('/main', ifAuthenticated, async (req, res) => {
 /**
  * @desc Renders to shoppinglist page WORKING
  */
-router.get('/list', ifAuthenticated, (req, res) => { 
+router.get('/list', ifAuthenticated, (req, res) => {
   db.all('SELECT * FROM shoppingRecord', (err, rows) => {
     if (err) {
       console.error(err.message);
@@ -103,7 +103,7 @@ router.get('/list', ifAuthenticated, (req, res) => {
 /**
  * @desc When a new item is added to the shopping list  WORKING
  */
-router.post('/list', (req, res) => { 
+router.post('/list', (req, res) => {
   const newItem = req.body.item;
   const quantity = req.body.quantity;
 
@@ -289,7 +289,7 @@ function retrievedDataFromDatabase(selectedDate, userId, callback) {
  */
 router.get('/get-calendar-data', ifAuthenticated, (req, res) => {
   const selectedDate = req.query.date;
-  const currentUserId = req.userId; 
+  const currentUserId = req.userId;
   retrievedDataFromDatabase(selectedDate, currentUserId, (err, data) => {
     if (err) {
       res.status(500).json({ error: 'Error retrieving data from the database' });
@@ -463,7 +463,7 @@ router.post("/modified/:modifiedRecipe_id", (req, res) => {
       console.error(err);
       return res.status(500).send('Internal Server Error');
     }
-    res.redirect('/user/main');
+    res.redirect('/user/myRecipe');
   });
 });
 
