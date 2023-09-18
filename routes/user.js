@@ -479,7 +479,7 @@ router.post("/toFavourite", async (req, res) => {
 
     //check if the user has already added the current recipe to favouriteRecipe in the database
     const idExistAlr = await new Promise((resolve, reject) => {
-      global.db.get("SELECT * FROM favouriteRecipe where recipe_id=?", [req.body.id], function (err, recipe) {
+      global.db.get("SELECT * FROM favouriteRecipe where recipe_id=? AND user_id=?", [req.body.id,userId], function (err, recipe) {
         if (err) {
           reject(err)
         } else {
