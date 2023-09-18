@@ -32,7 +32,7 @@ router.get('/main', ifAuthenticated, async (req, res) => {
   const userId = req.session.user_id;
   const recipes = await new Promise((resolve, reject) => {
     global.db.all(
-      'SELECT title, image_name, id, ingredients FROM recipes LIMIT 20',
+      'SELECT title, image_name, id, ingredients FROM recipes',
       function (err, recipe) {
         if (err) {
           reject(err);
