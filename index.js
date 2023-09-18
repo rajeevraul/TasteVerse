@@ -59,9 +59,7 @@ app.listen(port, () => {
 app.use('/assets', express.static('assets'));
 
 
-//login function 
-
-
+//login function
 
 
 app.get('/register',ifLoggedIn, (req,res)=>{
