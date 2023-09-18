@@ -370,7 +370,7 @@ router.get('/recipe', ifAuthenticated, (req, res) => {
       console.error(err);
       return res.status(500).send('Internal Server Error');
     }
-
+    data[0].ingredients = data[0].ingredients.replace('"', '');
     data[0].ingredients = data[0].ingredients.replace(/'/g, '"');
     // Parse the JSON string into an array
     const parsedArray = JSON.parse(data[0].ingredients);
